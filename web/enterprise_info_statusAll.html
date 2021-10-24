@@ -29,7 +29,7 @@
                         </div>
                         <div class="layui-inline s-layuiInline">
                             <button class="layui-btn layui-btn-warm" id="queryBtn">查询</button>
-                            <button class="layui-btn layui-btn-disabled" id="addBtn">开始申报</button>
+                            <button class="layui-btn" id="addBtn">开始申报</button>
                         </div>
                     </div>
                 </form>
@@ -204,7 +204,21 @@
         });
         $("#cancelAdd").unbind("click").click(function () {
             layer.closeAll();
-        })
+        });
+
+        function diffUserDoDiffThing(managerDo, enterpriseDo) {
+            $.get({
+                url: "../service/get_user_type.php",
+                success: function (res) {
+                    if (res === "manager") managerDo()
+                    if (res === "enterprise") enterpriseDo()
+                }
+            })
+        }
+        diffUserDoDiffThing(() => {
+            $("#addBtn").hide();
+        }, () => {
+        });
     })
 </script>
 </html>

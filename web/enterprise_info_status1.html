@@ -173,7 +173,6 @@
             ]],
             size: 'sm',
             parseData: function (res) {
-                console.log(res)
                 for (let item of res.data) {
                     if (item.status === null)
                         item.status = "未申报";
@@ -205,6 +204,20 @@
         $("#cancelAdd").unbind("click").click(function () {
             layer.closeAll();
         })
+
+        function diffUserDoDiffThing(managerDo, enterpriseDo) {
+            $.get({
+                url: "../service/get_user_type.php",
+                success: function (res) {
+                    if (res === "manager") managerDo()
+                    if (res === "enterprise") enterpriseDo()
+                }
+            })
+        }
+        diffUserDoDiffThing(() => {
+            $("#addBtn").hide();
+        }, () => {
+        });
     })
 </script>
 </html>
