@@ -129,7 +129,7 @@
             </div>
         </div>
         <div class="s-tabBottomButton">
-            <button class="layui-btn" id="confirm" lay-filter="confirm" lay-submit type="button">确认</button>
+            <button class="layui-btn" id="confirm" lay-filter="confirm" lay-submit type="button">提交</button>
             <button class="layui-btn layui-btn-warm" id="cancelAdd" type="button">取消</button>
         </div>
     </form>
@@ -167,13 +167,32 @@
                 {field: 'industry', width: '10%', title: '行业'},
                 {field: 'chargeperson', width: '7%', title: '企业负责人'},
                 {field: 'phone', width: '10%', title: '联系电话'},
+                {field: 'status', width: '6%', title: '状态'},
                 {field: 'remark', width: '10%', title: '备注'},
                 {field: 'operation', width: '170', title: '操作', toolbar: '#operation', fixed: 'right'}
             ]],
             size: 'sm',
             parseData: function (res) {
+                console.log(res)
+                for (let item of res.data) {
+                    if (item.status === null)
+                        item.status = "未申报";
+                }
             }
         });
+        form.on('submit(confirm)', function (data) {
+            $.post({
+                url: "../service/edit_enterprise_info.php",
+                data: data.field,
+                success: function (res) {
+                    if (JSON.parse(res).data)
+                        layer.alert("申报成功！", {icon: 1}, () => {
+                            enterpriseTable.reload()
+                            layer.closeAll();
+                        });
+                }
+            })
+        })
         $("#addBtn").unbind("click").click(function () {
             layer.open({
                 type: 1,
