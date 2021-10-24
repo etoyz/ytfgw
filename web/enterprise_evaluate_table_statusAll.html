@@ -81,6 +81,10 @@
             ]],
             size: 'sm',
             parseData: function (res) {
+                for (let item of res.data) {
+                    if (item.status === null)
+                        item.status = "未申报";
+                }
             }
         });
         function diffUserDoDiffThing(managerDo, enterpriseDo) {

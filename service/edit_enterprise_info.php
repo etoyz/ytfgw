@@ -15,8 +15,7 @@ if (isset($_SESSION['usertype'])) {
             `industry` = '$_POST[industry]', 
             `chargeperson` = '$_POST[chargeperson]', 
             `phone` = '$_POST[phone]', 
-            `remark` = '$_POST[remark]',
-            `status` = '已申报'
+            `remark` = '$_POST[remark]'
         WHERE `loginid` = '$_SESSION[loginid]';";
     require_once 'db.php';
     $db = new DB();
