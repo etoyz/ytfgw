@@ -1,0 +1,71 @@
+/* 图片上传预览样式  */
+.s-formItem2 .layui-input {
+    background-color: inherit;
+    border: none;
+    padding-left: 0;
+    padding-top: 4px;
+}
+.s-formItem2 .layui-form-mid {
+    padding: 6px 0!important;
+    margin-right: 0;
+}
+.s-imgUpload {
+    width: 100%;
+    float: left;
+}
+.s-imgDiv {
+    width: 544px;
+    margin-top: 8px;
+    text-align: center;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+.s-imgDiv img {
+    max-width: 512px;
+    height: auto;
+    border: dashed 6px #e6e6e6;
+}
+
+/* 复选框字数过多分行 */
+.s-layuiInputBlock .layui-form-checkbox span{
+    height: auto;
+}
+
+/* 取消select下拉框的绝对定位 */
+.s-layuiInputInline .layui-form-select dl{
+    position: static;
+    margin-top: 6px;
+}
+
+/* 弹窗内输入框layui-input-block样式 */
+.s-formItem4 .layui-form-label{
+    width: 56px;
+    padding: 6px 8px 6px 0;
+}
+.s-formItem4 .layui-input-block{
+    margin-left: 64px;
+}
+
+/* Tab下的form表单 */
+.s-formItem5 .layui-form-label{
+    width: 112px;
+    padding-left: 0;
+}
+.s-formItem5 .layui-input-block{
+    margin-left: 120px;
+}
+/*.s-formItem5 .layui-inline{*/
+/*    display: block;*/
+/*}*/
+.s-formItem5 .layui-input-block{
+    margin-left: 68px;
+}
+
+.s-formItem6 .layui-form-label{
+    width: 60px;
+    padding-left: 0;
+}
+.s-formItem6 .layui-input-inline{
+    width: 128px;
+    margin-right: 0;
+}

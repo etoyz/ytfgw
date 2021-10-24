@@ -1,0 +1,115 @@
+.s-tabBottomButton {
+    width: 100%;
+    text-align: center;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    box-sizing: border-box;
+}
+
+/* 首页 */
+.s-notice {
+    width: 100%;
+    height: 48px;
+    line-height: 48px;
+    box-sizing: border-box;
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: #f5f8fd;
+    border-left: solid 4px #8bb4e7;
+}
+
+.s-notice p {
+    font-size: 14px;
+}
+
+.s-notice p span {
+    font-weight: bold;
+}
+
+.s-consumptionStatistics {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.s-statisticsModule {
+    width: 23%;
+    border-radius: 4px;
+    /*background-color: #3598dc;*/
+    background: url("../image/scienceBg.png") center no-repeat #3598dc;
+    background-size: 100% auto;
+    box-sizing: border-box;
+    padding: 8px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.s-statisticsTitle {
+    width: auto;
+    font-size: 24px;
+    color: #fff;
+    line-height: 36px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.s-statistics {
+    width: 100%;
+    margin-top: 16px;
+}
+
+.s-statisticsItem {
+    width: 45%;
+    margin-right: 10%;
+    float: left;
+}
+
+.s-statisticsItem p {
+    width: 100%;
+    font-size: 14px;
+    color: #fff;
+    line-height: 21px;
+}
+
+.s-statisticsItem .s-numerical {
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.s-statisticsItem1 {
+    float: right;
+    margin-right: 0;
+}
+
+.s-statisticsItem1 p {
+    text-align: right;
+}
+
+.s-statisticsModule2 {
+    background-color: #e7505a;
+}
+
+.s-statisticsModule3 {
+    background-color: #32c5d2;
+}
+
+.s-statisticsModule4 {
+    background-color: #8e44ad;
+}
+
+.s-statisticalAmount {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px;
+    background-color: #F8F8F8;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.s-statisticalAmountChart {
+    width: 100%;
+    height: 460px;
+}

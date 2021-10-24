@@ -1,0 +1,118 @@
+/* 内容 */
+.login-bg {
+    width: 100%;
+}
+
+.login {
+    width: 700px;
+    height: 500px;
+    margin: 10% auto 0;
+    /* border: 1px solid #ccc; */
+    padding: 2% 30px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, .2);
+}
+
+.login-bg img {
+    background-size: 100% 100%;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    z-index: -1;
+    cursor: pointer;
+}
+
+.login > h3 {
+    color: #fff;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+
+.login > div {
+    width: 100%;
+    margin-top: 40px;
+}
+
+.login > div > input {
+    background: #fff;
+    text-indent: 1rem;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    color: #757575;
+    height: 40px;
+    font-size: 18px;
+}
+
+.login-id > input {
+    width: 100%;
+}
+
+.login-pwd {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-pwd > input {
+    width: 100%;
+}
+
+.login-pwd > span {
+    width: 16%;
+    color: #d8d8d8;
+    font-size: 18px;
+    text-align: center;
+}
+
+.login-code {
+    display: flex;
+    justify-content: space-between;
+}
+
+.login-code > input {
+    width: 63%;
+}
+
+.vcode {
+    width: 30%;
+    height: 40px;
+    background: url(../image/vcodebg.jpg) no-repeat;
+    background-size: cover;
+    box-sizing: border-box;
+    text-align: center;
+    line-height: 40px;
+    font-size: 18px;
+    color: rgb(201, 25, 25);
+}
+
+.login-btn {
+    width: 100%;
+    background: #1bac05;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.login-btn > a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.reg-btn {
+    width: 100%;
+    background: #bba510;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.reg-btn > a {
+    color: #fff;
+    text-decoration: none;
+}

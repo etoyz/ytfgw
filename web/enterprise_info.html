@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="assets/plugins/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="assets/css/table.css" media="all">
+    <link href="assets/plugins/font-awesome/css/font-awesome.min.css" media="all" rel="stylesheet">
+    <link href="assets/plugins/adjust/css/adjustLayui.css" media="all" rel="stylesheet">
+    <link href="assets/css/form.css" media="all" rel="stylesheet">
+    <link href="assets/css/common.css" media="all" rel="stylesheet">
+</head>
+<body>
+<div class="layui-fluid main">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div class="s-headerSearch" id="headArea">
+                <form action="" autocomplete="off" class="layui-form">
+                    <div class="layui-form-item">
+                        <div class="layui-inline s-layuiInline">
+                            <label class="layui-form-label">企业名称</label>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" id="enterpriseNameSearch"
+                                       placeholder="请输入企业名称"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="layui-inline s-layuiInline">
+                            <button class="layui-btn layui-btn-warm" id="queryBtn">查询</button>
+                            <button class="layui-btn layui-btn-disabled" id="addBtn">新增企业信息</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="s-commonTable">
+                <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
+                <script id="operation" type="text/html">
+                    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="edit">修改</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="relate">批准</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</a>
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="assets/plugins/layui/layui.js"></script>
+<script>
+    layui.use(['form', 'laydate', 'table', 'layer', 'element'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            laydate = layui.laydate,
+            layer = layui.layer,
+            table = layui.table,
+            element = layui.element;
+        let enterpriseTable = table.render({
+            elem: '#enterpriseTable',
+            url: '../service/get_enterprise_list.php?query=',
+            toolbar: true,
+            defaultToolbar: ['filter', 'print', 'exports'],
+            height: 'full-100',
+            page: {
+                layout: ['prev', 'page', 'next', 'skip', 'count'], //自定义分页布局
+                limit: 10,
+                groups: 3,
+                first: false,
+                last: false
+            },
+            cols: [[
+                {field: 'name', width: '15%', title: '企业名称'},
+                {field: 'typeName', width: '6%', title: '省'},
+                {field: 'unitPrice', width: '6%', title: '市'},
+                {field: 'costPrice', width: '10%', title: '详细地址'},
+                {field: 'remark', width: '7%', title: '下属企业数量'},
+                {field: 'createName', width: '10%', title: '主营业务'},
+                {field: 'createTime', width: '10%', title: '行业'},
+                {field: 'lastEditName', width: '7%', title: '企业负责人'},
+                {field: 'lastEditTime', width: '10%', title: '联系电话'},
+                {field: 'lastEditTime', width: '10%', title: '备注'},
+                {field: 'operation', width: '200', title: '操作', toolbar: '#operation', fixed: 'right'}
+            ]],
+            size: 'sm',
+            parseData: function (res) {
+            }
+        });
+    })
+</script>
+</html>

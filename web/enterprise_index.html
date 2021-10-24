@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>企业技术中心申报系统</title>
+    <link href="assets/plugins/layui/css/layui.css" media="all" rel="stylesheet">
+    <link href="assets/plugins/layui/css/layui.css" media="all" rel="stylesheet">
+    <link href="assets/plugins/font-awesome/css/font-awesome.min.css" media="all" rel="stylesheet">
+    <link href="assets/common/css/app.css" media="all" rel="stylesheet"/>
+    <link href="assets/common/css/default.css" id="skin" kit-skin media="all" rel="stylesheet"/>
+    <link href="assets/css/table.css" media="all" rel="stylesheet">
+    <link href="assets/css/form.css" media="all" rel="stylesheet">
+    <link href="assets/plugins/adjust/css/colorTheme.css" media="all" rel="stylesheet">
+</head>
+
+<body>
+<div class="layui-layout layui-layout-admin kit-layout-admin">
+    <div class="layui-header">
+        <a class="layui-logo" style=":line-height 60px;margin-left: 5px" onclick="location.href='../index.php'">
+            企业技术中心申报系统
+        </a>
+        <ul class="layui-nav layui-layout-right kit-nav">
+            <li class="layui-nav-item"><a class="s-headPortrait" href="javascript:" id="loginName">正在加载... </a></li>
+            <li class="layui-nav-item"><a class="s-logout" id="logout"><i aria-hidden="true" class="fa fa-sign-out"></i>
+                注销</a></li>
+        </ul>
+    </div>
+    <div class="layui-side layui-bg-black kit-side">
+        <div class="layui-side-scroll">
+            <div class="kit-side-fold"><i aria-hidden="true" class="fa fa-navicon"></i></div>
+            <ul class="layui-nav layui-nav-tree" kit-nFavbar lay-filter="kitNavbar">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:"><i aria-hidden="true" class="fa fa-plug"></i><span> 企业技术中心-申报</span></a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a data-options="{url:'tips1.html',icon:'&#xe658;',title:'填报指南',id:'1'}" href="javascript:" kit-target><i class="layui-icon">&#xe658;</i><span> 填报指南</span></a>
+                        </dd>
+                        <dd>
+                            <a data-options="{url:'enterprise_info.html',icon:'&#xe658;',title:'企业基本信息',id:'2'}" href="javascript:" kit-target><i class="layui-icon">&#xe658;</i><span> 企业基本信息</span></a>
+                        </dd>
+                        <dd>
+                            <a data-options="{url:'sd',icon:'&#xe658;',title:'申报数据表',id:'3'}" href="javascript:" kit-target><i class="layui-icon">&#xe658;</i><span> 申报数据表</span></a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-body" id="container">
+        <div style="padding: 15px;">正在加载... </div>
+    </div>
+</div>
+
+<script src="assets/plugins/layui/layui.js"></script>
+<script src="assets/common/js/tab.js"></script>
+<script>
+    layui.use(['form', 'layer'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            layer = layui.layer;
+
+        $.get({
+            url: "../service/getLoginId.php",
+            success: function (res) {
+                $("#loginName").html(res + " ")
+            }
+        })
+        $("#logout").unbind("click").click(function () {
+            location.href = "../service/logout.php";
+        })
+    }).config({
+        base: 'assets/common/js/'
+    }).use(['app'], function () {
+        var app = layui.app;
+        //主入口
+        app.set({
+            type: 'iframe'
+        }).init();
+    });
+</script>
+</body>
+</html>

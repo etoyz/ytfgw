@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="873ecc9c-5be4-454a-b5b4-c0aee1da8159" name="aly">
+        <fileTransfer accessType="SFTP" host="playtowin.top" port="22" sshConfigId="b3a06cbe-62f9-4385-a79b-2ee1b7ee1860" sshConfig="root@playtowin.top:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

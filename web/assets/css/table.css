@@ -1,0 +1,207 @@
+/* 表格头部搜索 */
+.s-headerSearch {
+    width: 100%;
+    padding: 16px 15px 0 7px;
+    background-color: #F8F8F8;
+    border: 1px solid #eeeeee;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* 表格单元格样式 */
+.s-specialField1 {
+    color: #60a917;
+}
+
+.s-specialField2 {
+    color: #f0a30a;
+}
+
+.s-specialField3 {
+    color: #fa6800;
+}
+
+/* 弹窗样式 */
+.s-details {
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+    display: none;
+}
+
+.s-details p {
+    color: #999;
+    line-height: 20px;
+}
+
+/* “审核”弹窗样式 */
+.s-layuiForm {
+    margin-top: 16px;
+}
+
+.s-formItem3 .layui-form-label {
+    width: auto;
+    padding: 6px 8px 6px 0;
+}
+
+.s-submitButton5 {
+    width: 100%;
+    text-align: center;
+    margin-left: 0;
+    padding-top: 8px;
+}
+
+/* 文件“导入”弹窗样式 */
+.s-submitButton1 {
+    padding-top: 8px;
+}
+
+/* 表格“操作”栏图标样式 */
+.layui-table-cell i.fa {
+    display: inline-block;
+    width: auto;
+    font-size: 14px;
+    color: #40a9ff;
+    margin-left: 8px;
+    cursor: pointer;
+    /* 服务器端表格文字图标端上浮问题 */
+    margin-top: 4px;
+}
+
+/* 复选框表格 - 操作按钮样式 */
+.s-operationDiv {
+    padding-bottom: 16px;
+}
+
+.s-operationDiv button {
+    float: left;
+}
+
+.s-operationDiv p {
+    float: left;
+    display: block;
+    padding: 8px 0 !important;
+    margin-right: 10px;
+    margin-left: 10px;
+    line-height: 20px;
+}
+
+/*  alarmInformation */
+.s-contentDetails {
+    width: 100%;
+    float: left;
+    background-color: #f8f8f8;
+    border: 1px solid #eeeeee;
+    border-radius: 4px;
+    padding-top: 8px;
+}
+
+.s-contentDetails li {
+    width: 33.33%;
+    float: left;
+    line-height: 21px;
+    padding: 0 15px 8px 15px;
+    box-sizing: border-box;
+}
+
+.s-layuiInline1 {
+    width: 50%;
+    float: left;
+    box-sizing: border-box;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+.s-layuiInline1 .layui-form-label {
+    width: auto;
+    padding: 6px 8px;
+}
+
+.s-layuiInput {
+    width: 300px;
+    float: left;
+}
+
+.s-submitButton {
+    margin-left: 93px;
+    padding-top: 9px;
+}
+
+.s-layuiInline8 {
+    width: 100%;
+}
+
+/* 表格内单选框样式 */
+.layui-table-view .layui-form-radio > i {
+    font-size: 18px;
+    color: #c2c2c2;
+    /* 服务器端表格文字图标端上浮问题 */
+    /*margin-top: 10px;*/
+}
+
+.layui-form-radio > i:hover, .layui-table-view .layui-form-radioed > i {
+    color: #5FB878;
+}
+
+/* 树形表格样式 */
+.layui-table-cell .layui-tree-head {
+    color: #666;
+}
+
+.layui-table-cell .s-tree-table-icon {
+    font-size: 14px;
+    margin-right: 2px;
+    margin-left: 6px;
+    color: #666;
+}
+
+/* 表格输入框点击增加/删除 */
+.layui-form-item .s-deleteDevice {
+    margin-bottom: 8px;
+}
+
+.s-deleteDevice .deleteDevice {
+    display: block;
+    width: auto;
+    position: absolute;
+    right: -20px;
+    top: 8px;
+    z-index: 100;
+    color: #FF5722;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.s-addDevice i {
+    display: block;
+    width: auto;
+    color: #1E9FFF;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 135px;
+    margin-top: -5px;
+}
+
+/* 单元格样式 */
+/*.layui-table-cell {*/
+/*    font-size: 14px;*/
+/*    padding: 0 5px;*/
+/*    height: auto;*/
+/*    overflow: visible;*/
+/*    text-overflow: inherit;*/
+/*    white-space: normal;*/
+/*    word-break: break-all;*/
+/*}*/
+
+/* TODO 尝试修复layui的bug */
+/*.layui-table-tips{*/
+/*    width: 800px!important;*/
+/*}*/
+/*.layui-table-tips-main{*/
+/*    height: 100%;*/
+/*    word-wrap: break-word;*/
+/*}*/
+/*.layui-layer-content{*/
+/*    height: 100px;*/
+/*}*/

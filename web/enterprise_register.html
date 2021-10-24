@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>企业用户注册</title>
+    <link rel="stylesheet" href="assets/plugins/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="assets/css/login2.css" media="all">
+    <style>
+        .layui-input {
+            background-color: inherit;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="zyl_login_cont"></div>
+
+<div class="zyl_lofo_main" style="height: 460px">
+    <fieldset class="layui-elem-field layui-field-title zyl_mar_02">
+        <legend>欢迎注册 - 企业技术中心申报系统</legend>
+    </fieldset>
+    <div class="layui-row layui-col-space15">
+        <form class="layui-form zyl_pad_01">
+            <div class="layui-col-sm12 layui-col-md12">
+                <div class="layui-form-item">
+                    <input type="text" name="loginid" lay-verify="required|userName" autocomplete="off"
+                           placeholder="账号" class="layui-input">
+                    <i class="layui-icon layui-icon-username zyl_lofo_icon"></i>
+                </div>
+            </div>
+            <div class="layui-col-sm12 layui-col-md12">
+                <div class="layui-form-item">
+                    <input type="text" name="name" lay-verify="required|name" autocomplete="off"
+                           placeholder="公司全称" class="layui-input">
+                    <i class="layui-icon layui-icon-survey zyl_lofo_icon"></i>
+                </div>
+            </div>
+            <div class="layui-col-sm12 layui-col-md12">
+                <div class="layui-form-item">
+                    <input type="password" name="loginpw" lay-verify="required|pass" autocomplete="off" placeholder="密码"
+                           class="layui-input">
+                    <i class="layui-icon layui-icon-password zyl_lofo_icon"></i>
+                </div>
+            </div>
+            <div class="layui-col-sm12 layui-col-md12">
+                <div class="layui-form-item">
+                    <input type="password" id="loginpw2" lay-verify="required" autocomplete="off"
+                           placeholder="确认密码"
+                           class="layui-input">
+                    <i class="layui-icon layui-icon-password zyl_lofo_icon"></i>
+                </div>
+            </div>
+            <div class="layui-col-sm12 layui-col-md12">
+                <div class="layui-row">
+                    <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+                        <div class="layui-form-item">
+                            <input type="text" id="vercode" lay-verify="required|vercodes"
+                                   autocomplete="off" placeholder="验证码" class="layui-input" maxlength="4">
+                            <i class="layui-icon layui-icon-vercode zyl_lofo_icon"></i>
+                        </div>
+                    </div>
+                    <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+                        <div class="zyl_lofo_vercode zylVerCode" onclick="zylVerCode()">QaRT</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm12 layui-col-md12">
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn-danger layui-btn-fluid" lay-filter="loginnow" lay-submit>立即注册
+                    </button>
+                </div>
+            </div>
+            <div class="layui-col-sm12 layui-col-md12">
+                <div class="layui-form-item">
+                    <button class="layui-btn  layui-btn-fluid"
+                            onclick="location.href='./enterprise_login.html';return false">返回登录
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" src="assets/common/js/jquery.min.js"></script>
+<script type="text/javascript" src="assets/common/js/zylVerificationCode.js"></script>
+<script type="text/javascript" src="assets/plugins/layui/layui.js"></script>
+<script type="text/javascript" src="assets/common/js/jparticle.min.js"></script>
+<script>
+    layui.use(['form', 'layer', 'form'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            layer = layui.layer;
+
+        form.verify({
+            userName: function (value) {
+                if (value.length < 5) {
+                    return '账号至少得5个字符';
+                }
+            }
+            , pass: function (value) {
+                if (!new RegExp(/^[\S]{6,12}$/).test(value))
+                    return "密码必须6到12位，且不能出现空格！";
+                if (value !== $("#loginpw2").val())
+                    return "两次密码不一致！";
+            }
+            , vercodes: function (value) {
+                return null; // TODO
+                //获取验证码
+                var zylVerCode = $(".zylVerCode").html();
+                if (value != zylVerCode) {
+                    return '验证码错误（区分大小写）';
+                }
+            }
+        });
+
+        form.on('submit(loginnow)', function (data) {
+            $.post({
+                url: "../service/enterprise_register.php",
+                data: data.field,
+                success: function (res) {
+                    console.log(res)
+                    if (res.nameRepetition)
+                        layer.alert("名字重复！", {icon: 2})
+                    if (res.regSuccess) {
+                        layer.alert("注册成功！\n您的用户名为" + res.username, {icon: 1}, function () {
+                            location.href = "enterprise_login.html";
+                        })
+                    }
+
+                },
+                dataType: 'json'
+            })
+            return false
+        });
+
+        //粒子线条
+        $(".zyl_login_cont").jParticle({
+            background: "rgba(0,0,0,0)",//背景颜色
+            color: "#fff",//粒子和连线的颜色
+            particlesNumber: 100,//粒子数量
+            //disableLinks:true,//禁止粒子间连线
+            //disableMouse:true,//禁止粒子间连线(鼠标)
+            particle: {
+                minSize: 1,//最小粒子
+                maxSize: 3,//最大粒子
+                speed: 30,//粒子的动画速度
+            }
+        });
+    });
+</script>
+</body>
+</html>
