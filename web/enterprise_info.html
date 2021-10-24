@@ -29,7 +29,7 @@
                         </div>
                         <div class="layui-inline s-layuiInline">
                             <button class="layui-btn layui-btn-warm" id="queryBtn">查询</button>
-                            <button class="layui-btn layui-btn-disabled" id="addBtn">新增企业信息</button>
+                            <button class="layui-btn layui-btn-disabled" id="addBtn">开始申报</button>
                         </div>
                     </div>
                 </form>
@@ -45,6 +45,94 @@
             </div>
         </div>
     </div>
+</div>
+<div class="s-details" id="popUp">
+    <form class="layui-form">
+        <div>
+            <div class="layui-form-item s-formItem1">
+                <div class="layui-inline">
+                    <label class="layui-form-label">企业名称</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="name"
+                               lay-verify="required" name="name" type="text">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">主营业务</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" name="mainbus"
+                               lay-verify="required" id="mainbus" type="text">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">行业</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="industry"
+                               lay-verify="required" name="industry" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item s-formItem1">
+                <div class="layui-inline">
+                    <label class="layui-form-label">省</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="province"
+                               lay-verify="required" name="province" type="text">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">市</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="city"
+                               lay-verify="required" name="city" type="text">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">详细地址</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="address"
+                               lay-verify="required" name="address" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item s-formItem1">
+                <div class="layui-inline">
+                    <label class="layui-form-label">下属企业数量</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="numofsub"
+                               lay-verify="number" name="numofsub" type="text">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">企业负责人</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="chargeperson"
+                               lay-verify="required" name="chargeperson" type="text">
+                    </div>
+                </div>
+                <div class="layui-inline editMod">
+                    <label class="layui-form-label">联系电话</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" name="phone"
+                               lay-verify="number" id="phone" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item s-formItem1">
+                <div class="layui-inline">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="remark"
+                               lay-verify="required" name="remark" type="text">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="s-tabBottomButton">
+            <button class="layui-btn" id="confirm" lay-filter="confirm" lay-submit type="button">确认</button>
+            <button class="layui-btn layui-btn-warm" id="cancelAdd" type="button">取消</button>
+        </div>
+    </form>
 </div>
 </body>
 <script src="assets/plugins/layui/layui.js"></script>
@@ -86,6 +174,18 @@
             parseData: function (res) {
             }
         });
+        $("#addBtn").unbind("click").click(function () {
+            layer.open({
+                type: 1,
+                title: '企业详细信息',
+                content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                area: ['1022px', '380px']
+            });
+            return false
+        });
+        $("#cancelAdd").unbind("click").click(function () {
+            layer.closeAll();
+        })
     })
 </script>
 </html>
