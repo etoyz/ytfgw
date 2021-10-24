@@ -61,6 +61,7 @@ class DB
             echo "sql语句执行失败<br>";
             echo "错误编码是" . mysqli_errno($this->link) . "<br>";
             echo "错误信息是" . mysqli_error($this->link) . "<br>";
+            echo "SQL:" . $sql . "<br>";
         }
         return $res;
     }
