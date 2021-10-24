@@ -21,6 +21,7 @@
             企业技术中心申报系统
         </a>
         <ul class="layui-nav layui-layout-right kit-nav">
+            <li class="layui-nav-item"><a class="s-headPortrait" href="javascript:" id="name">正在加载... </a></li>
             <li class="layui-nav-item"><a class="s-headPortrait" href="javascript:" id="loginName">正在加载... </a></li>
             <li class="layui-nav-item"><a class="s-logout" id="logout"><i aria-hidden="true" class="fa fa-sign-out"></i>
                 注销</a></li>
@@ -64,6 +65,12 @@
             url: "../service/getLoginId.php",
             success: function (res) {
                 $("#loginName").html(res + " ")
+            }
+        })
+        $.get({
+            url: "../service/getEnterpriseName.php",
+            success: function (res) {
+                $("#name").html(res + " ")
             }
         })
         $("#logout").unbind("click").click(function () {
