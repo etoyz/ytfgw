@@ -19,7 +19,7 @@
             <div class="s-headerSearch" id="headArea">
                 <form action="" autocomplete="off" class="layui-form">
                     <div class="layui-form-item">
-                        <div class="layui-inline s-layuiInline">
+                        <div class="layui-inline s-layuiInline m-mod">
                             <label class="layui-form-label">企业名称</label>
                             <div class="layui-input-inline">
                                 <input autocomplete="off" class="layui-input" id="enterpriseNameSearch"
@@ -28,8 +28,8 @@
                             </div>
                         </div>
                         <div class="layui-inline s-layuiInline">
-                            <button class="layui-btn layui-btn-warm" id="queryBtn">查询</button>
-                            <button class="layui-btn" id="addBtn">开始申报</button>
+                            <button class="layui-btn layui-btn-warm m-mod" id="queryBtn">查询</button>
+                            <button class="layui-btn e-mod" id="addBtn">完善企业信息</button>
                         </div>
                     </div>
                 </form>
@@ -37,11 +37,6 @@
 
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
-                <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="edit">修改</a>
-                    <a class="layui-btn layui-btn-xs" lay-event="relate">批准</a>
-                    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</a>
-                </script>
             </div>
         </div>
     </div>
@@ -169,7 +164,6 @@
                 {field: 'phone', width: '10%', title: '联系电话'},
                 {field: 'status', width: '6%', title: '状态'},
                 {field: 'remark', width: '10%', title: '备注'},
-                {field: 'operation', width: '170', title: '操作', toolbar: '#operation', fixed: 'right'}
             ]],
             size: 'sm',
             parseData: function (res) {
@@ -216,8 +210,9 @@
             })
         }
         diffUserDoDiffThing(() => {
-            $("#addBtn").hide();
+            $(".e-mod").hide();
         }, () => {
+            $(".m-mod").hide();
         });
     })
 </script>
