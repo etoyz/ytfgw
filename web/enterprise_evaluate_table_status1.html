@@ -19,7 +19,7 @@
             <div class="s-headerSearch" id="headArea">
                 <form action="" autocomplete="off" class="layui-form">
                     <div class="layui-form-item">
-                        <div class="layui-inline s-layuiInline">
+                        <div class="layui-inline s-layuiInline m-mod">
                             <label class="layui-form-label">企业名称</label>
                             <div class="layui-input-inline">
                                 <input autocomplete="off" class="layui-input" id="enterpriseNameSearch"
@@ -28,7 +28,8 @@
                             </div>
                         </div>
                         <div class="layui-inline s-layuiInline">
-                            <button class="layui-btn layui-btn-warm" id="queryBtn">查询</button>
+                            <button class="layui-btn layui-btn-warm m-mod" id="queryBtn">查询</button>
+                            <button class="layui-btn e-mod" id="submit">开始申报</button>
                         </div>
                     </div>
                 </form>
@@ -81,6 +82,20 @@
             size: 'sm',
             parseData: function (res) {
             }
+        });
+        function diffUserDoDiffThing(managerDo, enterpriseDo) {
+            $.get({
+                url: "../service/get_user_type.php",
+                success: function (res) {
+                    if (res === "manager") managerDo()
+                    if (res === "enterprise") enterpriseDo()
+                }
+            })
+        }
+        diffUserDoDiffThing(() => {
+            $(".e-mod").hide();
+        }, () => {
+            $(".m-mod").hide();
         });
     })
 </script>
