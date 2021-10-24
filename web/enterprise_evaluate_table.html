@@ -29,7 +29,6 @@
                         </div>
                         <div class="layui-inline s-layuiInline">
                             <button class="layui-btn layui-btn-warm" id="queryBtn">查询</button>
-                            <button class="layui-btn layui-btn-disabled" id="addBtn">新增企业信息</button>
                         </div>
                     </div>
                 </form>
@@ -38,9 +37,7 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="edit">修改</a>
-                    <a class="layui-btn layui-btn-xs" lay-event="relate">批准</a>
-                    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">查看</a>
                 </script>
             </div>
         </div>
@@ -56,7 +53,7 @@
             layer = layui.layer,
             table = layui.table,
             element = layui.element;
-        let enterpriseTable = table.render({
+        table.render({
             elem: '#enterpriseTable',
             url: '../service/get_enterprise_list.php?query=',
             toolbar: true,
@@ -70,17 +67,16 @@
                 last: false
             },
             cols: [[
-                {field: 'name', width: '15%', title: '企业名称'},
-                {field: 'province', width: '6%', title: '省'},
                 {field: 'city', width: '6%', title: '市'},
-                {field: 'address', width: '10%', title: '详细地址'},
-                {field: 'numofsub', width: '7%', title: '下属企业数量'},
-                {field: 'mainbus', width: '10%', title: '主营业务'},
-                {field: 'industry', width: '10%', title: '行业'},
-                {field: 'chargeperson', width: '7%', title: '企业负责人'},
-                {field: 'phone', width: '10%', title: '联系电话'},
+                {field: 'name', width: '15%', title: '企业名称'},
+                {field: 'year', width: '10%', title: '报告年度'},
+                {field: 'status', width: '7%', title: '申报状态'},
+                {field: 'expert_score', width: '10%', title: '专家评价分数'},
+                {field: 'expert_result', width: '10%', title: '评审结果'},
+                {field: 'submit_time', width: '7%', title: '填报时间'},
+                {field: 'return_reason', width: '10%', title: '退回原因'},
                 {field: 'remark', width: '10%', title: '备注'},
-                {field: 'operation', width: '170', title: '操作', toolbar: '#operation', fixed: 'right'}
+                {field: 'operation', width: '80', title: '操作', toolbar: '#operation', fixed: 'right'}
             ]],
             size: 'sm',
             parseData: function (res) {

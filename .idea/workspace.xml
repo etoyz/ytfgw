@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c98f57b6-2843-4fb2-8663-af5b404623c6" name="Changes" comment="" />
+    <list default="true" id="c98f57b6-2843-4fb2-8663-af5b404623c6" name="Changes" comment="init">
+      <change afterPath="$PROJECT_DIR$/web/enterprise_evaluate_table.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/data_table.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/enterprise_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/enterprise_index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/enterprise_info.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/enterprise_info.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/manage_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/manage_index.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,8 +75,16 @@
       <workItem from="1634980243307" duration="7987000" />
       <workItem from="1634989444215" duration="7901000" />
       <workItem from="1635037584402" duration="9550000" />
-      <workItem from="1635047642996" duration="11553000" />
+      <workItem from="1635047642996" duration="12354000" />
     </task>
+    <task id="LOCAL-00001" summary="init">
+      <created>1635061402485</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1635061402485</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -85,6 +100,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init" />
+    <option name="LAST_COMMIT_MESSAGE" value="init" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
