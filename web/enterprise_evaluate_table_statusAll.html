@@ -166,8 +166,13 @@
                 url: "../service/submit_data.php",
                 data: dataToBeSub,
                 success: function (res) {
-                    console.log(res)
-                }
+                    if (res.data === true) {
+                        layer.alert("提交审核成功！", {icon: 1})
+                    } else {
+                        layer.alert("异常，请联系管理人员！", {icon: 2})
+                    }
+                },
+                dataType: "json"
             })
             return false
         })
