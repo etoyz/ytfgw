@@ -48,7 +48,7 @@
 <div class="s-details" id="dataTablePopup">
     <table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
     <script id="operationUseCardTable" type="text/html">
-        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">？？</a>
     </script>
     <div class="layui-btn-container s-tabBottomButton">
             <span class="layui-btn layui-btn-warm" id="submitForReview">
@@ -123,7 +123,7 @@
                 type: 1,
                 title: '请在数值列输入企业详细信息',
                 content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                area: ['55%', '80%']
+                area: ['57%', '80%']
             });
             return false
         });
@@ -136,9 +136,9 @@
             style:'background-color: #DFE4E6; color: #DFE4E6;',
             cols: [[
                 {type: 'numbers', style:'background-color: #eee;'},
-                {field: 'indicator', width: 250, title: '指标', style:'background-color: #eee;'},
-                {field: 'count', width: 175, title: '数值', edit: "number", style:'background-color: #FFFFFF;'},
-                {field: 'unit', width: 150, title: '单位', style:'background-color: #eee;'},
+                {field: 'indicator', width: 300, title: '指标', style:'background-color: #eee;'},
+                {field: 'count', width: 160, title: '数值', edit: "number", style:'background-color: #FFFFFF;'},
+                {field: 'unit', width: 140, title: '单位', style:'background-color: #eee;'},
                 {field: 'enclosure', width: 200, title: '附件', style:'background-color: #eee;'}, //单元格内容水平居中
                 {field: 'operation', width: 70, title: '操作', toolbar: '#operationUseCardTable', fixed: 'right', style:'background-color: #eee;'}
             ]],
