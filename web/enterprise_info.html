@@ -143,9 +143,20 @@
             layer = layui.layer,
             table = layui.table,
             element = layui.element;
+
+        function getQueryString(name) {
+            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            let r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return decodeURIComponent(r[2]);
+            }
+            ;
+            return null;
+        }
+
         let enterpriseTable = table.render({
             elem: '#enterpriseTable',
-            url: '../service/get_enterprise_list.php?query=&status=-1',
+            url: '../service/get_enterprise_list.php?query=&status=' + getQueryString("status"),
             toolbar: true,
             defaultToolbar: ['filter', 'print', 'exports'],
             height: 'full-100',
@@ -213,6 +224,7 @@
                 }
             })
         }
+
         diffUserDoDiffThing(() => {
             $(".e-mod").hide();
         }, () => {
