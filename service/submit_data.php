@@ -32,7 +32,7 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
 
     // update status
     if ($arr["data"] == true) {
-        $sql = "UPDATE `enterprise` set `status`=2 WHERE `loginid` = '$_SESSION[loginid]'";
+        $sql = "UPDATE `enterprise` set `status` = 2, `submit_time` = '" . date('Y-m-d H:i:s',time()) . "' WHERE `loginid` = '$_SESSION[loginid]'";
         $db->query($sql);
         $_SESSION['status'] = 2;
     }
