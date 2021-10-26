@@ -184,8 +184,12 @@
             size: 'sm',
             parseData: function (res) {
                 for (let item of res.data) {
-                    if (item.status === null)
-                        item.status = "未申报";
+                    if (item.status === "0")
+                        item.status = "未完善信息";
+                    else if (item.status === "1")
+                        item.status = "未申报数据";
+                    else if (item.status === "2")
+                        item.status = "评审中";
                 }
             }
         });
