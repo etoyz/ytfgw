@@ -79,7 +79,7 @@
             return null;
         }
 
-        table.render({
+        let maintable = table.render({
             elem: '#enterpriseTable',
             url: '../service/get_enterprise_list.php?query=&status=' + getQueryString("status"),
             toolbar: true,
@@ -183,9 +183,10 @@
                     if (res.data === true) {
                         layer.alert("提交审核成功！", {icon: 1}, () => {
                             layer.closeAll();
+                            maintable.reload();
                         })
                     } else {
-                        layer.alert(res.data, {icon: 2}, () => {
+                        layer.alert(res.data + '', {icon: 2}, () => {
                             layer.closeAll();
                         })
                     }

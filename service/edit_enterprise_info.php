@@ -18,6 +18,7 @@ if (isset($_SESSION['usertype'])) {
             `remark` = '$_POST[remark]',
             `status` = 1
         WHERE `loginid` = '$_SESSION[loginid]';";
+    $_SESSION['status'] = 1;
     require_once 'db.php';
     $db = new DB();
     $response['status'] = "isLogin";
