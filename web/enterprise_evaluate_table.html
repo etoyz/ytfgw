@@ -145,7 +145,7 @@
                 $("#submitForReview").hide()
                 let loadMsg = layer.load(1)
                 dataTable.reload({
-                    url: "../service/get_evaluating_indicator_value.php",
+                    url: "../service/get_evaluating_indicator_value.php?user=" + obj.data["loginid"],
                     done: () => {
                         layer.close(loadMsg)
                         layer.open({

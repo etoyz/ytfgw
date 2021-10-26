@@ -6,9 +6,16 @@ $response = array(
 );
 
 if (isset($_SESSION['usertype'])) { // 已经登录
+    $user = null;
+    if ($_SESSION['usertype'] === "enterprise") {
+        $user = $_SESSION['loginid'];
+    } else {
+        $user = $_GET['user'];
+    }
+
     require_once 'db.php';
     $sql = "DESCRIBE enterprise_data;";
-    $sql2 = "SELECT * FROM enterprise_data WHERE `loginid` = $_SESSION[loginid];";
+    $sql2 = "SELECT * FROM enterprise_data WHERE `loginid` = $user;";
     $db = new DB();
     $re = $db->query($sql);
     $re2 = $db->query($sql2);
@@ -16,7 +23,8 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $response["data"] = [];
     $response["code"] = 0;
     $re = $re->fetch_all(MYSQLI_ASSOC);
-//    var_dump(mysqli_fetch_array($re2));
+//    var_dump($re2);
+//    var_dump($sql2);
     $re2 = mysqli_fetch_array($re2);
     $i = 0;
     foreach ($re as $f) {
