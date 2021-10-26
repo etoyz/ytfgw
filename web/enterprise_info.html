@@ -38,7 +38,7 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs" lay-event="edit">查看</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="view">查看</a>
                 </script>
             </div>
         </div>
@@ -128,8 +128,8 @@
             </div>
         </div>
         <div class="s-tabBottomButton">
-            <button class="layui-btn" id="confirm" lay-filter="confirm" lay-submit type="button">提交</button>
-            <button class="layui-btn layui-btn-warm" id="cancelAdd" type="button">取消</button>
+            <button class="layui-btn edit_mod" id="confirm" lay-filter="confirm" lay-submit type="button">提交</button>
+            <button class="layui-btn layui-btn-warm edit_mod" id="cancelAdd" type="button">取消</button>
         </div>
     </form>
 </div>
@@ -193,6 +193,37 @@
                 }
             }
         });
+
+        table.on('tool(enterpriseTable)', function (obj) {
+            if (obj.event === 'view') {
+                $(".edit_mod").hide()
+                //
+                $.post({
+                    url: '../service/get_enterprise_list.php?page=1&limit=1&query=&status=' + getQueryString("status"),
+                    success: function (res) {
+                        let data = res.data[0];
+                        $("#name").val(data["name"]);
+                        $("#mainbus").val(data["mainbus"]);
+                        $("#industry").val(data["industry"]);
+                        $("#province").val(data["province"]);
+                        $("#city").val(data["city"]);
+                        $("#address").val(data["address"]);
+                        $("#numofsub").val(data["numofsub"]);
+                        $("#chargeperson").val(data["chargeperson"]);
+                        $("#phone").val(data["phone"]);
+                        $("#remark").val(data["remark"]);
+                    },
+                    dataType: "json"
+                })
+                layer.open({
+                    type: 1,
+                    title: '企业详细信息',
+                    content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                    area: ['1022px', '380px']
+                });
+            }
+        })
+
         form.on('submit(confirm)', function (data) {
             $.post({
                 url: "../service/edit_enterprise_info.php",
@@ -207,9 +238,10 @@
             })
         })
         $("#addBtn").unbind("click").click(function () {
+            $(".edit_mod").show()
             layer.open({
                 type: 1,
-                title: '企业详细信息',
+                title: '请输入企业详细信息',
                 content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                 area: ['1022px', '380px']
             });
