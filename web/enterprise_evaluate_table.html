@@ -184,12 +184,8 @@
                         layer.alert("提交审核成功！", {icon: 1}, () => {
                             layer.closeAll();
                         })
-                    } else if (res.data === 1062) {
-                        layer.alert("您已经提交，请勿重复提交！", {icon: 2}, () => {
-                            layer.closeAll();
-                        })
                     } else {
-                        layer.alert("异常，请联系管理人员！", {icon: 2}, () => {
+                        layer.alert(res.data, {icon: 2}, () => {
                             layer.closeAll();
                         })
                     }

@@ -15,6 +15,7 @@ if ($re->num_rows == 1) { // 后台校验成功
     $arr['status'] = 'isLogin';
     $_SESSION['usertype'] = "enterprise";
     $_SESSION['loginid'] = $_POST['loginid'];
+    $_SESSION['status'] = mysqli_fetch_assoc($re)['status'];
 }
 
 die(json_encode($arr));

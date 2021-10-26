@@ -199,7 +199,7 @@
                 data: data.field,
                 success: function (res) {
                     if (JSON.parse(res).data)
-                        layer.alert("申报成功！", {icon: 1}, () => {
+                        layer.alert("完善成功！", {icon: 1}, () => {
                             enterpriseTable.reload()
                             layer.closeAll();
                         });
