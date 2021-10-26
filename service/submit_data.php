@@ -16,6 +16,33 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
         die(json_encode($arr));
     }
 
+
+    // 数据插入数据库
+    $sql = "INSERT INTO `enterprise_data`(";
+    foreach (array_keys($_POST) as $key) {
+        $sql .= "`$key`, ";
+    }
+    $sql .= "`loginid`) VALUES(";
+    foreach (array_keys($_POST) as $key) {
+        $sql .= "'$_POST[$key]', ";
+    }
+    //$sql = substr($sql, 0, strlen($sql) - 2);
+    $sql .= "'$_SESSION[loginid]');";
+    require_once 'db.php';
+    $db = new DB();
+    $arr["data"] = $db->query($sql); // 成功返回true，失败返回错误码
+
+    // update status
+    if ($arr["data"] == true) {
+        date_default_timezone_set("PRC");
+        $sql = "UPDATE `enterprise` set `status` = 2, `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '$_SESSION[loginid]'";
+        $db->query($sql);
+        $_SESSION['status'] = 2;
+    }
+}
+
+function cal_score()
+{
     // 公式
     $metaData = array();
     $metaData["研究人员人均研发经费支出"] = array(
@@ -84,29 +111,22 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
     $metaData["获省级协会以上成果奖励项目数量"] = array( //？？
         $_POST["企业获得省级以上质量标杆，品牌培育示范、试点企业项目数量"], 4, 1, 2
     );
-
-
-    // 数据插入数据库
-    $sql = "INSERT INTO `enterprise_data`(";
-    foreach (array_keys($_POST) as $key) {
-        $sql .= "`$key`, ";
+    //  指标数值0    权重1  基本要求2    满分要求3
+    $res = 0;
+    foreach ($metaData as &$data) {
+        if ($data[0] >= $data[3])
+            array_push($data, $data[1]);
+        else if ($data[0] == $data[2])
+            array_push($data, $data[1] * 0.6);
+        else if ($data[0] == 0)
+            array_push($data, 0);
+        else if ($data[0] > 0 && $data[0] < $data[2])
+            array_push($data, $data[0] / $data[2] * $data[1] * 0.6);
+        else if ($data[0] > $data[2] && $data[0] < $data[3])
+            array_push($data, ($data[0] - $data[2]) / ($data[3] - $data[2]) * $data[1] * 0.4 + $data[1] * 0.6);
     }
-    $sql .= "`loginid`) VALUES(";
-    foreach (array_keys($_POST) as $key) {
-        $sql .= "'$_POST[$key]', ";
-    }
-    //$sql = substr($sql, 0, strlen($sql) - 2);
-    $sql .= "'$_SESSION[loginid]');";
-    require_once 'db.php';
-    $db = new DB();
-    $arr["data"] = $db->query($sql); // 成功返回true，失败返回错误码
-
-    // update status
-    if ($arr["data"] == true) {
-        date_default_timezone_set("PRC");
-        $sql = "UPDATE `enterprise` set `status` = 2, `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '$_SESSION[loginid]'";
-        $db->query($sql);
-        $_SESSION['status'] = 2;
-    }
+    var_dump($metaData);
+    die();
 }
+
 die(json_encode($arr));
