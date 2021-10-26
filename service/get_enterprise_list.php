@@ -6,6 +6,7 @@ $response = array(
 );
 
 if (isset($_SESSION['usertype'])) { // 已经登录
+    $response["status"] = "isLogin";
     require_once 'db.php';
     $sql = null;
     if ($_SESSION['usertype'] == "manager") {
@@ -21,7 +22,6 @@ if (isset($_SESSION['usertype'])) { // 已经登录
         $db = new DB();
         $re = $db->query($sql);
         //echo $re;
-        $response["status"] = "isLogin";
         $response["data"] = $re->fetch_all(MYSQLI_ASSOC);
         $response["code"] = 0;
     } else if ($_SESSION['usertype'] == "enterprise") {
@@ -35,9 +35,9 @@ if (isset($_SESSION['usertype'])) { // 已经登录
             $sql = "SELECT * FROM `enterprise` WHERE `loginid` = " . $_SESSION['loginid'] . ";";
         $db = new DB();
         $re = $db->query($sql);
-        $response["status"] = "isLogin";
         $response["data"] = $re->fetch_all(MYSQLI_ASSOC);
         $response["code"] = 0;
     }
 }
+//var_dump($sql);
 die(json_encode($response));
