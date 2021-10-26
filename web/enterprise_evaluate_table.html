@@ -38,7 +38,7 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs" lay-event="edit">查看</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="view">查看</a>
                 </script>
             </div>
         </div>
@@ -75,7 +75,8 @@
             let r = window.location.search.substr(1).match(reg);
             if (r != null) {
                 return decodeURIComponent(r[2]);
-            };
+            }
+            ;
             return null;
         }
 
@@ -117,6 +118,47 @@
             }
         });
 
+        let dataTable = table.render({
+            elem: '#dataTable',
+            url: "../service/get_evaluating_indicator.php",
+            height: 900,
+            limit: Number.MAX_SAFE_INTEGER,
+            cols: [[
+                {type: 'numbers', style: 'background-color: #eee;'},
+                {field: 'indicator', width: 300, title: '指标', style: 'background-color: #eee;'},
+                {field: 'value', width: 160, title: '数值', edit: "number", style: 'background-color: #FFFFFF;'},
+                {field: 'unit', width: 140, title: '单位', style: 'background-color: #eee;'},
+                {field: 'enclosure', width: 200, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
+                {
+                    field: 'operation', width: 70,
+                    title: '操作',
+                    toolbar: '#operationUseCardTable',
+                    fixed: 'right',
+                    style: 'background-color: #eee;'
+                }
+            ]],
+            size: 'sm'
+        });
+
+        table.on('tool(enterpriseTable)', function (obj) {
+            if (obj.event === 'view') {
+                $("#submitForReview").hide()
+                let loadMsg = layer.load(1)
+                dataTable.reload({
+                    url: "../service/get_evaluating_indicator_value.php",
+                    done: () => {
+                        layer.close(loadMsg)
+                        layer.open({
+                            type: 1,
+                            title: '企业详细数据',
+                            content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                            area: ['57%', '80%']
+                        });
+                    }
+                })
+            }
+        })
+
         function diffUserDoDiffThing(managerDo, enterpriseDo) {
             $.get({
                 url: "../service/get_user_type.php",
@@ -133,6 +175,7 @@
             $(".m-mod").hide();
         });
         $("#submit").unbind("click").click(function () {
+            $("#submitForReview").show()
             layer.open({
                 type: 1,
                 title: '请在数值列输入详细数据',
@@ -140,28 +183,6 @@
                 area: ['57%', '80%']
             });
             return false
-        });
-
-        table.render({
-            elem: '#dataTable',
-            url: "../service/get_evaluating_indicator.php",
-            height: 900,
-            limit: Number.MAX_SAFE_INTEGER,
-            cols: [[
-                {type: 'numbers', style: 'background-color: #eee;'},
-                {field: 'indicator', width: 300, title: '指标', style: 'background-color: #eee;'},
-                {field: 'count', width: 160, title: '数值', edit: "number", style: 'background-color: #FFFFFF;'},
-                {field: 'unit', width: 140, title: '单位', style: 'background-color: #eee;'},
-                {field: 'enclosure', width: 200, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
-                {
-                    field: 'operation', width: 70,
-                    title: '操作',
-                    toolbar: '#operationUseCardTable',
-                    fixed: 'right',
-                    style: 'background-color: #eee;'
-                }
-            ]],
-            size: 'sm'
         });
 
         let dataToBeSub = {};
