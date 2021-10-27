@@ -39,7 +39,9 @@
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
                     <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view_data">查看提交数据</a>
-                    <a class="layui-btn layui-btn-xs" lay-event="view_score_mach">查看机器评判结果</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view_score_mach">查看机器评判结果</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="pass">通过</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="return">退回</a>
                 </script>
             </div>
         </div>
@@ -111,7 +113,7 @@
                 {field: 'submit_time', width: '150', title: '填报时间'},
                 {field: 'return_reason', width: '150', title: '退回原因'},
                 {field: 'remark', width: '110', title: '备注'},
-                {field: 'operation', width: '300', title: '操作', toolbar: '#operation', fixed: 'right'}
+                {field: 'operation', width: '320', title: '操作', toolbar: '#operation', fixed: 'right'}
             ]],
             size: 'sm',
             parseData: function (res) {
@@ -192,6 +194,39 @@
                     title: '机器评判结果',
                     content: $('#scoreTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                     area: ['630px', '90%']
+                });
+            } else if (obj.event === 'pass') {
+                layer.confirm("确认通过【" + obj.data.name + "】的申请吗？", {
+                    btn: ['确认', '取消'] //可以无限个按钮
+                }, function () {
+                    $.post({
+                        url: "../service/check_data.php",
+                        data: {
+                            "loginid": obj.data.loginid,
+                            "operation": "pass"
+                        },
+                        success: function (res) {
+                            if (res.data === true)
+                                layer.alert("成功！", {icon: "1"})
+                        },
+                        dataType: "json"
+                    })
+                })
+            } else if (obj.event === 'return') {
+                layer.prompt({title: "请输入退回原因"}, function (value, index) {
+                    $.post({
+                        url: "../service/check_data.php",
+                        data: {
+                            "loginid": obj.data.loginid,
+                            "operation": "return",
+                            "return_reason": value
+                        },
+                        success: function (res) {
+                            layer.msg(res)
+                        },
+                        dataType: "json"
+                    })
+                    layer.close(index);
                 });
             }
         })
