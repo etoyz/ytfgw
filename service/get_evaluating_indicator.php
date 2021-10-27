@@ -14,11 +14,16 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $response["data"] = [];
     $response["code"] = 0;
     $re = $re->fetch_all(MYSQLI_ASSOC);
+    $units = ["万元", "万元", "人", "人", "人", "人月", "个", "个", "个", "项", "项", "个", "个", "万元", "项", "项", "项", "项", "项", "项", "项", "万元", "万元", "万元", "项", "项", "万元", "项", "项", "项", "项"];
+    $i = 0;
     foreach ($re as $f) {
-        if ($f['Field'] != "loginid")
+        if ($f['Field'] != "loginid") {
             array_push($response["data"], array(
-                "indicator" => $f['Field']
+                "indicator" => $f['Field'],
+                "unit" => $units[$i]
             ));
+            $i++;
+        }
     }
 }
 
