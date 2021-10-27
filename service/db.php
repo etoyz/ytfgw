@@ -66,4 +66,13 @@ class DB
         }
         return $res;
     }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function escape($value)
+    {
+        return $this->link->real_escape_string($value);
+    }
 }

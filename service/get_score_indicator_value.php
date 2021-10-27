@@ -15,10 +15,10 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     }
 
     require_once 'db.php';
-    $sql = "DESCRIBE enterprise_score;";
-    $sql2 = "SELECT * FROM enterprise_score WHERE `loginid` = '" . $user . "' AND `type` = 'machine';";
-    //$sql2 = "SELECT * FROM enterprise_score WHERE `loginid` = '" . mysqli_real_escape_string($user) . "' AND `type` = 'machine';";
     $db = new DB();
+
+    $sql = "DESCRIBE enterprise_score;";
+    $sql2 = "SELECT * FROM enterprise_score WHERE `loginid` = '" . $db->escape($user) . "' AND `type` = 'machine';";
     $re = $db->query($sql);
     $re2 = $db->query($sql2);
     $response["status"] = "isLogin";
