@@ -26,14 +26,17 @@ if (isset($_SESSION['usertype'])) { // 已经登录
 //    var_dump($re2);
 //    var_dump($sql2);
     $re2 = mysqli_fetch_array($re2);
+    $units = ["万元", "万元", "人", "人", "人", "人月", "个", "个", "个", "项", "项", "个", "个", "万元", "项", "项", "项", "项", "项", "项", "项", "万元", "万元", "万元", "项", "项", "万元", "项", "项", "项", "项"];
     $i = 0;
     foreach ($re as $f) {
-        if ($f['Field'] != "loginid")
+        if ($f['Field'] != "loginid") {
             array_push($response["data"], array(
                 "indicator" => $f['Field'],
-                "value" => $re2[$i]
+                "value" => $re2[$i],
+                "unit" => $units[$i]
             ));
-        $i++;
+            $i++;
+        }
     }
 }
 
