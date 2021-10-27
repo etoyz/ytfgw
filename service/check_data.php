@@ -19,7 +19,6 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "manager") {
         $_SESSION['status'] = 3;
     }
     $response['data'] = $db->query($sql);
-    var_dump($sql);
 }
 
 die(json_encode($response));

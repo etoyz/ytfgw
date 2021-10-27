@@ -190,6 +190,10 @@
                         item.status = "未申报数据";
                     else if (item.status === "2")
                         item.status = "审核中";
+                    else if (item.status === "3")
+                        item.status = "已退回";
+                    else if (item.status === "4")
+                        item.status = "待专家评价";
                 }
             }
         });
