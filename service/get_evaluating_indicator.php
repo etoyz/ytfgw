@@ -15,7 +15,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $response["code"] = 0;
     $re = $re->fetch_all(MYSQLI_ASSOC);
     foreach ($re as $f) {
-        if ($f['Field'] != "loginid")
+        if ($f['Field'] != "loginid" && $f['Field'] != "type")
             array_push($response["data"], array(
                 "indicator" => $f['Field']
             ));

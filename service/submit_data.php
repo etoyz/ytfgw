@@ -4,6 +4,9 @@ $arr = array(
     "status" => 'notLogin',
     "data" => null
 );
+require_once 'db.php';
+$db = new DB();
+
 if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
     $arr["status"] = "isLogin";
 
@@ -22,15 +25,14 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
     foreach (array_keys($_POST) as $key) {
         $sql .= "`$key`, ";
     }
-    $sql .= "`loginid`) VALUES(";
+    $sql .= "`loginid`, `type`) VALUES(";
     foreach (array_keys($_POST) as $key) {
         $sql .= "'$_POST[$key]', ";
     }
     //$sql = substr($sql, 0, strlen($sql) - 2);
-    $sql .= "'$_SESSION[loginid]');";
-    require_once 'db.php';
-    $db = new DB();
+    $sql .= "'$_SESSION[loginid]', 'value');";
     $arr["data"] = $db->query($sql); // 成功返回true，失败返回错误码
+    cal_score();
 
     // update status
     if ($arr["data"] == true) {
@@ -125,6 +127,19 @@ function cal_score()
         else if ($data[0] > $data[2] && $data[0] < $data[3])
             array_push($data, ($data[0] - $data[2]) / ($data[3] - $data[2]) * $data[1] * 0.4 + $data[1] * 0.6);
     }
+    foreach ($metaData as &$data) {
+        $sql = "INSERT INTO `enterprise_data`(";
+        foreach (array_keys($_POST) as $key) {
+            $sql .= "`$key`, ";
+        }
+        $sql .= "`loginid`, `type`) VALUES(";
+        foreach (array_keys($_POST) as $key) {
+            $sql .= "'$data[4]', ";
+        }
+        //$sql = substr($sql, 0, strlen($sql) - 2);
+        $sql .= "'$_SESSION[loginid]', 'score_mach');";
+    }
+    var_dump($GLOBALS['db']->query($sql));
     var_dump($metaData);
     die();
 }
