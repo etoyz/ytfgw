@@ -4,6 +4,8 @@ $arr = array(
     "status" => 'notLogin',
     "data" => null
 );
+require_once 'db.php';
+$db = new DB();
 if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
     $arr["status"] = "isLogin";
 
@@ -16,7 +18,6 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
         die(json_encode($arr));
     }
 
-
     // 数据插入数据库
     $sql = "INSERT INTO `enterprise_data`(";
     foreach (array_keys($_POST) as $key) {
@@ -28,9 +29,10 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
     }
     //$sql = substr($sql, 0, strlen($sql) - 2);
     $sql .= "'$_SESSION[loginid]');";
-    require_once 'db.php';
-    $db = new DB();
     $arr["data"] = $db->query($sql); // 成功返回true，失败返回错误码
+
+    // 计算成绩并插入数据库
+    cal_score();
 
     // update status
     if ($arr["data"] == true) {
@@ -113,7 +115,7 @@ function cal_score()
     );
     //  指标数值0    权重1  基本要求2    满分要求3
     $res = 0;
-    foreach ($metaData as &$data) {
+    foreach ($metaData as &$data) { // 成绩存储在data[4]
         if ($data[0] >= $data[3])
             array_push($data, $data[1]);
         else if ($data[0] == $data[2])
@@ -125,6 +127,19 @@ function cal_score()
         else if ($data[0] > $data[2] && $data[0] < $data[3])
             array_push($data, ($data[0] - $data[2]) / ($data[3] - $data[2]) * $data[1] * 0.4 + $data[1] * 0.6);
     }
+
+    $sql = "INSERT INTO `enterprise_score`(";
+    foreach (array_keys($metaData) as $key) {
+        $sql .= "`$key`, ";
+    }
+    $sql .= "`loginid`, `type`) VALUES(";
+    foreach (array_keys($metaData) as $key) {
+        $sql .= "'" . $metaData[$key][4] . "', ";
+    }
+    $sql .= "'$_SESSION[loginid]', 'machine');";
+    $re = $GLOBALS['db']->query($sql);
+
+    var_dump($re);
     var_dump($metaData);
     die();
 }
