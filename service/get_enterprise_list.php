@@ -27,7 +27,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
         $response["data"] = $all_data;
     } else if ($_SESSION['usertype'] == "enterprise") {
         for ($i = 0; $i < count($all_data); $i++) {
-            if ($all_data[$i]["loginid"] = $_SESSION['loginid']) {
+            if ($all_data[$i]["loginid"] == $_SESSION['loginid']) {
                 $response["data"] = [$all_data[$i]];
                 break;
             }
