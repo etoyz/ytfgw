@@ -151,7 +151,6 @@
             if (r != null) {
                 return decodeURIComponent(r[2]);
             }
-            ;
             return null;
         }
 
@@ -271,6 +270,14 @@
         }, () => {
             $(".e-mod").show();
         });
+
+        $("#queryBtn").unbind("click").click(function () {
+            console.log(getQueryString("status"))
+            enterpriseTable.reload({
+                url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val() + '&status=' + getQueryString("status"),
+            })
+            return false;
+        })
     })
 </script>
 </html>

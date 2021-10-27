@@ -307,6 +307,12 @@
             })
             return false
         })
+        $("#queryBtn").unbind("click").click(function () {
+            maintable.reload({
+                url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val() + '&status=' + getQueryString("status"),
+            })
+            return false;
+        })
     })
 </script>
 </html>

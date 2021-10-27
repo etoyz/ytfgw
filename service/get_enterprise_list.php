@@ -14,11 +14,11 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $from = ($_GET['page'] - 1) * $_GET['limit'];
     $to = $_GET['page'] * $_GET['limit'];
     if ($_GET['status'] === '-1')  // 全部
-        $sql = "SELECT * FROM `enterprise` LIMIT " . $from . "," . $to . ";";
+        $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' LIMIT " . $from . "," . $to . ";";
     else if ($_GET['status'] === '4')  // 已审核通过
-        $sql = "SELECT * FROM `enterprise` WHERE `status` = 4 LIMIT " . $from . "," . $to . ";";
+        $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` = 4 LIMIT " . $from . "," . $to . ";";
     else if ($_GET['status'] === '-4') // 未审核通过
-        $sql = "SELECT * FROM `enterprise` WHERE `status` != 4 LIMIT " . $from . "," . $to . ";";
+        $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` != 4 LIMIT " . $from . "," . $to . ";";
     $db = new DB();
     $re = $db->query($sql);
     //echo $re;
