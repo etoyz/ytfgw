@@ -13,12 +13,12 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $query = $_GET['query'];
     $from = ($_GET['page'] - 1) * $_GET['limit'];
     $to = $_GET['page'] * $_GET['limit'];
-    if ($_GET['status'] === '-1')
+    if ($_GET['status'] === '-1')  // 全部
         $sql = "SELECT * FROM `enterprise` LIMIT " . $from . "," . $to . ";";
-    else if ($_GET['status'] === '2')
-        $sql = "SELECT * FROM `enterprise` WHERE `status` = 2 LIMIT " . $from . "," . $to . ";";
-    else if ($_GET['status'] === '01')
-        $sql = "SELECT * FROM `enterprise` WHERE `status` = 0 OR `status` = 1 LIMIT " . $from . "," . $to . ";";
+    else if ($_GET['status'] === '4')  // 已审核通过
+        $sql = "SELECT * FROM `enterprise` WHERE `status` = 4 LIMIT " . $from . "," . $to . ";";
+    else if ($_GET['status'] === '-4') // 未审核通过
+        $sql = "SELECT * FROM `enterprise` WHERE `status` != 4 LIMIT " . $from . "," . $to . ";";
     $db = new DB();
     $re = $db->query($sql);
     //echo $re;
