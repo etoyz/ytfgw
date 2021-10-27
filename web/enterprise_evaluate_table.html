@@ -152,6 +152,8 @@
             elem: '#scoreTable',
             url: "../service/get_score_indicator_value.php",
             height: 900,
+            toolbar: true,
+            defaultToolbar: ['print', 'exports'],
             limit: Number.MAX_SAFE_INTEGER,
             cols: [[
                 {type: 'numbers', style: 'background-color: #eee;'},
@@ -189,7 +191,7 @@
                     type: 1,
                     title: '机器评判结果',
                     content: $('#scoreTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                    area: ['500px', '90%']
+                    area: ['630px', '90%']
                 });
             }
         })
