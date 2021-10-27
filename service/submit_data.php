@@ -31,11 +31,10 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
     $sql .= "'$_SESSION[loginid]');";
     $arr["data"] = $db->query($sql); // 成功返回true，失败返回错误码
 
-    // 计算成绩并插入数据库
-    cal_score();
-
-    // update status
-    if ($arr["data"] == true) {
+    if ($arr["data"] === true) {
+        // 计算成绩并插入数据库
+        cal_score();
+        // update status
         date_default_timezone_set("PRC");
         $sql = "UPDATE `enterprise` set `status` = 2, `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '$_SESSION[loginid]'";
         $db->query($sql);

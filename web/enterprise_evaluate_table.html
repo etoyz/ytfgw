@@ -234,12 +234,19 @@
                 layer.msg("请检查！");
         });
         $("#submitForReview").unbind("click").click(function () {
+            let msg = layer.load(1)
             $.post({
                 url: "../service/submit_data.php",
                 data: dataToBeSub,
                 success: function (res) {
+                    layer.close(msg)
                     if (res.data === true) {
                         layer.alert("提交审核成功！", {icon: 1}, () => {
+                            layer.closeAll();
+                            maintable.reload();
+                        })
+                    } else if (res.data === 1265) {
+                        layer.alert("请检查数据格式是否正确！", {icon: 2}, () => {
                             layer.closeAll();
                             maintable.reload();
                         })
