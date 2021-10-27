@@ -76,7 +76,6 @@
             if (r != null) {
                 return decodeURIComponent(r[2]);
             }
-            ;
             return null;
         }
 
@@ -125,9 +124,10 @@
             limit: Number.MAX_SAFE_INTEGER,
             cols: [[
                 {type: 'numbers', style: 'background-color: #eee;'},
-                {field: 'indicator', width: 300, title: '指标', style: 'background-color: #eee;'},
-                {field: 'value', width: 160, title: '数值', edit: "number", style: 'background-color: #FFFFFF;'},
-                {field: 'unit', width: 140, title: '单位', style: 'background-color: #eee;'},
+                {field: 'indicator', width: 380, title: '指标', style: 'background-color: #eee;'},
+                {field: 'value', width: 150, title: '数值', edit: "number", style: 'background-color: #FFFFFF;'},
+                {field: 'unit', width: 110, title: '单位', style: 'background-color: #eee;'},
+                {field: 'score_mach', width: 150, title: '机器评审分数', style: 'background-color: #eee;'}, //单元格内容水平居中
                 {field: 'enclosure', width: 200, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
                 {
                     field: 'operation', width: 70,
@@ -152,7 +152,7 @@
                             type: 1,
                             title: '企业详细数据',
                             content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                            area: ['57%', '80%']
+                            area: ['1200px', '85%']
                         });
                     }
                 })
@@ -180,7 +180,7 @@
                 type: 1,
                 title: '请在数值列输入详细数据',
                 content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                area: ['57%', '80%']
+                area: ['1200px', '85%']
             });
             return false
         });
