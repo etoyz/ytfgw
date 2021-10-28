@@ -53,6 +53,7 @@
 <div class="s-details" id="dataTablePopup">
     <table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
     <script id="operationDataTable" type="text/html">
+        <a class="layui-btn layui-btn-xs" lay-event="upload" id="upload"><i class="layui-icon">&#xe67c;</i>上传附件</a>
         <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除输入和附件</a>
     </script>
     <div class="layui-btn-container s-tabBottomButton">
@@ -72,13 +73,14 @@
 </body>
 <script src="assets/plugins/layui/layui.js"></script>
 <script>
-    layui.use(['form', 'laydate', 'table', 'layer', 'element'], function () {
+    layui.use(['form', 'laydate', 'table', 'layer', 'element', 'upload'], function () {
         var $ = layui.jquery,
             form = layui.form,
             laydate = layui.laydate,
             layer = layui.layer,
             table = layui.table,
-            element = layui.element;
+            element = layui.element,
+            upload = layui.upload;
 
         function getQueryString(name) {
             let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -141,9 +143,9 @@
                 {field: 'indicator', width: 450, title: '指标', style: 'background-color: #eee;'},
                 {field: 'value', width: 110, title: '数值', edit: "number", style: 'background-color: #FFFFFF;'},
                 {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
-                {field: 'enclosure', width: 150, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
+                {field: 'file_count', width: 85, title: '附件个数', style: 'background-color: #eee;'}, //单元格内容水平居中
                 {
-                    field: 'operation', width: 125,
+                    field: 'operation', width: 210,
                     title: '操作',
                     toolbar: '#operationDataTable',
                     fixed: 'right',
@@ -233,6 +235,22 @@
             }
         })
 
+        table.on('tool(dataTable)', function (obj) {
+            if (obj.event === 'upload') {
+                console.log(123321)
+                let uploadInst = upload.render({
+                    elem: '#upload' //绑定元素
+                    , url: '/upload/' //上传接口
+                    , done: function (res) {
+                        //上传完毕回调
+                    }
+                    , error: function () {
+                        //请求异常回调
+                    }
+                });
+            }
+        })
+
         function diffUserDoDiffThing(managerDo, enterpriseDo) {
             $.get({
                 url: "../service/get_user_type.php",
@@ -245,7 +263,8 @@
 
         diffUserDoDiffThing(() => {
             $(".m-mod").show();
-        }, () => {});
+        }, () => {
+        });
 
         $.post({
             url: "../service/can_user_submit_data.php",
@@ -260,7 +279,8 @@
         $("#submit").unbind("click").click(function () {
             $("#submitForReview").show()
             dataTable.reload({
-                done: ()=>{}
+                done: () => {
+                }
             })
             layer.open({
                 type: 1,
