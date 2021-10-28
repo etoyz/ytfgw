@@ -53,7 +53,7 @@
 <div class="s-details" id="dataTablePopup">
     <table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
     <script id="operationDataTable" type="text/html">
-        <a class="layui-btn layui-btn-xs" lay-event="upload" id="upload"><i class="layui-icon">&#xe67c;</i>上传附件</a>
+        <a class="layui-btn layui-btn-xs file_upload" lay-event="file_upload"><i class="layui-icon">&#xe67c;</i>上传附件</a>
         <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除输入和附件</a>
     </script>
     <div class="layui-btn-container s-tabBottomButton">
@@ -133,6 +133,19 @@
             }
         });
 
+        function renderUpload() {
+            upload.render({
+                elem: '.file_upload'
+                , url: '/api/upload/'
+                , choose: function (obj) {
+                    obj.preview(function (index, file, result) {
+                        //对上传失败的单个文件重新上传，一般在某个事件中使用
+                        //obj.upload(index, file);
+                    });
+                }
+            });
+        }
+
         let dataTable = table.render({
             elem: '#dataTable',
             url: "../service/get_evaluating_indicator.php",
@@ -152,7 +165,10 @@
                     style: 'background-color: #eee;'
                 }
             ]],
-            size: 'sm'
+            size: 'sm',
+            done: function () {
+                renderUpload()
+            }
         });
 
         table.on('tool(enterpriseTable)', function (obj) {
@@ -169,6 +185,7 @@
                             content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                             area: ['1022px', '90%']
                         });
+                        renderUpload()
                     }
                 })
             } else if (obj.event === 'view_score_mach') {
@@ -236,18 +253,9 @@
         })
 
         table.on('tool(dataTable)', function (obj) {
-            if (obj.event === 'upload') {
+            if (obj.event === 'file_upload') {
                 console.log(123321)
-                let uploadInst = upload.render({
-                    elem: '#upload' //绑定元素
-                    , url: '/upload/' //上传接口
-                    , done: function (res) {
-                        //上传完毕回调
-                    }
-                    , error: function () {
-                        //请求异常回调
-                    }
-                });
+
             }
         })
 
@@ -280,6 +288,7 @@
             $("#submitForReview").show()
             dataTable.reload({
                 done: () => {
+                    renderUpload()
                 }
             })
             layer.open({
