@@ -138,11 +138,7 @@ function cal_score()
         $sql .= "'" . $metaData[$key][4] . "', ";
     }
     $sql .= "'$_SESSION[loginid]', 'machine');";
-    $re = $GLOBALS['db']->query($sql);
-
-    var_dump($re);
-    var_dump($metaData);
-    die();
+    $GLOBALS['db']->query($sql);
 }
 
 die(json_encode($arr));
