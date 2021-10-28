@@ -10,11 +10,13 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
     $arr["status"] = "isLogin";
 
     // 检查用户状态
-    if ($_SESSION['status'] != "1") {
+    if ($_SESSION['status'] != "1" && $_SESSION['status'] != "3") {
         if ($_SESSION['status'] == "0")
             $arr["data"] = "请先完善企业信息！";
         else if ($_SESSION['status'] == "2")
             $arr["data"] = "您已经提交，请勿重复提交！";
+        else if ($_SESSION['status'] == "4")
+            $arr["data"] = "已经通过！";
         die(json_encode($arr));
     }
 
