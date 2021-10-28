@@ -259,6 +259,9 @@
 
         $("#submit").unbind("click").click(function () {
             $("#submitForReview").show()
+            dataTable.reload({
+                done: ()=>{}
+            })
             layer.open({
                 type: 1,
                 title: '请在数值列输入详细数据',
