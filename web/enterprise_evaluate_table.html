@@ -30,7 +30,7 @@
                         <div class="layui-inline s-layuiInline">
                             <button class="layui-btn layui-btn-warm m-mod" style="display: none" id="queryBtn">查询
                             </button>
-                            <button class="layui-btn e-mod" style="display: none" id="submit">开始申报</button>
+                            <button class="layui-btn e-mod" style="display: none" id="submit">申报数据</button>
                         </div>
                     </div>
                 </form>
@@ -264,6 +264,8 @@
             success: function (res) {
                 if (res == "1")
                     $("#submit").show();
+                else
+                    $("#submit").hide();
             }
         })
 
