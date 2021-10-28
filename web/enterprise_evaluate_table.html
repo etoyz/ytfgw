@@ -53,7 +53,7 @@
 <div class="s-details" id="dataTablePopup">
     <table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
     <script id="operationDataTable" type="text/html">
-        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">？？</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除输入和附件</a>
     </script>
     <div class="layui-btn-container s-tabBottomButton">
             <span class="layui-btn layui-btn-warm" id="submitForReview">
@@ -67,9 +67,6 @@
 
 <div class="s-details" id="scoreTablePopup">
     <table class="layui-hide" id="scoreTable" lay-filter="scoreTable"></table>
-    <script id="operationScoreTable" type="text/html">
-        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">？？</a>
-    </script>
 </div>
 
 </body>
@@ -146,7 +143,7 @@
                 {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
                 {field: 'enclosure', width: 150, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
                 {
-                    field: 'operation', width: 70,
+                    field: 'operation', width: 125,
                     title: '操作',
                     toolbar: '#operationDataTable',
                     fixed: 'right',
@@ -168,7 +165,7 @@
                             type: 1,
                             title: '企业详细数据',
                             content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                            area: ['970px', '90%']
+                            area: ['1020px', '90%']
                         });
                     }
                 })
@@ -184,14 +181,7 @@
                     cols: [[
                         {type: 'numbers', style: 'background-color: #eee;'},
                         {field: 'indicator', width: 300, title: '指标', style: 'background-color: #eee;'},
-                        {field: 'score', width: 160, title: '成绩', edit: "number", style: 'background-color: #FFFFFF;'},
-                        {
-                            field: 'operation', width: 70,
-                            title: '操作',
-                            toolbar: '#operationDataTable',
-                            fixed: 'right',
-                            style: 'background-color: #eee;'
-                        }
+                        {field: 'score', width: 150, title: '成绩', edit: "number", style: 'background-color: #FFFFFF;'},
                     ]],
                     size: 'sm',
                     done: function () {
@@ -199,7 +189,7 @@
                             type: 1,
                             title: '机器评判结果',
                             content: $('#scoreTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                            area: ['630px', '90%']
+                            area: ['500x', '90%']
                         });
                         layer.close(msg)
                     }
@@ -255,9 +245,7 @@
 
         diffUserDoDiffThing(() => {
             $(".m-mod").show();
-        }, () => {
-            $(".e-mod").show();
-        });
+        }, () => {});
 
         $.post({
             url: "../service/can_user_submit_data.php",
@@ -286,8 +274,6 @@
             var value = obj.value //得到修改后的值
                 , data = obj.data //得到所在行所有键值
                 , field = obj.field; //得到字段
-            // layer.msg('[ID: '+ data.indicator +'] ' + field + ' 字段更改值为：'+ value);
-
             dataToBeSub[data.indicator] = value;
         });
         $("#submitForReview").unbind("click").click(function () {
