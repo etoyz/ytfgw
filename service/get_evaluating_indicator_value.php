@@ -37,7 +37,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
 //        var_dump($e);
         $allFile = array();
     }
-    function fetch_indicator_attachment_path($indicator)
+    function fetch_indicator_attachment_name($indicator)
     {
         foreach (preg_grep("/^附件_" . $indicator . ".*$/", $GLOBALS['allFile']) as $r)
             return $r;
@@ -46,11 +46,12 @@ if (isset($_SESSION['usertype'])) { // 已经登录
 
     foreach ($re as $f) {
         if ($f['Field'] != "loginid") {
+            $attachment_name = fetch_indicator_attachment_name($f['Field']);
             array_push($response["data"], array(
                 "indicator" => $f['Field'],
                 "value" => $re2[$i],
                 "unit" => $units[$i],
-                "file" => fetch_indicator_attachment_path($f['Field'])
+                "file" => "<a class='layui-btn layui-btn-xs layui-btn-primary' target='_blank' href='../uploads/$_SESSION[loginid]/$attachment_name'>$attachment_name</a>"
             ));
             $i++;
         }
