@@ -133,11 +133,26 @@
             }
         });
 
+        let indicator_selected;
+
         function renderUpload() {
             upload.render({
                 elem: '.file_upload'
-                , url: '/api/upload/'
+                , url: '../service/upload_attachment.php'
+                , accept: 'file'
+                , multiple: true
+                , data: {
+                    'indicator': function () {
+                        return indicator_selected;
+                    }
+                }
+                , allDone: function (obj) { //当文件全部被提交后，才触发
+                    console.log(obj.total); //得到总文件数
+                    console.log(obj.successful); //请求成功的文件数
+                    console.log(obj.aborted); //请求失败的文件数
+                }
                 , choose: function (obj) {
+                    console.log(indicator_selected)
                     obj.preview(function (index, file, result) {
                         //对上传失败的单个文件重新上传，一般在某个事件中使用
                         //obj.upload(index, file);
@@ -254,8 +269,7 @@
 
         table.on('tool(dataTable)', function (obj) {
             if (obj.event === 'file_upload') {
-                console.log(123321)
-
+                indicator_selected = obj.data.indicator;
             }
         })
 
