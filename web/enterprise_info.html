@@ -201,24 +201,17 @@
         table.on('tool(enterpriseTable)', function (obj) {
             if (obj.event === 'view') {
                 $(".edit_mod").hide()
-                //
-                $.post({
-                    url: '../service/get_enterprise_list.php?page=1&limit=1&query=&status=' + getQueryString("status"),
-                    success: function (res) {
-                        let data = res.data[0];
-                        $("#name").val(data["name"]);
-                        $("#mainbus").val(data["mainbus"]);
-                        $("#industry").val(data["industry"]);
-                        $("#province").val(data["province"]);
-                        $("#city").val(data["city"]);
-                        $("#address").val(data["address"]);
-                        $("#numofsub").val(data["numofsub"]);
-                        $("#chargeperson").val(data["chargeperson"]);
-                        $("#phone").val(data["phone"]);
-                        $("#remark").val(data["remark"]);
-                    },
-                    dataType: "json"
-                })
+                let data = obj.data;
+                $("#name").val(data["name"]);
+                $("#mainbus").val(data["mainbus"]);
+                $("#industry").val(data["industry"]);
+                $("#province").val(data["province"]);
+                $("#city").val(data["city"]);
+                $("#address").val(data["address"]);
+                $("#numofsub").val(data["numofsub"]);
+                $("#chargeperson").val(data["chargeperson"]);
+                $("#phone").val(data["phone"]);
+                $("#remark").val(data["remark"]);
                 layer.open({
                     type: 1,
                     title: '企业详细信息',
