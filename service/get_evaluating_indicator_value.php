@@ -30,7 +30,13 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $i = 0;
 
     // file code
-    $allFile = scandir("../uploads/$_SESSION[loginid]");
+    require_once "define_error_handler_to_catch_warnings.php";
+    try {
+        $allFile = scandir("../uploads/$_SESSION[loginid]");
+    } catch (Exception $e) {
+//        var_dump($e);
+        $allFile = array();
+    }
     function fetch_indicator_attachment_path($indicator)
     {
         foreach (preg_grep("/^附件_" . $indicator . ".*$/", $GLOBALS['allFile']) as $r)

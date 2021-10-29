@@ -7,14 +7,7 @@ $response = array(
     "data" => null
 );
 
-set_error_handler(function ($errno, $errstr, $errfile, $errline) {
-    // error was suppressed with the @-operator
-    if (0 === error_reporting()) {
-        return false;
-    }
-
-    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-});
+require_once "define_error_handler_to_catch_warnings.php";
 
 try {
     mkdir("../uploads/" . $_SESSION['loginid']);
