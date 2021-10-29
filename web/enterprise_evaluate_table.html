@@ -140,21 +140,22 @@
                 elem: '.file_upload'
                 , url: '../service/upload_attachment.php'
                 , accept: 'file'
-                , multiple: true
+                , multiple: false
                 , data: {
                     'indicator': function () {
                         return indicator_selected;
                     }
                 }
-                , allDone: function (obj) { //当文件全部被提交后，才触发
+                , done: function (obj) { //当文件全部被提交后，才触发
+                    if (obj.data === true)
+                        layer.msg("上传成功！")
+                    else
+                        layer.msg("异常错误！")
                     dataTable.reload({
                         done: () => {
                             renderUpload()
                         }
                     })
-                    console.log(obj.total); //得到总文件数
-                    console.log(obj.successful); //请求成功的文件数
-                    console.log(obj.aborted); //请求失败的文件数
                 }
                 , choose: function (obj) {
                     console.log(indicator_selected)
