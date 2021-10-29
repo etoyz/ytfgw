@@ -10,3 +10,4 @@
 config.php
 web/doc/*
 .idea/*
+uploads/*

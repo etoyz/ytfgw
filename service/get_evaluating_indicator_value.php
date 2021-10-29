@@ -28,12 +28,23 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $re2 = mysqli_fetch_array($re2);
     $units = ["万元", "万元", "人", "人", "人", "人月", "个", "个", "个", "项", "项", "个", "个", "万元", "项", "项", "项", "项", "项", "项", "项", "万元", "万元", "万元", "项", "项", "万元", "项", "项", "项", "项"];
     $i = 0;
+
+    // file code
+    $allFile = scandir("../uploads/$_SESSION[loginid]");
+    function fetch_indicator_attachment_path($indicator)
+    {
+        foreach (preg_grep("/^附件_" . $indicator . ".*$/", $GLOBALS['allFile']) as $r)
+            return $r;
+        return "未上传";
+    }
+
     foreach ($re as $f) {
         if ($f['Field'] != "loginid") {
             array_push($response["data"], array(
                 "indicator" => $f['Field'],
                 "value" => $re2[$i],
-                "unit" => $units[$i]
+                "unit" => $units[$i],
+                "file" => fetch_indicator_attachment_path($f['Field'])
             ));
             $i++;
         }

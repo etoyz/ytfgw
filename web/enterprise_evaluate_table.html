@@ -147,6 +147,11 @@
                     }
                 }
                 , allDone: function (obj) { //当文件全部被提交后，才触发
+                    dataTable.reload({
+                        done: () => {
+                            renderUpload()
+                        }
+                    })
                     console.log(obj.total); //得到总文件数
                     console.log(obj.successful); //请求成功的文件数
                     console.log(obj.aborted); //请求失败的文件数
@@ -171,7 +176,7 @@
                 {field: 'indicator', width: 450, title: '指标', style: 'background-color: #eee;'},
                 {field: 'value', width: 110, title: '数值', edit: "number", style: 'background-color: #FFFFFF;'},
                 {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
-                {field: 'file_count', width: 85, title: '附件个数', style: 'background-color: #eee;'}, //单元格内容水平居中
+                {field: 'file', width: 85, title: '附件个数', style: 'background-color: #eee;'}, //单元格内容水平居中
                 {
                     field: 'operation', width: 210,
                     title: '操作',
