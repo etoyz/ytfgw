@@ -32,7 +32,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     // file code
     require_once "define_error_handler_to_catch_warnings.php";
     try {
-        $allFile = scandir("../uploads/$_SESSION[loginid]");
+        $allFile = scandir("../uploads/$user");
     } catch (Exception $e) {
 //        var_dump($e);
         $allFile = array();
@@ -51,7 +51,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
                 "indicator" => $f['Field'],
                 "value" => $re2[$i],
                 "unit" => $units[$i],
-                "file" => "<a class='layui-btn layui-btn-xs layui-btn-primary' target='_blank' href='../uploads/$_SESSION[loginid]/$attachment_name'>$attachment_name</a>"
+                "file" => "<a class='layui-btn layui-btn-xs layui-btn-primary' target='_blank' href='../uploads/$user/$attachment_name'>$attachment_name</a>"
             ));
             $i++;
         }
