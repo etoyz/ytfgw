@@ -45,7 +45,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
                 "indicator" => $f['Field'],
                 "value" => $re2[$i],
                 "unit" => $units[$i],
-                "file" => "<a class='layui-btn layui-btn-xs layui-btn-primary' target='_blank' href='../uploads/$user/$attachment_name'>$attachment_name</a>"
+                "attachment" => "<a class='layui-btn layui-btn-xs layui-btn-primary' target='_blank' href='../uploads/$user/$attachment_name'>$attachment_name</a>"
             ));
             $i++;
         }
