@@ -26,7 +26,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
 //    var_dump($re2);
 //    var_dump($sql2);
     $re2 = mysqli_fetch_array($re2);
-    $units = ["万元", "万元", "人", "人", "人", "人月", "个", "个", "个", "项", "项", "个", "个", "万元", "项", "项", "项", "项", "项", "项", "项", "万元", "万元", "万元", "项", "项", "万元", "项", "项", "项", "项"];
+    $units = ["loginid", "万元", "万元", "人", "人", "人", "人月", "个", "个", "个", "项", "项", "个", "个", "万元", "项", "项", "项", "项", "项", "项", "项", "万元", "万元", "万元", "项", "项", "万元", "项", "项", "项", "项"];
     $i = 0;
 
     // file code
@@ -38,6 +38,8 @@ if (isset($_SESSION['usertype'])) { // 已经登录
         $allFile = array();
     }
     require_once "common.php";
+//    var_dump($re);
+//    var_dump($re2);
     foreach ($re as $f) {
         if ($f['Field'] != "loginid") {
             $attachment_name = fetch_indicator_attachment_name($f['Field'], $GLOBALS['allFile']);
@@ -47,8 +49,8 @@ if (isset($_SESSION['usertype'])) { // 已经登录
                 "unit" => $units[$i],
                 "attachment" => "<a class='layui-btn layui-btn-xs layui-btn-primary' target='_blank' href='../uploads/$user/$attachment_name'>$attachment_name</a>"
             ));
-            $i++;
         }
+        $i++;
     }
 }
 
