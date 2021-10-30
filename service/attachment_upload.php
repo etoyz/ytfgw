@@ -7,7 +7,7 @@ $response = array(
 );
 
 //若未登录、登录者不是企业、登录企业状态不为2即已经申报数据，则不能上传文件。（申报数据后才能上传文件）
-if (!isset($_SESSION['usertype']) || $_SESSION['usertype'] === "manager" || $_SESSION['status'] !== 2) {
+if (!isset($_SESSION['usertype']) || $_SESSION['usertype'] === "manager" || $_SESSION['status'] != 2) {
     die(json_encode($response));
 }
 $response["status"] = "isLogin";
