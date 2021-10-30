@@ -37,16 +37,10 @@ if (isset($_SESSION['usertype'])) { // 已经登录
 //        var_dump($e);
         $allFile = array();
     }
-    function fetch_indicator_attachment_name($indicator)
-    {
-        foreach (preg_grep("/^附件_" . $indicator . ".*$/", $GLOBALS['allFile']) as $r)
-            return $r;
-        return "未上传";
-    }
-
+    require_once "common.php";
     foreach ($re as $f) {
         if ($f['Field'] != "loginid") {
-            $attachment_name = fetch_indicator_attachment_name($f['Field']);
+            $attachment_name = fetch_indicator_attachment_name($f['Field'], $GLOBALS['allFile']);
             array_push($response["data"], array(
                 "indicator" => $f['Field'],
                 "value" => $re2[$i],

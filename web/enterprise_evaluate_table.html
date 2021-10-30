@@ -54,7 +54,7 @@
     <table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
     <script id="operationDataTable" type="text/html">
         <a class="layui-btn layui-btn-xs file_upload" lay-event="file_upload"><i class="layui-icon">&#xe67c;</i>上传附件</a>
-        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除输入和附件</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="file_del">删除附件</a>
     </script>
     <div class="layui-btn-container s-tabBottomButton">
             <span class="layui-btn layui-btn-warm" id="submitForReview">
@@ -138,7 +138,7 @@
         function renderUpload() {
             upload.render({
                 elem: '.file_upload'
-                , url: '../service/upload_attachment.php'
+                , url: '../service/attachment_upload.php'
                 , accept: 'file'
                 , multiple: false
                 , data: {
@@ -158,7 +158,6 @@
                     })
                 }
                 , choose: function (obj) {
-                    console.log(indicator_selected)
                     obj.preview(function (index, file, result) {
                         //对上传失败的单个文件重新上传，一般在某个事件中使用
                         //obj.upload(index, file);
@@ -276,6 +275,26 @@
         table.on('tool(dataTable)', function (obj) {
             if (obj.event === 'file_upload') {
                 indicator_selected = obj.data.indicator;
+            } else if (obj.event === "file_del") {
+                $.get({
+                    url: "../service/attachment_delete.php",
+                    data: {
+                        "indicator": obj.data.indicator
+                    },
+                    success: function (res) {
+                        if (res.data) {
+                            layer.msg("删除成功！")
+                            dataTable.reload({
+                                done: () => {
+                                    renderUpload()
+                                }
+                            })
+                        } else {
+                            layer.msg("删除失败！")
+                        }
+                    },
+                    dataType: 'json'
+                })
             }
         })
 
