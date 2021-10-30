@@ -180,9 +180,9 @@
                 {field: 'indicator', width: 450, title: '指标', style: 'background-color: #eee;'},
                 {field: 'value', width: 110, title: '数值', style: 'background-color: #eee;'},
                 {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
-                {field: 'attachment', width: 85, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
+                {field: 'attachment', width: 220, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
                 {
-                    field: 'operation', width: 210,
+                    field: 'operation', width: 170,
                     title: '操作',
                     toolbar: '#operationDataTable',
                     fixed: 'right',
@@ -207,7 +207,7 @@
                             type: 1,
                             title: '企业详细数据',
                             content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                            area: ['1022px', '90%']
+                            area: ['1150px', '90%']
                         });
                         renderUpload()
                     }
@@ -346,7 +346,7 @@
                 type: 1,
                 title: '请在数值列输入详细数据',
                 content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                area: ['1022px', '90%']
+                area: ['748px', '90%']
             });
             return false
         });
