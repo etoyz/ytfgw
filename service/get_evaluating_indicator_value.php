@@ -43,11 +43,12 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     foreach ($re as $f) {
         if ($f['Field'] != "loginid") {
             $attachment_name = fetch_indicator_attachment_name($f['Field'], $GLOBALS['allFile']);
+            $attachment_tag = "<a style='color: #0000FF;text-decoration: underline' target='_blank' href='../uploads/$user/$attachment_name'>$attachment_name</a>";
             array_push($response["data"], array(
                 "indicator" => $f['Field'],
                 "value" => $re2[$i],
                 "unit" => $units[$i],
-                "attachment" => "<a class='layui-btn layui-btn-xs layui-btn-primary' target='_blank' href='../uploads/$user/$attachment_name'>$attachment_name</a>"
+                "attachment" => $attachment_tag
             ));
         }
         $i++;
