@@ -214,7 +214,7 @@
                 })
             } else if (obj.event === 'view_score_mach') {
                 let msg = layer.load(1)
-                let scoreTable = table.render({
+                table.render({
                     elem: '#scoreTable',
                     url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid,
                     height: 900,
@@ -276,7 +276,7 @@
             }
         })
 
-        table.on('tool(dataTableWithAttach)', function (obj) {
+        table.on('tool(dataTable)', function (obj) { // 监听的tool在页面元素中被标记为dataTable
             if (obj.event === 'file_upload') {
                 indicator_selected = obj.data.indicator;
             } else if (obj.event === "file_del") {
@@ -340,10 +340,7 @@
                     {field: 'value', width: 110, title: '数值', edit: "number", style: 'background-color: #FFFFFF;'},
                     {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
                 ]],
-                size: 'sm',
-                done: function () {
-                    renderUpload()
-                }
+                size: 'sm'
             });
             layer.open({
                 type: 1,
