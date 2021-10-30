@@ -53,8 +53,9 @@
 <div class="s-details" id="dataTablePopup">
     <table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
     <script id="operationDataTable" type="text/html">
-        <a class="layui-btn layui-btn-xs file_upload" lay-event="file_upload"><i class="layui-icon">&#xe67c;</i>上传附件</a>
-        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="file_del">删除附件</a>
+        <a class="layui-btn layui-btn-xs file_upload e-mod" style="display: none" lay-event="file_upload"><i
+                class="layui-icon">&#xe67c;</i>上传附件</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger e-mod" style="display: none" lay-event="file_del">删除附件</a>
     </script>
     <div class="layui-btn-container s-tabBottomButton">
             <span class="layui-btn layui-btn-warm" id="submitForReview">
@@ -315,6 +316,7 @@
         diffUserDoDiffThing(() => {
             $(".m-mod").show();
         }, () => {
+            $(".e-mod").show();
         });
 
         $.post({
