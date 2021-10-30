@@ -15,7 +15,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
 
     require_once 'db.php';
     $sql = "DESCRIBE enterprise_data;";
-    $sql2 = "SELECT * FROM enterprise_data WHERE `loginid` = $user;";
+    $sql2 = "SELECT * FROM enterprise_data WHERE `loginid` = '$user';";
     $db = new DB();
     $re = $db->query($sql);
     $re2 = $db->query($sql2);
