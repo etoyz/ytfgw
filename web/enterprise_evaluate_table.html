@@ -39,7 +39,7 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view_data">查看提交数据</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="view_data">附件</a>
                     <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view_score_mach">查看机器评判结果</a>
                     <a class="layui-btn layui-btn-xs m-mod" style="display: none" lay-event="pass">通过</a>
                     <a class="layui-btn layui-btn-xs layui-btn-danger m-mod" style="display: none"
@@ -147,15 +147,19 @@
                     }
                 }
                 , done: function (obj) { //当文件全部被提交后，才触发
-                    if (obj.data === true)
-                        layer.msg("上传成功！")
-                    else
-                        layer.msg("异常错误！")
-                    dataTable.reload({
-                        done: () => {
-                            renderUpload()
-                        }
-                    })
+                    if (obj.status === "isLogin") {
+                        if (obj.data === true)
+                            layer.msg("上传成功！")
+                        else
+                            layer.msg("异常错误！")
+                        dataTableWithAttach.reload({
+                            done: () => {
+                                renderUpload()
+                            }
+                        })
+                    } else {
+                        layer.msg("请先申报数据！")
+                    }
                 }
                 , choose: function (obj) {
                     obj.preview(function (index, file, result) {
@@ -166,7 +170,7 @@
             });
         }
 
-        let dataTable = table.render({
+        let dataTableWithAttach = table.render({
             elem: '#dataTable',
             url: "../service/get_evaluating_indicator.php",
             height: 1100,
@@ -174,7 +178,7 @@
             cols: [[
                 {type: 'numbers', style: 'background-color: #eee;'},
                 {field: 'indicator', width: 450, title: '指标', style: 'background-color: #eee;'},
-                {field: 'value', width: 110, title: '数值', edit: "number", style: 'background-color: #FFFFFF;'},
+                {field: 'value', width: 110, title: '数值', style: 'background-color: #eee;'},
                 {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
                 {field: 'attachment', width: 85, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
                 {
@@ -191,11 +195,28 @@
             }
         });
 
+        let dataTable = table.render({
+            elem: '#dataTable',
+            url: "../service/get_evaluating_indicator.php",
+            height: 1100,
+            limit: Number.MAX_SAFE_INTEGER,
+            cols: [[
+                {type: 'numbers', style: 'background-color: #eee;'},
+                {field: 'indicator', width: 450, title: '指标', style: 'background-color: #eee;'},
+                {field: 'value', width: 110, title: '数值', edit: "number", style: 'background-color: #FFFFFF;'},
+                {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
+            ]],
+            size: 'sm',
+            done: function () {
+                renderUpload()
+            }
+        });
+
         table.on('tool(enterpriseTable)', function (obj) {
             if (obj.event === 'view_data') {
                 $("#submitForReview").hide()
                 let loadMsg = layer.load(1)
-                dataTable.reload({
+                dataTableWithAttach.reload({
                     url: "../service/get_evaluating_indicator_value.php?user=" + obj.data["loginid"],
                     done: () => {
                         layer.close(loadMsg)
@@ -272,7 +293,7 @@
             }
         })
 
-        table.on('tool(dataTable)', function (obj) {
+        table.on('tool(dataTableWithAttach)', function (obj) {
             if (obj.event === 'file_upload') {
                 indicator_selected = obj.data.indicator;
             } else if (obj.event === "file_del") {
@@ -284,7 +305,7 @@
                     success: function (res) {
                         if (res.data) {
                             layer.msg("删除成功！")
-                            dataTable.reload({
+                            dataTableWithAttach.reload({
                                 done: () => {
                                     renderUpload()
                                 }
@@ -325,11 +346,7 @@
 
         $("#submit").unbind("click").click(function () {
             $("#submitForReview").show()
-            dataTable.reload({
-                done: () => {
-                    renderUpload()
-                }
-            })
+            dataTable.reload()
             layer.open({
                 type: 1,
                 title: '请在数值列输入详细数据',
