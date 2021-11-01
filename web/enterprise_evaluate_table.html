@@ -58,12 +58,13 @@
         <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="file_del">删除附件</a>
     </script>
     <div class="layui-btn-container s-tabBottomButton">
-            <span class="layui-btn layui-btn-warm" id="submitForReview">
+        <span class="layui-btn" id="submitForPreserve"> 保存</span>
+        <span class="layui-btn layui-btn-warm" id="submitForReview">
                 提交申报 <svg class="icon" height="21" p-id="6305" t="1623748927861"
                           version="1.1" viewBox="0 0 1024 620" width="21" xmlns="http://www.w3.org/2000/svg"><path
-                    d="M960 260.571L462.222 864 64 512l49.778-100.571 348.444 201.142L960 160z" fill="#ffffff"
-                    p-id="6306"></path></svg>
-            </span>
+                d="M960 260.571L462.222 864 64 512l49.778-100.571 348.444 201.142L960 160z" fill="#ffffff"
+                p-id="6306"></path></svg>
+        </span>
     </div>
 </div>
 
@@ -208,7 +209,6 @@
 
         table.on('tool(enterpriseTable)', function (obj) {
             if (obj.event === 'view_data') {
-                $("#submitForReview").hide()
                 let loadMsg = layer.load(1)
                 dataTableWithAttach.reload({
                     url: "../service/get_evaluating_indicator_value.php?user=" + obj.data["loginid"],
@@ -340,10 +340,9 @@
         })
 
         $("#submit").unbind("click").click(function () {
-            $("#submitForReview").show()
             table.render({
                 elem: '#dataTable',
-                url: "../service/get_evaluating_indicator.php",
+                url: "../service/get_evaluating_indicator_value.php",
                 height: 1100,
                 limit: Number.MAX_SAFE_INTEGER,
                 cols: [[
@@ -372,35 +371,39 @@
             dataToBeSub[data.indicator] = value;
         });
         $("#submitForReview").unbind("click").click(function () {
-            if (Object.keys(dataToBeSub).length < dataLength) {
-                layer.msg("请输入全部数据！");
-                return false;
-            }
-            let msg = layer.load(1)
-            $.post({
-                url: "../service/submit_data.php",
-                data: dataToBeSub,
-                success: function (res) {
-                    layer.close(msg)
-                    if (res.data === true) {
-                        layer.alert("提交审核成功！", {icon: 1}, () => {
-                            layer.closeAll();
-                            maintable.reload();
-                        })
-                    } else if (res.data === 1265) {
-                        layer.alert("请检查数据格式是否正确！", {icon: 2}, () => {
-                            layer.closeAll();
-                            maintable.reload();
-                        })
-                    } else {
-                        layer.alert(res.data + '', {icon: 2}, () => {
-                            layer.closeAll();
-                        })
-                    }
-                },
-                dataType: "json"
+            layer.confirm("提交申报后将不可修改，确认提交吗？", {
+                btn: ['确认', '取消'] //可以无限个按钮
+            }, function () {
+                if (Object.keys(dataToBeSub).length < dataLength) {
+                    layer.msg("请输入全部数据！");
+                    return false;
+                }
+                let msg = layer.load(1)
+                $.post({
+                    url: "../service/submit_data.php",
+                    data: dataToBeSub,
+                    success: function (res) {
+                        layer.close(msg)
+                        if (res.data === true) {
+                            layer.alert("提交审核成功！", {icon: 1}, () => {
+                                layer.closeAll();
+                                maintable.reload();
+                            })
+                        } else if (res.data === 1265) {
+                            layer.alert("请检查数据格式是否正确！", {icon: 2}, () => {
+                                layer.closeAll();
+                                maintable.reload();
+                            })
+                        } else {
+                            layer.alert(res.data + '', {icon: 2}, () => {
+                                layer.closeAll();
+                            })
+                        }
+                    },
+                    dataType: "json"
+                })
+                return false
             })
-            return false
         })
         $("#queryBtn").unbind("click").click(function () {
             maintable.reload({
