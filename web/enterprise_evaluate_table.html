@@ -59,7 +59,7 @@
     </script>
     <div class="layui-btn-container s-tabBottomButton">
         <span class="layui-btn" id="submitForPreserve"> 保存</span>
-        <span class="layui-btn layui-btn-warm" id="submitForReview">
+        <span class="layui-btn layui-btn-warm" style="display: none" id="submitForReview">
                 提交申报 <svg class="icon" height="21" p-id="6305" t="1623748927861"
                           version="1.1" viewBox="0 0 1024 620" width="21" xmlns="http://www.w3.org/2000/svg"><path
                 d="M960 260.571L462.222 864 64 512l49.778-100.571 348.444 201.142L960 160z" fill="#ffffff"
@@ -209,6 +209,8 @@
 
         table.on('tool(enterpriseTable)', function (obj) {
             if (obj.event === 'view_data') {
+                $("#submitForPreserve").hide()
+                $("#submitForReview").show()
                 let loadMsg = layer.load(1)
                 dataTableWithAttach.reload({
                     url: "../service/get_evaluating_indicator_value.php?user=" + obj.data["loginid"],
@@ -218,7 +220,11 @@
                             type: 1,
                             title: '企业详细数据',
                             content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                            area: ['1150px', '90%']
+                            area: ['1150px', '90%'],
+                            cancel: () => {
+                                $("#submitForPreserve").show()
+                                $("#submitForReview").hide()
+                            }
                         });
                         renderUpload()
                     }
@@ -378,37 +384,40 @@
             if (value === "")
                 delete dataToBeSub[data.indicator]
         });
+        $("#submitForPreserve").unbind("click").click(function () {
+            if (Object.keys(dataToBeSub).length < dataLength) {
+                layer.msg("请输入全部数据！");
+                return false;
+            }
+            let msg = layer.load(1)
+            $.post({
+                url: "../service/submit_data.php",
+                data: dataToBeSub,
+                success: function (res) {
+                    layer.close(msg)
+                    if (res.data === true) {
+                        layer.alert("保存成功！请确认无误后上传相关附件,然后提交审核！", {icon: 1}, () => {
+                            layer.closeAll();
+                            location.reload();
+                        })
+                    } else if (res.data === 1265 || res.data == 1366) {
+                        layer.alert("请检查数据格式是否正确！", {icon: 2})
+                    } else {
+                        layer.alert(res.data + '', {icon: 2}, () => {
+                            layer.closeAll();
+                        })
+                    }
+                },
+                dataType: "json"
+            })
+            return false
+        })
         $("#submitForReview").unbind("click").click(function () {
-            layer.confirm("提交申报后将不可修改，确认提交吗？", {
-                btn: ['确认', '取消'] //可以无限个按钮
-            }, function () {
-                if (Object.keys(dataToBeSub).length < dataLength) {
-                    layer.msg("请输入全部数据！");
-                    return false;
+            $.get({
+                url: "../service/submit_data_for_review.php",
+                success: function (res) {
+                    console.log(res)
                 }
-                let msg = layer.load(1)
-                $.post({
-                    url: "../service/submit_data.php",
-                    data: dataToBeSub,
-                    success: function (res) {
-                        layer.close(msg)
-                        if (res.data === true) {
-                            layer.alert("提交审核成功！请上传附件", {icon: 1}, () => {
-                                layer.closeAll();
-                                location.reload();
-                            })
-                        } else
-                            // } else if (res.data === 1265) {
-                            layer.alert("请检查数据格式是否正确！", {icon: 2})
-                        // } else {
-                        //     layer.alert(res.data + '', {icon: 2}, () => {
-                        //         layer.closeAll();
-                        //     })
-                        // }
-                    },
-                    dataType: "json"
-                })
-                return false
             })
         })
         $("#queryBtn").unbind("click").click(function () {
