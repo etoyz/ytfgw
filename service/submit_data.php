@@ -145,7 +145,14 @@ function cal_score()
         $sql .= "'" . $metaData[$key][4] . "', ";
     }
     $sql .= "'$_SESSION[loginid]', 'machine');";
-    $GLOBALS['db']->query($sql);
+    if ($GLOBALS['db']->query($sql) == 1062) { // 如果已经存在尝试进行更新
+        $sql = "UPDATE `enterprise_score` SET ";
+        foreach (array_keys($metaData) as $key) {
+            $sql .= "`$key` = '$metaData[$key][4]', ";
+        }
+        $sql .= "`loginid` = '$_SESSION[loginid]', `type` = 'machine';";
+        $GLOBALS['db']->query($sql);
+    }
 }
 
 die(json_encode($arr));
