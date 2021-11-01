@@ -40,7 +40,8 @@
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
                     <a class="layui-btn layui-btn-xs" lay-event="view_data">上传附件并提交申报</a>
-                    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view_score_mach">查看机器评判结果</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-warm m-mod" lay-event="view_score_mach"
+                       style="display: none">查看机器评判结果</a>
                     <a class="layui-btn layui-btn-xs m-mod" style="display: none" lay-event="pass">通过</a>
                     <a class="layui-btn layui-btn-xs layui-btn-danger m-mod" style="display: none"
                        lay-event="return">退回</a>
@@ -90,348 +91,354 @@
                 if (res == "1") {
                     layer.alert("请先完善企业基本信息！\n完善基本信息之后可刷新本页面继续操作！", () => {
                     })
-                }
-            }
-        })
-
-        function getQueryString(name) {
-            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-            let r = window.location.search.substr(1).match(reg);
-            if (r != null) {
-                return decodeURIComponent(r[2]);
-            }
-            return null;
-        }
-
-        let maintable = table.render({
-            elem: '#enterpriseTable',
-            url: '../service/get_enterprise_list.php?query=&status=' + getQueryString("status"),
-            toolbar: true,
-            defaultToolbar: ['print', 'exports'],
-            height: 'full-100',
-            page: {
-                layout: ['prev', 'page', 'next', 'skip', 'count'], //自定义分页布局
-                limit: 10,
-                groups: 3,
-                first: false,
-                last: false
-            },
-            cols: [[
-                {field: 'city', width: '100', title: '市'},
-                {field: 'name', width: '220', title: '企业名称'},
-                {field: 'year', width: '100', title: '报告年度'},
-                {field: 'status', width: '100', title: '申报状态'},
-                {field: 'expert_score', width: '120', title: '专家评价分数'},
-                {field: 'expert_result', width: '120', title: '评审结果'},
-                {field: 'submit_time', width: '150', title: '填报时间'},
-                {field: 'return_reason', width: '150', title: '退回原因'},
-                {field: 'remark', width: '110', title: '备注'},
-                {field: 'operation', width: '320', title: '操作', toolbar: '#operation', fixed: 'right'}
-            ]],
-            size: 'sm',
-            parseData: function (res) {
-                for (let item of res.data) {
-                    if (item.status === "0")
-                        item.status = "未完善信息";
-                    else if (item.status === "1")
-                        item.status = "未申报数据";
-                    else if (item.status === "2")
-                        item.status = "审核中";
-                    else if (item.status === "3")
-                        item.status = "已退回";
-                    else if (item.status === "4")
-                        item.status = "待专家评价";
-                }
-            }
-        });
-
-        let indicator_selected;
-
-        function renderUpload() {
-            upload.render({
-                elem: '.file_upload'
-                , url: '../service/attachment_upload.php'
-                , accept: 'file'
-                , multiple: false
-                , data: {
-                    'indicator': function () {
-                        return indicator_selected;
+                } else {
+                    function getQueryString(name) {
+                        let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                        let r = window.location.search.substr(1).match(reg);
+                        if (r != null) {
+                            return decodeURIComponent(r[2]);
+                        }
+                        return null;
                     }
-                }
-                , done: function (obj) { //当文件全部被提交后，才触发
-                    if (obj.status === "isLogin") {
-                        if (obj.data === true)
-                            layer.msg("上传成功！")
-                        else
-                            layer.msg("异常错误！")
-                        dataTableWithAttach.reload({
-                            done: () => {
-                                renderUpload()
+
+                    let maintable = table.render({
+                        elem: '#enterpriseTable',
+                        url: '../service/get_enterprise_list.php?query=&status=' + getQueryString("status"),
+                        toolbar: true,
+                        defaultToolbar: ['print', 'exports'],
+                        height: 'full-100',
+                        page: {
+                            layout: ['prev', 'page', 'next', 'skip', 'count'], //自定义分页布局
+                            limit: 10,
+                            groups: 3,
+                            first: false,
+                            last: false
+                        },
+                        cols: [[
+                            {field: 'city', width: '100', title: '市'},
+                            {field: 'name', width: '220', title: '企业名称'},
+                            {field: 'year', width: '100', title: '报告年度'},
+                            {field: 'status', width: '100', title: '申报状态'},
+                            {field: 'expert_score', width: '120', title: '专家评价分数'},
+                            {field: 'expert_result', width: '120', title: '评审结果'},
+                            {field: 'submit_time', width: '150', title: '填报时间'},
+                            {field: 'return_reason', width: '150', title: '退回原因'},
+                            {field: 'remark', width: '110', title: '备注'},
+                            {field: 'operation', width: '320', title: '操作', toolbar: '#operation', fixed: 'right'}
+                        ]],
+                        size: 'sm',
+                        parseData: function (res) {
+                            for (let item of res.data) {
+                                if (item.status === "0")
+                                    item.status = "未完善信息";
+                                else if (item.status === "1")
+                                    item.status = "未申报数据";
+                                else if (item.status === "2")
+                                    item.status = "审核中";
+                                else if (item.status === "3")
+                                    item.status = "已退回";
+                                else if (item.status === "4")
+                                    item.status = "待专家评价";
                             }
-                        })
-                    } else {
-                        layer.msg("请先申报数据！")
-                    }
-                }
-                , choose: function (obj) {
-                    obj.preview(function (index, file, result) {
-                        //对上传失败的单个文件重新上传，一般在某个事件中使用
-                        //obj.upload(index, file);
+                        }
                     });
-                }
-            });
-        }
 
-        let dataTableWithAttach = table.render({
-            elem: '#dataTable',
-            url: "../service/get_evaluating_indicator.php",
-            height: 1100,
-            limit: Number.MAX_SAFE_INTEGER,
-            cols: [[
-                {type: 'numbers', style: 'background-color: #eee;'},
-                {field: 'indicator', width: 450, title: '指标', style: 'background-color: #eee;'},
-                {field: 'value', width: 110, title: '数值', style: 'background-color: #eee;'},
-                {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
-                {field: 'attachment', width: 220, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
-                {
-                    field: 'operation', width: 170,
-                    title: '操作',
-                    toolbar: '#operationDataTable',
-                    fixed: 'right',
-                    style: 'background-color: #eee;'
-                }
-            ]],
-            size: 'sm',
-            done: function () {
-                renderUpload()
-            }
-        });
+                    let indicator_selected;
 
-        table.on('tool(enterpriseTable)', function (obj) {
-            if (obj.event === 'view_data') {
-                $("#submitForPreserve").hide()
-                $("#submitForReview").show()
-                let loadMsg = layer.load(1)
-                dataTableWithAttach.reload({
-                    url: "../service/get_evaluating_indicator_value.php?user=" + obj.data["loginid"],
-                    done: () => {
-                        layer.close(loadMsg)
-                        layer.open({
-                            type: 1,
-                            title: '企业详细数据',
-                            content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                            area: ['1150px', '90%'],
-                            cancel: () => {
-                                $("#submitForPreserve").show()
-                                $("#submitForReview").hide()
+                    function renderUpload() {
+                        upload.render({
+                            elem: '.file_upload'
+                            , url: '../service/attachment_upload.php'
+                            , accept: 'file'
+                            , multiple: false
+                            , data: {
+                                'indicator': function () {
+                                    return indicator_selected;
+                                }
+                            }
+                            , done: function (obj) { //当文件全部被提交后，才触发
+                                if (obj.status === "isLogin") {
+                                    if (obj.data === true)
+                                        layer.msg("上传成功！")
+                                    else
+                                        layer.msg("异常错误！")
+                                    dataTableWithAttach.reload({
+                                        done: () => {
+                                            renderUpload()
+                                        }
+                                    })
+                                } else {
+                                    layer.msg("请先申报数据！")
+                                }
+                            }
+                            , choose: function (obj) {
+                                obj.preview(function (index, file, result) {
+                                    //对上传失败的单个文件重新上传，一般在某个事件中使用
+                                    //obj.upload(index, file);
+                                });
                             }
                         });
-                        renderUpload()
                     }
-                })
-            } else if (obj.event === 'view_score_mach') {
-                let msg = layer.load(1)
-                table.render({
-                    elem: '#scoreTable',
-                    url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid,
-                    height: 900,
-                    toolbar: true,
-                    defaultToolbar: ['print', 'exports'],
-                    limit: Number.MAX_SAFE_INTEGER,
-                    cols: [[
-                        {type: 'numbers', style: 'background-color: #eee;'},
-                        {field: 'indicator', width: 300, title: '指标', style: 'background-color: #eee;'},
-                        {field: 'score', width: 150, title: '成绩', style: 'background-color: #FFFFFF;'},
-                    ]],
-                    size: 'sm',
-                    done: function () {
-                        layer.open({
-                            type: 1,
-                            title: '机器评判结果',
-                            content: $('#scoreTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                            area: ['500x', '90%']
-                        });
-                        layer.close(msg)
-                    }
-                });
-            } else if (obj.event === 'pass') {
-                layer.confirm("确认通过【" + obj.data.name + "】的申请吗？", {
-                    btn: ['确认', '取消'] //可以无限个按钮
-                }, function () {
-                    $.post({
-                        url: "../service/check_data.php",
-                        data: {
-                            "loginid": obj.data.loginid,
-                            "operation": "pass"
-                        },
-                        success: function (res) {
-                            if (res.data === true)
-                                layer.alert("成功！", {icon: "1"})
-                            maintable.reload()
-                        },
-                        dataType: "json"
-                    })
-                })
-            } else if (obj.event === 'return') {
-                layer.prompt({title: "请输入退回原因"}, function (value, index) {
-                    $.post({
-                        url: "../service/check_data.php",
-                        data: {
-                            "loginid": obj.data.loginid,
-                            "operation": "return",
-                            "return_reason": value
-                        },
-                        success: function (res) {
-                            if (res.data === true)
-                                layer.alert("成功！", {icon: "1"})
-                            maintable.reload()
-                        },
-                        dataType: "json"
-                    })
-                    layer.close(index);
-                });
-            }
-        })
 
-        table.on('tool(dataTable)', function (obj) { // 监听的tool在页面元素中被标记为dataTable
-            if (obj.event === 'file_upload') {
-                indicator_selected = obj.data.indicator;
-            } else if (obj.event === "file_del") {
-                $.get({
-                    url: "../service/attachment_delete.php",
-                    data: {
-                        "indicator": obj.data.indicator
-                    },
-                    success: function (res) {
-                        if (res.data) {
-                            layer.msg("删除成功！")
+                    let dataTableWithAttach = table.render({
+                        elem: '#dataTable',
+                        url: "../service/get_evaluating_indicator.php",
+                        height: 1100,
+                        limit: Number.MAX_SAFE_INTEGER,
+                        cols: [[
+                            {type: 'numbers', style: 'background-color: #eee;'},
+                            {field: 'indicator', width: 450, title: '指标', style: 'background-color: #eee;'},
+                            {field: 'value', width: 110, title: '数值', style: 'background-color: #eee;'},
+                            {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
+                            {field: 'attachment', width: 220, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
+                            {
+                                field: 'operation', width: 170,
+                                title: '操作',
+                                toolbar: '#operationDataTable',
+                                fixed: 'right',
+                                style: 'background-color: #eee;'
+                            }
+                        ]],
+                        size: 'sm',
+                        done: function () {
+                            renderUpload()
+                        }
+                    });
+
+                    table.on('tool(enterpriseTable)', function (obj) {
+                        if (obj.event === 'view_data') {
+                            $("#submitForPreserve").hide()
+                            $("#submitForReview").show()
+                            let loadMsg = layer.load(1)
                             dataTableWithAttach.reload({
+                                url: "../service/get_evaluating_indicator_value.php?user=" + obj.data["loginid"],
                                 done: () => {
+                                    layer.close(loadMsg)
+                                    layer.open({
+                                        type: 1,
+                                        title: '企业详细数据',
+                                        content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                                        area: ['1150px', '90%'],
+                                        cancel: () => {
+                                            $("#submitForPreserve").show()
+                                            $("#submitForReview").hide()
+                                        }
+                                    });
                                     renderUpload()
                                 }
                             })
-                        } else {
-                            layer.msg("删除失败！")
+                        } else if (obj.event === 'view_score_mach') {
+                            let msg = layer.load(1)
+                            table.render({
+                                elem: '#scoreTable',
+                                url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid,
+                                height: 900,
+                                toolbar: true,
+                                defaultToolbar: ['print', 'exports'],
+                                limit: Number.MAX_SAFE_INTEGER,
+                                cols: [[
+                                    {type: 'numbers', style: 'background-color: #eee;'},
+                                    {field: 'indicator', width: 300, title: '指标', style: 'background-color: #eee;'},
+                                    {field: 'score', width: 150, title: '成绩', style: 'background-color: #FFFFFF;'},
+                                ]],
+                                size: 'sm',
+                                done: function () {
+                                    layer.open({
+                                        type: 1,
+                                        title: '机器评判结果',
+                                        content: $('#scoreTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                                        area: ['500x', '90%']
+                                    });
+                                    layer.close(msg)
+                                }
+                            });
+                        } else if (obj.event === 'pass') {
+                            layer.confirm("确认通过【" + obj.data.name + "】的申请吗？", {
+                                btn: ['确认', '取消'] //可以无限个按钮
+                            }, function () {
+                                $.post({
+                                    url: "../service/check_data.php",
+                                    data: {
+                                        "loginid": obj.data.loginid,
+                                        "operation": "pass"
+                                    },
+                                    success: function (res) {
+                                        if (res.data === true)
+                                            layer.alert("成功！", {icon: "1"})
+                                        maintable.reload()
+                                    },
+                                    dataType: "json"
+                                })
+                            })
+                        } else if (obj.event === 'return') {
+                            layer.prompt({title: "请输入退回原因"}, function (value, index) {
+                                $.post({
+                                    url: "../service/check_data.php",
+                                    data: {
+                                        "loginid": obj.data.loginid,
+                                        "operation": "return",
+                                        "return_reason": value
+                                    },
+                                    success: function (res) {
+                                        if (res.data === true)
+                                            layer.alert("成功！", {icon: "1"})
+                                        maintable.reload()
+                                    },
+                                    dataType: "json"
+                                })
+                                layer.close(index);
+                            });
                         }
-                    },
-                    dataType: 'json'
-                })
-            }
-        })
+                    })
 
-        function diffUserDoDiffThing(managerDo, enterpriseDo) {
-            $.get({
-                url: "../service/get_user_type.php",
-                success: function (res) {
-                    if (res === "manager") managerDo()
-                    if (res === "enterprise") enterpriseDo()
-                }
-            })
-        }
-
-        diffUserDoDiffThing(() => {
-            $(".m-mod").show();
-        }, () => {
-            $(".e-mod").show();
-        });
-
-        $.post({
-            url: "../service/can_user_submit_data.php",
-            success: function (res) {
-                if (res == "1")
-                    $("#submit").click();
-                else
-                    $("#submit").html("修改填报数据");
-            }
-        })
-
-        let dataToBeSub = {};
-        $("#submit").unbind("click").click(function () {
-            table.render({
-                elem: '#dataTable',
-                url: "../service/get_evaluating_indicator_value.php",
-                height: 1100,
-                limit: Number.MAX_SAFE_INTEGER,
-                cols: [[
-                    {type: 'numbers', style: 'background-color: #eee;'},
-                    {field: 'indicator', width: 450, title: '指标', style: 'background-color: #eee;'},
-                    {field: 'value', width: 110, title: '数值', edit: "number", style: 'background-color: #FFFFFF;'},
-                    {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
-                ]],
-                size: 'sm',
-                done: function (res) {
-                    for (const d of res.data) {
-                        if (d["value"] != null)
-                            dataToBeSub[d["indicator"]] = d["value"];
-                    }
-                }
-            });
-            layer.open({
-                type: 1,
-                title: '请在数值列输入详细数据',
-                content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                area: ['748px', '90%']
-            });
-            return false
-        });
-
-        let dataLength = 32;
-        table.on('edit(dataTable)', function (obj) {
-            var value = obj.value //得到修改后的值
-                , data = obj.data //得到所在行所有键值
-                , field = obj.field; //得到字段
-            dataToBeSub[data.indicator] = value;
-            if (value === "")
-                delete dataToBeSub[data.indicator]
-        });
-        $("#submitForPreserve").unbind("click").click(function () {
-            if (Object.keys(dataToBeSub).length < dataLength) {
-                layer.msg("请输入全部数据！");
-                return false;
-            }
-            let msg = layer.load(1)
-            $.post({
-                url: "../service/submit_data.php",
-                data: dataToBeSub,
-                success: function (res) {
-                    layer.close(msg)
-                    if (res.data === true) {
-                        layer.alert("保存成功！请确认无误后上传相关附件,然后提交审核！", {icon: 1}, () => {
-                            layer.closeAll();
-                            location.reload();
-                        })
-                    } else if (res.data === 1265 || res.data == 1366) {
-                        layer.alert("请检查数据格式是否正确！", {icon: 2})
-                    } else {
-                        layer.alert(res.data + '', {icon: 2}, () => {
-                            layer.closeAll();
-                        })
-                    }
-                },
-                dataType: "json"
-            })
-            return false
-        })
-        $("#submitForReview").unbind("click").click(function () {
-            layer.confirm("提交申报后不可修改，确认提交吗？", {
-                btn: ['确认', '取消'] //可以无限个按钮
-            }, function () {
-                $.get({
-                    url: "../service/submit_data_for_review.php",
-                    success: function (res) {
-                        if (res == 1) {
-                            layer.alert("提交审核成功！")
-                            location.reload()
+                    table.on('tool(dataTable)', function (obj) { // 监听的tool在页面元素中被标记为dataTable
+                        if (obj.event === 'file_upload') {
+                            indicator_selected = obj.data.indicator;
+                        } else if (obj.event === "file_del") {
+                            $.get({
+                                url: "../service/attachment_delete.php",
+                                data: {
+                                    "indicator": obj.data.indicator
+                                },
+                                success: function (res) {
+                                    if (res.data) {
+                                        layer.msg("删除成功！")
+                                        dataTableWithAttach.reload({
+                                            done: () => {
+                                                renderUpload()
+                                            }
+                                        })
+                                    } else {
+                                        layer.msg("删除失败！")
+                                    }
+                                },
+                                dataType: 'json'
+                            })
                         }
+                    })
+
+                    function diffUserDoDiffThing(managerDo, enterpriseDo) {
+                        $.get({
+                            url: "../service/get_user_type.php",
+                            success: function (res) {
+                                if (res === "manager") managerDo()
+                                if (res === "enterprise") enterpriseDo()
+                            }
+                        })
                     }
-                })
-            })
-        })
-        $("#queryBtn").unbind("click").click(function () {
-            maintable.reload({
-                url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val() + '&status=' + getQueryString("status"),
-            })
-            return false;
+
+                    diffUserDoDiffThing(() => {
+                        $(".m-mod").show();
+                    }, () => {
+                        $(".e-mod").show();
+                    });
+
+                    $.post({
+                        url: "../service/can_user_submit_data.php",
+                        success: function (res) {
+                            if (res == "1")
+                                $("#submit").click();
+                            else
+                                $("#submit").html("修改填报数据");
+                        }
+                    })
+
+                    let dataToBeSub = {};
+                    $("#submit").unbind("click").click(function () {
+                        table.render({
+                            elem: '#dataTable',
+                            url: "../service/get_evaluating_indicator_value.php",
+                            height: 1100,
+                            limit: Number.MAX_SAFE_INTEGER,
+                            cols: [[
+                                {type: 'numbers', style: 'background-color: #eee;'},
+                                {field: 'indicator', width: 450, title: '指标', style: 'background-color: #eee;'},
+                                {
+                                    field: 'value',
+                                    width: 110,
+                                    title: '数值',
+                                    edit: "number",
+                                    style: 'background-color: #FFFFFF;'
+                                },
+                                {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
+                            ]],
+                            size: 'sm',
+                            done: function (res) {
+                                for (const d of res.data) {
+                                    if (d["value"] != null)
+                                        dataToBeSub[d["indicator"]] = d["value"];
+                                }
+                            }
+                        });
+                        layer.open({
+                            type: 1,
+                            title: '请在数值列输入详细数据',
+                            content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                            area: ['748px', '90%']
+                        });
+                        return false
+                    });
+
+                    let dataLength = 32;
+                    table.on('edit(dataTable)', function (obj) {
+                        var value = obj.value //得到修改后的值
+                            , data = obj.data //得到所在行所有键值
+                            , field = obj.field; //得到字段
+                        dataToBeSub[data.indicator] = value;
+                        if (value === "")
+                            delete dataToBeSub[data.indicator]
+                    });
+                    $("#submitForPreserve").unbind("click").click(function () {
+                        if (Object.keys(dataToBeSub).length < dataLength) {
+                            layer.msg("请输入全部数据！");
+                            return false;
+                        }
+                        let msg = layer.load(1)
+                        $.post({
+                            url: "../service/submit_data.php",
+                            data: dataToBeSub,
+                            success: function (res) {
+                                layer.close(msg)
+                                if (res.data === true) {
+                                    layer.alert("保存成功！请确认无误后上传相关附件,然后提交审核！", {icon: 1}, () => {
+                                        layer.closeAll();
+                                        location.reload();
+                                    })
+                                } else if (res.data === 1265 || res.data == 1366) {
+                                    layer.alert("请检查数据格式是否正确！", {icon: 2})
+                                } else {
+                                    layer.alert(res.data + '', {icon: 2}, () => {
+                                        layer.closeAll();
+                                    })
+                                }
+                            },
+                            dataType: "json"
+                        })
+                        return false
+                    })
+                    $("#submitForReview").unbind("click").click(function () {
+                        layer.confirm("提交申报后不可修改，确认提交吗？", {
+                            btn: ['确认', '取消'] //可以无限个按钮
+                        }, function () {
+                            $.get({
+                                url: "../service/submit_data_for_review.php",
+                                success: function (res) {
+                                    if (res == 1) {
+                                        layer.alert("提交审核成功！")
+                                        location.reload()
+                                    }
+                                }
+                            })
+                        })
+                    })
+                    $("#queryBtn").unbind("click").click(function () {
+                        maintable.reload({
+                            url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val() + '&status=' + getQueryString("status"),
+                        })
+                        return false;
+                    })
+                }
+            }
         })
     })
 </script>
