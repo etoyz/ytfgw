@@ -39,7 +39,7 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs" lay-event="view_data">附件</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="view_data">上传附件并提交申报</a>
                     <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view_score_mach">查看机器评判结果</a>
                     <a class="layui-btn layui-btn-xs m-mod" style="display: none" lay-event="pass">通过</a>
                     <a class="layui-btn layui-btn-xs layui-btn-danger m-mod" style="display: none"
@@ -413,11 +413,18 @@
             return false
         })
         $("#submitForReview").unbind("click").click(function () {
-            $.get({
-                url: "../service/submit_data_for_review.php",
-                success: function (res) {
-                    console.log(res)
-                }
+            layer.confirm("提交申报后不可修改，确认提交吗？", {
+                btn: ['确认', '取消'] //可以无限个按钮
+            }, function () {
+                $.get({
+                    url: "../service/submit_data_for_review.php",
+                    success: function (res) {
+                        if (res == 1) {
+                            layer.alert("提交审核成功！")
+                            location.reload()
+                        }
+                    }
+                })
             })
         })
         $("#queryBtn").unbind("click").click(function () {
