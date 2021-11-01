@@ -148,9 +148,9 @@ function cal_score()
     if ($GLOBALS['db']->query($sql) == 1062) { // 如果已经存在尝试进行更新
         $sql = "UPDATE `enterprise_score` SET ";
         foreach (array_keys($metaData) as $key) {
-            $sql .= "`$key` = '$metaData[$key][4]', ";
+            $sql .= "`$key` = '" . $metaData[$key][4] . "', ";
         }
-        $sql .= "`loginid` = '$_SESSION[loginid]', `type` = 'machine';";
+        $sql .= "`type` = 'machine' WHERE `loginid` = '$_SESSION[loginid]'";
         $GLOBALS['db']->query($sql);
     }
 }
