@@ -30,7 +30,7 @@
                         <div class="layui-inline s-layuiInline">
                             <button class="layui-btn layui-btn-warm m-mod" style="display: none" id="queryBtn">查询
                             </button>
-                            <button class="layui-btn" style="display: none" id="submit">申报数据</button>
+                            <button class="layui-btn e-mod" style="display: none" id="submit">填报数据</button>
                         </div>
                     </div>
                 </form>
@@ -82,6 +82,16 @@
             table = layui.table,
             element = layui.element,
             upload = layui.upload;
+
+        $.post({
+            url: "../service/can_user_submit_info.php",
+            success: function (res) {
+                if (res == "1") {
+                    layer.alert("请先完善企业基本信息！\n完善基本信息之后可刷新本页面继续操作！", () => {
+                    })
+                }
+            }
+        })
 
         function getQueryString(name) {
             let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -316,15 +326,16 @@
         diffUserDoDiffThing(() => {
             $(".m-mod").show();
         }, () => {
+            $(".e-mod").show();
         });
 
         $.post({
             url: "../service/can_user_submit_data.php",
             success: function (res) {
                 if (res == "1")
-                    $("#submit").show();
+                    $("#submit").click();
                 else
-                    $("#submit").hide();
+                    $("#submit").html("修改填报数据");
             }
         })
 

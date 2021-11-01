@@ -88,14 +88,21 @@
                     </div>
                 </div>
                 <div class="layui-inline">
+                    <label class="layui-form-label">县市区</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="*"
+                               lay-verify="required" name="*" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item s-formItem1">
+                <div class="layui-inline">
                     <label class="layui-form-label">详细地址</label>
                     <div class="layui-input-inline">
                         <input autocomplete="off" class="layui-input" id="address"
                                lay-verify="required" name="address" type="text">
                     </div>
                 </div>
-            </div>
-            <div class="layui-form-item s-formItem1">
                 <div class="layui-inline">
                     <label class="layui-form-label">下属企业数量</label>
                     <div class="layui-input-inline">
@@ -110,20 +117,27 @@
                                lay-verify="required" name="chargeperson" type="text">
                     </div>
                 </div>
+            </div>
+            <div class="layui-form-item s-formItem1">
                 <div class="layui-inline editMod">
                     <label class="layui-form-label">联系电话</label>
                     <div class="layui-input-inline">
                         <input autocomplete="off" class="layui-input" name="phone"
-                               lay-verify="number" id="phone" type="text">
+                               id="phone" type="text">
                     </div>
                 </div>
-            </div>
-            <div class="layui-form-item s-formItem1">
+                <div class="layui-inline editMod">
+                    <label class="layui-form-label">报告年度</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" name="created_year"
+                               lay-verify="number" id="created_year" type="text">
+                    </div>
+                </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">备注</label>
                     <div class="layui-input-inline">
                         <input autocomplete="off" class="layui-input" id="remark"
-                               lay-verify="required" name="remark" type="text">
+                               name="remark" type="text">
                     </div>
                 </div>
             </div>
@@ -228,7 +242,7 @@
                 success: function (res) {
                     if (JSON.parse(res).data)
                         layer.alert("完善成功！", {icon: 1}, () => {
-                            enterpriseTable.reload()
+                            location.reload()
                             layer.closeAll();
                         });
                 }
