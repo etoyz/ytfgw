@@ -339,6 +339,7 @@
             }
         })
 
+        let dataToBeSub = {};
         $("#submit").unbind("click").click(function () {
             table.render({
                 elem: '#dataTable',
@@ -351,7 +352,13 @@
                     {field: 'value', width: 110, title: '数值', edit: "number", style: 'background-color: #FFFFFF;'},
                     {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
                 ]],
-                size: 'sm'
+                size: 'sm',
+                done: function (res) {
+                    for (const d of res.data) {
+                        if (d["value"] != null)
+                            dataToBeSub[d["indicator"]] = d["value"];
+                    }
+                }
             });
             layer.open({
                 type: 1,
@@ -362,13 +369,14 @@
             return false
         });
 
-        let dataToBeSub = {};
-        let dataLength = 31;
+        let dataLength = 32;
         table.on('edit(dataTable)', function (obj) {
             var value = obj.value //得到修改后的值
                 , data = obj.data //得到所在行所有键值
                 , field = obj.field; //得到字段
             dataToBeSub[data.indicator] = value;
+            if (value === "")
+                delete dataToBeSub[data.indicator]
         });
         $("#submitForReview").unbind("click").click(function () {
             layer.confirm("提交申报后将不可修改，确认提交吗？", {
@@ -385,20 +393,18 @@
                     success: function (res) {
                         layer.close(msg)
                         if (res.data === true) {
-                            layer.alert("提交审核成功！", {icon: 1}, () => {
+                            layer.alert("提交审核成功！请上传附件", {icon: 1}, () => {
                                 layer.closeAll();
-                                maintable.reload();
+                                location.reload();
                             })
-                        } else if (res.data === 1265) {
-                            layer.alert("请检查数据格式是否正确！", {icon: 2}, () => {
-                                layer.closeAll();
-                                maintable.reload();
-                            })
-                        } else {
-                            layer.alert(res.data + '', {icon: 2}, () => {
-                                layer.closeAll();
-                            })
-                        }
+                        } else
+                            // } else if (res.data === 1265) {
+                            layer.alert("请检查数据格式是否正确！", {icon: 2})
+                        // } else {
+                        //     layer.alert(res.data + '', {icon: 2}, () => {
+                        //         layer.closeAll();
+                        //     })
+                        // }
                     },
                     dataType: "json"
                 })
