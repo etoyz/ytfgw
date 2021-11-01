@@ -264,6 +264,17 @@
             $(".e-mod").show();
         });
 
+        $.post({
+            url: "../service/can_user_submit_info.php",
+            success: function (res) {
+                if (res == "1") {
+                    $("#addBtn").click();
+                } else {
+                    $("#addBtn").html("修改企业信息")
+                }
+            }
+        })
+
         $("#queryBtn").unbind("click").click(function () {
             console.log(getQueryString("status"))
             enterpriseTable.reload({
