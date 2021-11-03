@@ -6,13 +6,12 @@ $response = array(
 );
 if (isset($_SESSION['usertype'])) {
     $sql = "UPDATE `enterprise` 
-        SET `city` = '$_POST[city]', 
-            `province` = '$_POST[province]', 
-            `name` = '$_POST[name]', 
+        SET `name` = '$_POST[name]', 
             `address` = '$_POST[address]', 
             `numofsub` = '$_POST[numofsub]', 
             `mainbus` = '$_POST[mainbus]', 
             `industry` = '$_POST[industry]', 
+            `created_year` = '$_POST[created_year]', 
             `chargeperson` = '$_POST[chargeperson]', 
             `phone` = '$_POST[phone]', 
             `remark` = '$_POST[remark]',

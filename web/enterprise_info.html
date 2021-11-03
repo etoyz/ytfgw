@@ -74,30 +74,7 @@
             </div>
             <div class="layui-form-item s-formItem1">
                 <div class="layui-inline">
-                    <label class="layui-form-label">省</label>
-                    <div class="layui-input-inline">
-                        <input autocomplete="off" class="layui-input" id="province"
-                               lay-verify="required" name="province" type="text">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">市</label>
-                    <div class="layui-input-inline">
-                        <input autocomplete="off" class="layui-input" id="city"
-                               lay-verify="required" name="city" type="text">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">县市区</label>
-                    <div class="layui-input-inline">
-                        <input autocomplete="off" class="layui-input" id="*"
-                               lay-verify="required" name="*" type="text">
-                    </div>
-                </div>
-            </div>
-            <div class="layui-form-item s-formItem1">
-                <div class="layui-inline">
-                    <label class="layui-form-label">详细地址</label>
+                    <label class="layui-form-label">归属地(县市区</label>
                     <div class="layui-input-inline">
                         <input autocomplete="off" class="layui-input" id="address"
                                lay-verify="required" name="address" type="text">
@@ -185,7 +162,7 @@
                 {type: 'numbers', style: 'background-color: #eee;'},
                 {field: 'address', width: '180', title: '归属地（县市区）'},
                 {field: 'name', width: '200', title: '企业名称'},
-                {field: 'year', width: '100', title: '报告年度'},
+                {field: 'created_year', width: '100', title: '报告年度'},
                 {field: 'status', width: '100', title: '申报状态'},
                 {field: 'remark', width: '200', title: '备注'},
                 {field: 'operation', width: '80', title: '操作', toolbar: '#operation', fixed: 'right'}
