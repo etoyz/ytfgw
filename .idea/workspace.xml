@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c98f57b6-2843-4fb2-8663-af5b404623c6" name="Changes" comment="init">
-      <change afterPath="$PROJECT_DIR$/web/enterprise_evaluate_table.html" afterDir="false" />
+    <list default="true" id="c98f57b6-2843-4fb2-8663-af5b404623c6" name="Changes" comment="feat:提交申报后相应按钮消失">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/data_table.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/enterprise_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/enterprise_index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/enterprise_info.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/enterprise_info.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/enterprise_login.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/enterprise_login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/enterprise_register.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/enterprise_register.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/manage_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/manage_index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/manage_login.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/manage_login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/tips1.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/tips1.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,17 +49,17 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/web/assets/common/js" />
-    <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/service" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Projects\phpProj\FaGaiWei\service" />
       <recent name="D:\Projects\phpProj\FaGaiWei\web\assets\common\js" />
       <recent name="D:\Projects\phpProj\FaGaiWei\web\assets\plugins\layui\css" />
       <recent name="D:\Projects\phpProj\FaGaiWei\web\assets\plugins\layui" />
       <recent name="D:\Projects\phpProj\FaGaiWei\web\assets\css" />
-      <recent name="D:\Projects\phpProj\FaGaiWei\web\doc" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Projects\phpProj\FaGaiWei\web" />
@@ -76,6 +78,12 @@
       <workItem from="1634989444215" duration="7901000" />
       <workItem from="1635037584402" duration="9550000" />
       <workItem from="1635047642996" duration="12354000" />
+      <workItem from="1635543691107" duration="11769000" />
+      <workItem from="1635586575555" duration="3642000" />
+      <workItem from="1635734156211" duration="12498000" />
+      <workItem from="1635846091381" duration="599000" />
+      <workItem from="1635848990244" duration="617000" />
+      <workItem from="1635935830270" duration="421000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1635061402485</created>
@@ -84,7 +92,238 @@
       <option name="project" value="LOCAL" />
       <updated>1635061402485</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="fix:admin user bugs">
+      <created>1635544271239</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1635544271239</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fix:admin user bugs">
+      <created>1635544488358</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1635544488358</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat:attachment can be deleted by web  &#10;feat:new common.php">
+      <created>1635578207964</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1635578207964</updated>
+    </task>
+    <task id="LOCAL-00005" summary="opt:keyword">
+      <created>1635580532129</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1635580532129</updated>
+    </task>
+    <task id="LOCAL-00006" summary="opt:申报数据后才能上传文件">
+      <created>1635581683826</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1635581683826</updated>
+    </task>
+    <task id="LOCAL-00007" summary="opt:code  &#10;fix:small bug">
+      <created>1635582245989</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1635582245989</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fix:fatal bug">
+      <created>1635582530426</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1635582530426</updated>
+    </task>
+    <task id="LOCAL-00009" summary="fix:fatal bug  &#10;opt:code">
+      <created>1635583399542</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1635583399542</updated>
+    </task>
+    <task id="LOCAL-00010" summary="opt:UI for enterprise">
+      <created>1635583738867</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1635583738867</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fix:fatal bug">
+      <created>1635583838085</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1635583838085</updated>
+    </task>
+    <task id="LOCAL-00012" summary="opt:UI for manager">
+      <created>1635584270792</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1635584270792</updated>
+    </task>
+    <task id="LOCAL-00013" summary="opt:attachment tag">
+      <created>1635584438909</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1635584438909</updated>
+    </task>
+    <task id="LOCAL-00014" summary="opt:attachment display origin file name">
+      <created>1635585143741</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1635585143741</updated>
+    </task>
+    <task id="LOCAL-00015" summary="feat:信用报告证明材料  &#10;fix:申报数据表格数据错位">
+      <created>1635585820431</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1635585820431</updated>
+    </task>
+    <task id="LOCAL-00016" summary="fix:some bugs">
+      <created>1635586928378</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1635586928378</updated>
+    </task>
+    <task id="LOCAL-00017" summary="feat:数据修改相关代码">
+      <created>1635734940459</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1635734940460</updated>
+    </task>
+    <task id="LOCAL-00018" summary="feat:未上传信息会自动弹窗，否则可以修改信息">
+      <created>1635764959269</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1635764959269</updated>
+    </task>
+    <task id="LOCAL-00019" summary="feat:修改字段名">
+      <created>1635765565273</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1635765565273</updated>
+    </task>
+    <task id="LOCAL-00020" summary="feat:完善信息后可自动弹出申报数据表，否则无法进入此页面  &#10;fix:完善信息后按钮无变化的BUG">
+      <created>1635766665416</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1635766665416</updated>
+    </task>
+    <task id="LOCAL-00021" summary="feat:完善信息后可自动弹出申报数据表，否则无法进入此页面  &#10;fix:完善信息后按钮无变化的BUG&#10;feat:信息弹窗新字段">
+      <created>1635766712770</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1635766712770</updated>
+    </task>
+    <task id="LOCAL-00022" summary="feat:完善信息后可自动弹出申报数据表，否则无法进入此页面&#10;fix:完善信息后按钮无变化的BUG">
+      <created>1635766808802</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1635766808802</updated>
+    </task>
+    <task id="LOCAL-00023" summary="feat:数据保存按钮  &#10;fix:修改弹窗数据不填充">
+      <created>1635767565733</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1635767565733</updated>
+    </task>
+    <task id="LOCAL-00024" summary="fix:dataToBeSub更加精准">
+      <created>1635768970754</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1635768970754</updated>
+    </task>
+    <task id="LOCAL-00025" summary="feat:企业数据支持修改  &#10;feat:提交审核按钮和保存按钮分开">
+      <created>1635770885667</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1635770885667</updated>
+    </task>
+    <task id="LOCAL-00026" summary="feat:数据修改后会重判分数">
+      <created>1635771152084</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1635771152084</updated>
+    </task>
+    <task id="LOCAL-00027" summary="fix:成绩表异常不更新">
+      <created>1635772220555</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1635772220555</updated>
+    </task>
+    <task id="LOCAL-00028" summary="fix:“是否可以提交新数据”接口回显正常">
+      <created>1635772599574</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1635772599574</updated>
+    </task>
+    <task id="LOCAL-00029" summary="fix:取消一项上传文件限制">
+      <created>1635772769819</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1635772769819</updated>
+    </task>
+    <task id="LOCAL-00030" summary="feat:提交审核回显正常">
+      <created>1635773007982</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1635773007982</updated>
+    </task>
+    <task id="LOCAL-00031" summary="feat:未完善信息不可打开填报数据页">
+      <created>1635773666675</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1635773666675</updated>
+    </task>
+    <task id="LOCAL-00032" summary="fix:管理员页面正常">
+      <created>1635773775448</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1635773775448</updated>
+    </task>
+    <task id="LOCAL-00033" summary="fix:管理员页面正常">
+      <created>1635774465520</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1635774465520</updated>
+    </task>
+    <task id="LOCAL-00034" summary="feat:提交申报后相应按钮消失">
+      <created>1635774906829</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1635774906829</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -100,10 +339,35 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="init" />
-    <option name="LAST_COMMIT_MESSAGE" value="init" />
+    <MESSAGE value="fix:fatal bug  &#10;opt:code" />
+    <MESSAGE value="opt:UI for enterprise" />
+    <MESSAGE value="fix:fatal bug" />
+    <MESSAGE value="opt:UI for manager" />
+    <MESSAGE value="opt:attachment tag" />
+    <MESSAGE value="opt:attachment display origin file name" />
+    <MESSAGE value="feat:信用报告证明材料  &#10;fix:申报数据表格数据错位" />
+    <MESSAGE value="fix:some bugs" />
+    <MESSAGE value="feat:数据修改相关代码" />
+    <MESSAGE value="feat:未上传信息会自动弹窗，否则可以修改信息" />
+    <MESSAGE value="feat:修改字段名" />
+    <MESSAGE value="feat:完善信息后可自动弹出申报数据表，否则无法进入此页面  &#10;fix:完善信息后按钮无变化的BUG" />
+    <MESSAGE value="feat:完善信息后可自动弹出申报数据表，否则无法进入此页面  &#10;fix:完善信息后按钮无变化的BUG&#10;feat:信息弹窗新字段" />
+    <MESSAGE value="feat:完善信息后可自动弹出申报数据表，否则无法进入此页面&#10;fix:完善信息后按钮无变化的BUG" />
+    <MESSAGE value="feat:数据保存按钮  &#10;fix:修改弹窗数据不填充" />
+    <MESSAGE value="fix:dataToBeSub更加精准" />
+    <MESSAGE value="feat:企业数据支持修改  &#10;feat:提交审核按钮和保存按钮分开" />
+    <MESSAGE value="feat:数据修改后会重判分数" />
+    <MESSAGE value="fix:成绩表异常不更新" />
+    <MESSAGE value="fix:“是否可以提交新数据”接口回显正常" />
+    <MESSAGE value="fix:取消一项上传文件限制" />
+    <MESSAGE value="feat:提交审核回显正常" />
+    <MESSAGE value="feat:未完善信息不可打开填报数据页" />
+    <MESSAGE value="fix:管理员页面正常" />
+    <MESSAGE value="feat:提交申报后相应按钮消失" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat:提交申报后相应按钮消失" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

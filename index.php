@@ -14,7 +14,7 @@ echo <<<ETO
 <html>
 <head>
   <meta charset="utf-8">
-  <title>企业技术中心申报系统</title>
+  <title>烟台市企业技术中心申报系统</title>
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -31,7 +31,7 @@ echo <<<ETO
     <div class="zyl_login_cont"></div>
     <div class="zyl_lofo_main" style="height: 310px">
         <fieldset class="layui-elem-field layui-field-title zyl_mar_02">
-            <legend>欢迎使用 - 企业技术中心申报系统</legend>
+            <legend>欢迎使用 - 烟台市企业技术中心申报系统</legend>
         </fieldset>
         <div class="layui-row layui-col-space15">
             <div class="layui-form zyl_pad_01">
