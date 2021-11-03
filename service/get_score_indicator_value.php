@@ -32,7 +32,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
         if ($f['Field'] != "loginid" && $f['Field'] != "type")
             array_push($response["data"], array(
                 "indicator" => $f['Field'],
-                "score" => $re2[$i]
+                "score" => number_format($re2[$i], 2)
             ));
         $i++;
     }
