@@ -182,17 +182,12 @@
                 last: false
             },
             cols: [[
-                {field: 'name', width: '220', title: '企业名称'},
-                {field: 'province', width: '100', title: '省'},
-                {field: 'city', width: '100', title: '市'},
-                {field: 'address', width: '100', title: '详细地址'},
-                {field: 'numofsub', width: '120', title: '下属企业数量'},
-                {field: 'mainbus', width: '230', title: '主营业务'},
-                {field: 'industry', width: '150', title: '行业'},
-                {field: 'chargeperson', width: '100', title: '企业负责人'},
-                {field: 'phone', width: '120', title: '联系电话'},
-                {field: 'status', width: '100', title: '状态'},
-                {field: 'remark', width: '100', title: '备注'},
+                {type: 'numbers', style: 'background-color: #eee;'},
+                {field: 'address', width: '180', title: '归属地（县市区）'},
+                {field: 'name', width: '200', title: '企业名称'},
+                {field: 'year', width: '100', title: '报告年度'},
+                {field: 'status', width: '100', title: '申报状态'},
+                {field: 'remark', width: '200', title: '备注'},
                 {field: 'operation', width: '80', title: '操作', toolbar: '#operation', fixed: 'right'}
             ]],
             size: 'sm',
@@ -207,7 +202,7 @@
                     else if (item.status === "3")
                         item.status = "已退回";
                     else if (item.status === "4")
-                        item.status = "待专家评价";
+                        item.status = "已通过审核";
                 }
             }
         });
