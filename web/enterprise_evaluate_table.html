@@ -157,17 +157,17 @@
                                 $(".upload_M").show()
                             }, () => {
                                 $(".e-mod").show();
-                                $(".upload").show()
-                            });
-                            $.post({
-                                url: "../service/can_user_edit_data.php",
-                                success: function (res) {
-                                    if (res == "0") {
-                                        $("#submit").hide();
-                                        $(".upload").hide();
+                                $(".upload").show();
+                                $.post({
+                                    url: "../service/can_user_edit_data.php",
+                                    success: function (res) {
+                                        if (res == "0") {
+                                            $("#submit").hide();
+                                            $(".upload").hide();
+                                        }
                                     }
-                                }
-                            })
+                                })
+                            });
                             let dataToBeSub = {};
                             $("#submit").unbind("click").click(function () {
                                 table.render({
