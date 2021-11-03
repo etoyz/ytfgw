@@ -120,7 +120,7 @@
                             {field: 'name', width: '200', title: '企业名称'},
                             {field: 'year', width: '100', title: '报告年度'},
                             {field: 'status', width: '100', title: '申报状态'},
-                            {field: 'submit_time', width: '150', title: '填报时间'},
+                            {field: 'submit_time', width: '160', title: '填报时间'},
                             {field: 'return_reason', width: '150', title: '退回原因'},
                             {field: 'remark', width: '200', title: '备注'},
                             {field: 'operation', width: '320', title: '操作', toolbar: '#operation', fixed: 'right'}
@@ -137,7 +137,7 @@
                                 else if (item.status === "3")
                                     item.status = "已退回";
                                 else if (item.status === "4")
-                                    item.status = "待专家评价";
+                                    item.status = "已通过审核";
                             }
                         }
                     });
