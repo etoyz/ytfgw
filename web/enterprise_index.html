@@ -21,6 +21,8 @@
             烟台市企业技术中心申报系统
         </a>
         <ul class="layui-nav layui-layout-right kit-nav">
+            <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="changePassword"><i
+                    aria-hidden="true" class="fa fa-pencil-square"></i> 修改密码</a></li>
             <li class="layui-nav-item"><a class="s-headPortrait" href="javascript:" id="name">正在加载... </a></li>
             <li class="layui-nav-item"><a class="s-headPortrait" href="javascript:" id="loginName">正在加载... </a></li>
             <li class="layui-nav-item"><a class="s-logout" id="logout"><i aria-hidden="true" class="fa fa-sign-out"></i>
@@ -32,16 +34,20 @@
             <div class="kit-side-fold"><i aria-hidden="true" class="fa fa-navicon"></i></div>
             <ul class="layui-nav layui-nav-tree" kit-nFavbar lay-filter="kitNavbar">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:"><i aria-hidden="true" class="fa fa-plug"></i><span> 烟台市企业技术中心-申报</span></a>
+                    <a class="" href="javascript:"><i aria-hidden="true"
+                                                      class="fa fa-plug"></i><span> 烟台市企业技术中心-申报</span></a>
                     <dl class="layui-nav-child">
                         <dd>
-                            <a data-options="{url:'tips1.html',icon:'&#xe658;',title:'填报指南',id:'1'}" href="javascript:" kit-target><i class="layui-icon">&#xe658;</i><span> 填报指南</span></a>
+                            <a data-options="{url:'tips1.html',icon:'&#xe658;',title:'填报指南',id:'1'}" href="javascript:"
+                               kit-target><i class="layui-icon">&#xe658;</i><span> 填报指南</span></a>
                         </dd>
                         <dd>
-                            <a data-options="{url:'enterprise_info.html?status=-1',icon:'&#xe658;',title:'企业基本信息',id:'2'}" href="javascript:" kit-target><i class="layui-icon">&#xe658;</i><span> 企业基本信息</span></a>
+                            <a data-options="{url:'enterprise_info.html?status=-1',icon:'&#xe658;',title:'企业基本信息',id:'2'}"
+                               href="javascript:" kit-target><i class="layui-icon">&#xe658;</i><span> 企业基本信息</span></a>
                         </dd>
                         <dd>
-                            <a data-options="{url:'enterprise_evaluate_table.html?status=-1',icon:'&#xe658;',title:'填报评价数据',id:'3'}" href="javascript:" kit-target><i class="layui-icon">&#xe658;</i><span> 填报评价数据</span></a>
+                            <a data-options="{url:'enterprise_evaluate_table.html?status=-1',icon:'&#xe658;',title:'填报评价数据',id:'3'}"
+                               href="javascript:" kit-target><i class="layui-icon">&#xe658;</i><span> 填报评价数据</span></a>
                         </dd>
                     </dl>
                 </li>
@@ -49,8 +55,35 @@
         </div>
     </div>
     <div class="layui-body" id="container">
-        <div style="padding: 15px;">正在加载... </div>
+        <div style="padding: 15px;">正在加载...</div>
     </div>
+</div>
+
+<!-- 修改密码弹窗 -->
+<div class="s-details" id="changePasswordWin">
+    <form action="" autocomplete="off" class="layui-form">
+        <div class="layui-form-item s-formItem4">
+            <label class="layui-form-label">新密码</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-verify="required|pass" name="password"
+                       placeholder="请输入6到12位新密码" type="password">
+            </div>
+        </div>
+        <div class="layui-form-item s-formItem4">
+            <label class="layui-form-label">确认密码</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-verify="required|repass" name="confirmPassword"
+                       placeholder="请输入确认密码" type="password">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block s-submitButton5">
+                <button class="layui-btn" lay-filter="save" lay-submit type="button">确认</button>
+                <a class="layui-btn layui-btn-danger" id="cancel">取消</a>
+            </div>
+        </div>
+    </form>
 </div>
 
 <script src="assets/plugins/layui/layui.js"></script>
@@ -76,6 +109,33 @@
         $("#logout").unbind("click").click(function () {
             location.href = "../service/logout.php";
         })
+        $('body').on('click', '#changePassword', function () {
+            var index = layer.open({
+                type: 1,
+                title: '修改密码',
+                content: $('#changePasswordWin'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                area: '300px'
+            });
+            form.on('submit(save)', function (data) {
+                $.post({
+                    url: "../service/change_passwd.php",
+                    data: {
+                        loginpw: data.field.password
+                    },
+                    success: function (res) {
+                        layer.alert(res, () => {
+                            location.href = "../service/logout.php"
+                        });
+                    }
+                })
+                // 关闭当前弹出层
+                layer.close(index);
+            });
+            $('#cancel').on('click', function () {
+                // 关闭当前弹出层
+                layer.close(index);
+            });
+        });
     }).config({
         base: 'assets/common/js/'
     }).use(['app'], function () {
