@@ -15,13 +15,13 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $to = $_GET['page'] * $_GET['limit'];
     if ($_GET['status'] === '-1')  // 全部
         $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' LIMIT " . $from . "," . $to . ";";
-    else if ($_GET['status'] === '4')  // 已审核通过
-        $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` = 4 LIMIT " . $from . "," . $to . ";";
-    else if ($_GET['status'] === '-4') // 未审核通过
-        $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` != 4 LIMIT " . $from . "," . $to . ";";
+    else if ($_GET['status'] === '0-4')  // 申报状态
+        $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` != 5 LIMIT " . $from . "," . $to . ";";
+    else if ($_GET['status'] === '5') // 评价状态
+        $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` = 5 LIMIT " . $from . "," . $to . ";";
     $db = new DB();
     $re = $db->query($sql);
-    //echo $re;
+//    echo $sql;
     $all_data = $re->fetch_all(MYSQLI_ASSOC);
     if ($_SESSION['usertype'] == "manager") {
         $response["data"] = $all_data;
