@@ -184,15 +184,15 @@
 }
 
 /* 单元格样式 */
-/*.layui-table-cell {*/
-/*    font-size: 14px;*/
-/*    padding: 0 5px;*/
-/*    height: auto;*/
-/*    overflow: visible;*/
-/*    text-overflow: inherit;*/
-/*    white-space: normal;*/
-/*    word-break: break-all;*/
-/*}*/
+.layui-table-cell {
+    font-size: 16px;
+    padding: 0 5px;
+    height: auto;
+    overflow: visible;
+    text-overflow: inherit;
+    white-space: normal;
+    word-break: break-all;
+}
 
 /* TODO 尝试修复layui的bug */
 /*.layui-table-tips{*/
