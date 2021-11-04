@@ -17,13 +17,13 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $to = $_GET['page'] * $_GET['limit'];
     if ($_GET['status'] === '-1') { // 全部
         $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' LIMIT " . $from . "," . $to . ";";
-        $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' LIMIT " . $from . "," . $to . ";";
+        $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%';";
     } else if ($_GET['status'] === '0-4') { // 申报状态
         $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` != 5 LIMIT " . $from . "," . $to . ";";
-        $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` != 5 LIMIT " . $from . "," . $to . ";";
+        $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` != 5;";
     } else if ($_GET['status'] === '5') {// 评价状态
         $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` = 5 LIMIT " . $from . "," . $to . ";";
-        $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` = 5 LIMIT " . $from . "," . $to . ";";
+        $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` = 5;";
     }
     $db = new DB();
     $re = $db->query($sql);
