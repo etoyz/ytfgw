@@ -248,24 +248,7 @@
 
                 renderUploadBtn("#upload_license", "企业营业执照")
                 renderUploadBtn("#upload_license_sub", "下属企业营业执照")
-                $.post({
-                    url: "../service/fetch_license.php",
-                    success: function (res) {
-                        if (res.license != null) {
-                            $("#upload_license").attr('class', "")
-                            $("#upload_license").html('点击查看>>>')
-                            $("#upload_license").attr('style', "color: red")
-                            $("#upload_license").attr('href', res.license)
-                        }
-                        if (res.license_sub != null) {
-                            $("#upload_license_sub").attr('class', "")
-                            $("#upload_license_sub").html('点击查看>>>')
-                            $("#upload_license_sub").attr('style', "color: red")
-                            $("#upload_license_sub").attr('href', res.license_sub)
-                        }
-                    },
-                    dataType: "json"
-                })
+
             }
         });
 
@@ -288,6 +271,24 @@
                     content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                     area: ['800px', '430px']
                 });
+                $.get({
+                    url: "../service/fetch_license.php?user=" + obj.data.loginid,
+                    success: function (res) {
+                        if (res.license != null) {
+                            $("#upload_license").attr('class', "")
+                            $("#upload_license").html('点击查看>>>')
+                            $("#upload_license").attr('style', "color: red")
+                            $("#upload_license").attr('href', res.license)
+                        }
+                        if (res.license_sub != null) {
+                            $("#upload_license_sub").attr('class', "")
+                            $("#upload_license_sub").html('点击查看>>>')
+                            $("#upload_license_sub").attr('style', "color: red")
+                            $("#upload_license_sub").attr('href', res.license_sub)
+                        }
+                    },
+                    dataType: "json"
+                })
             } else if (obj.event === 'addBtn') {
                 $(".edit_mod").show()
                 let data = obj.data;
