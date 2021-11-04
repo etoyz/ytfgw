@@ -28,7 +28,8 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $db = new DB();
     $re = $db->query($sql);
 //    echo $sql;
-    $response['count'] = $db->query($sql2)->fetch_assoc()['cnt'];
+    if ($_SESSION['usertype'] == "manager")
+        $response['count'] = $db->query($sql2)->fetch_assoc()['cnt'];
     $all_data = $re->fetch_all(MYSQLI_ASSOC);
     if ($_SESSION['usertype'] == "manager") {
         $response["data"] = $all_data;
