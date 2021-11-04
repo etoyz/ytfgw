@@ -224,6 +224,20 @@
             $(elem).attr('class', "layui-btn")
             $(elem).html('<i class="layui-icon">&#xe67c;</i>')
             $(elem).attr('style', "color: white")
+            $(elem).click(function (){
+                $.get({
+                    url: "../service/attachment_delete.php",
+                    data: {
+                        "indicator": indicator
+                    },
+                    success: function (res) {
+                        if (res.data) {
+                            layer.msg("已删除上次提交的附件，请重新上传！")
+                        }
+                    },
+                    dataType: 'json'
+                })
+            })
             upload.render({
                 elem: elem
                 , url: '../service/attachment_upload.php'
