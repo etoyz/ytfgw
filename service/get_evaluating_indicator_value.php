@@ -54,7 +54,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
                 continue;
             }
             if ($re2 == null)
-                $value = "";
+                $value = null;
             else
                 $value = $re2[$i];
             array_push($response["data"], array(
