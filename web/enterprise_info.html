@@ -213,7 +213,8 @@
                         }
                     }
                 })
-                function renderUploadBtn(elem, indicator){
+
+                function renderUploadBtn(elem, indicator) {
                     upload.render({
                         elem: elem
                         , url: '../service/attachment_upload.php'
@@ -244,8 +245,27 @@
                         }
                     })
                 }
+
                 renderUploadBtn("#upload_license", "企业营业执照")
                 renderUploadBtn("#upload_license_sub", "下属企业营业执照")
+                $.post({
+                    url: "../service/fetch_license.php",
+                    success: function (res) {
+                        if (res.license != null) {
+                            $("#upload_license").attr('class', "")
+                            $("#upload_license").html('点击查看>>>')
+                            $("#upload_license").attr('style', "color: red")
+                            $("#upload_license").attr('href', res.license)
+                        }
+                        if (res.license_sub != null) {
+                            $("#upload_license_sub").attr('class', "")
+                            $("#upload_license_sub").html('点击查看>>>')
+                            $("#upload_license_sub").attr('style', "color: red")
+                            $("#upload_license_sub").attr('href', res.license_sub)
+                        }
+                    },
+                    dataType: "json"
+                })
             }
         });
 
