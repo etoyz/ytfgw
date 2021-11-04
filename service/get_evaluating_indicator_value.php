@@ -53,9 +53,13 @@ if (isset($_SESSION['usertype'])) { // 已经登录
                 ));
                 continue;
             }
+            if ($re2 == null)
+                $value = "";
+            else
+                $value = $re2[$i];
             array_push($response["data"], array(
                 "indicator" => $f['Field'],
-                "value" => $re2[$i],
+                "value" => $value,
                 "unit" => $units[$i],
                 "attachment" => $attachment_tag
             ));
