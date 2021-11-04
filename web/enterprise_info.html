@@ -140,7 +140,6 @@
         </div>
         <div class="s-tabBottomButton">
             <button class="layui-btn edit_mod" id="confirm" lay-filter="confirm" lay-submit type="button">提交</button>
-            <button class="layui-btn layui-btn-warm edit_mod" id="cancelAdd" type="button">取消</button>
         </div>
     </form>
 </div>
@@ -337,9 +336,6 @@
                 }
             })
         })
-        $("#cancelAdd").unbind("click").click(function () {
-            layer.closeAll();
-        });
 
         function diffUserDoDiffThing(managerDo, enterpriseDo) {
             $.get({

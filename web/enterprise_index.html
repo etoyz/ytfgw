@@ -80,7 +80,6 @@
         <div class="layui-form-item">
             <div class="layui-input-block s-submitButton5">
                 <button class="layui-btn" lay-filter="save" lay-submit type="button">确认</button>
-                <a class="layui-btn layui-btn-danger" id="cancel">取消</a>
             </div>
         </div>
     </form>
@@ -128,10 +127,6 @@
                         });
                     }
                 })
-                // 关闭当前弹出层
-                layer.close(index);
-            });
-            $('#cancel').on('click', function () {
                 // 关闭当前弹出层
                 layer.close(index);
             });
