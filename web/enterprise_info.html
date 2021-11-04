@@ -203,6 +203,11 @@
                 }
             },
             done: function () {
+                diffUserDoDiffThing(() => {
+                    $(".m-mod").show();
+                }, () => {
+                    $(".e-mod").show();
+                });
                 $.post({
                     url: "../service/can_user_submit_info.php",
                     success: function (res) {
@@ -336,12 +341,6 @@
                 }
             })
         }
-
-        diffUserDoDiffThing(() => {
-            $(".m-mod").show();
-        }, () => {
-            $(".e-mod").show();
-        });
 
         $("#queryBtn").unbind("click").click(function () {
             console.log(getQueryString("status"))
