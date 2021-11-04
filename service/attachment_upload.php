@@ -20,8 +20,9 @@ try {
 }
 ini_set("upload_max_filesize", "10M"); //TODO It does not work on some system
 try {
-    $response['data'] = move_uploaded_file($_FILES['file']['tmp_name'],
-        "../uploads/" . $_SESSION['loginid'] . "/附件_" . $_POST['indicator'] . "_" . $_FILES['file']['name']);
+    $dst_url = "../uploads/" . $_SESSION['loginid'] . "/附件_" . $_POST['indicator'] . "_" . $_FILES['file']['name'];
+    $response['data'] = move_uploaded_file($_FILES['file']['tmp_name'], $dst_url);
+    $response['url'] = $dst_url;
 } catch (Exception $e) {
     $response['error'] = json_encode($e);
 }

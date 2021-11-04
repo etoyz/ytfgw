@@ -50,7 +50,7 @@
 <div class="s-details" id="popUp">
     <form class="layui-form">
         <div>
-            <div class="layui-form-item s-formItem1">
+            <div class="layui-form-item s-formItem5">
                 <div class="layui-inline">
                     <label class="layui-form-label">企业名称</label>
                     <div class="layui-input-inline">
@@ -58,6 +58,29 @@
                                lay-verify="required" name="name" type="text">
                     </div>
                 </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">企业营业执照</label>
+                    <div class="layui-input-inline">
+                        <a target="_blank" class="layui-btn" id="upload_license"><i class="layui-icon">&#xe67c;</i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item s-formItem5">
+                <div class="layui-inline">
+                    <label class="layui-form-label">下属企业数量</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="numofsub"
+                               lay-verify="number" name="numofsub" type="text">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">下属企业营业执照</label>
+                    <div class="layui-input-inline">
+                        <a target="_blank" class="layui-btn" id="upload_license_sub"><i class="layui-icon">&#xe67c;</i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item s-formItem5">
                 <div class="layui-inline">
                     <label class="layui-form-label">主营业务</label>
                     <div class="layui-input-inline">
@@ -73,19 +96,12 @@
                     </div>
                 </div>
             </div>
-            <div class="layui-form-item s-formItem1">
+            <div class="layui-form-item s-formItem5">
                 <div class="layui-inline">
                     <label class="layui-form-label">归属地(县市区</label>
                     <div class="layui-input-inline">
                         <input autocomplete="off" class="layui-input" id="address"
                                lay-verify="required" name="address" type="text">
-                    </div>
-                </div>
-                <div class="layui-inline">
-                    <label class="layui-form-label">下属企业数量</label>
-                    <div class="layui-input-inline">
-                        <input autocomplete="off" class="layui-input" id="numofsub"
-                               lay-verify="number" name="numofsub" type="text">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -96,21 +112,23 @@
                     </div>
                 </div>
             </div>
-            <div class="layui-form-item s-formItem1">
-                <div class="layui-inline editMod">
+            <div class="layui-form-item s-formItem5">
+                <div class="layui-inline">
                     <label class="layui-form-label">联系电话</label>
                     <div class="layui-input-inline">
                         <input autocomplete="off" class="layui-input" name="phone"
                                id="phone" type="text">
                     </div>
                 </div>
-                <div class="layui-inline editMod">
+                <div class="layui-inline">
                     <label class="layui-form-label">报告年度</label>
                     <div class="layui-input-inline">
                         <input autocomplete="off" class="layui-input" name="created_year"
                                lay-verify="number" id="created_year" type="text">
                     </div>
                 </div>
+            </div>
+            <div class="layui-form-item s-formItem5">
                 <div class="layui-inline">
                     <label class="layui-form-label">备注</label>
                     <div class="layui-input-inline">
@@ -129,13 +147,14 @@
 </body>
 <script src="assets/plugins/layui/layui.js"></script>
 <script>
-    layui.use(['form', 'laydate', 'table', 'layer', 'element'], function () {
+    layui.use(['form', 'laydate', 'table', 'layer', 'element', 'upload'], function () {
         var $ = layui.jquery,
             form = layui.form,
             laydate = layui.laydate,
             layer = layui.layer,
             table = layui.table,
-            element = layui.element;
+            element = layui.element,
+            upload = layui.upload;
 
         function getQueryString(name) {
             let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -194,6 +213,39 @@
                         }
                     }
                 })
+                function renderUploadBtn(elem, indicator){
+                    upload.render({
+                        elem: elem
+                        , url: '../service/attachment_upload.php'
+                        , accept: 'file'
+                        , multiple: false
+                        , data: {
+                            'indicator': indicator
+                        }
+                        , done: function (obj) {
+                            if (obj.status === "isLogin") {
+                                if (obj.data === true) {
+                                    layer.msg("上传成功！")
+                                    $(elem).attr('class', "")
+                                    $(elem).html('点击查看>>>')
+                                    $(elem).attr('style', "color: red")
+                                    $(elem).attr('href', obj.url)
+                                } else
+                                    layer.msg("异常错误！")
+                            } else {
+                                layer.msg("未登录！")
+                            }
+                        }
+                        , choose: function (obj) {
+                            obj.preview(function (index, file, result) {
+                                //对上传失败的单个文件重新上传，一般在某个事件中使用
+                                //obj.upload(index, file);
+                            });
+                        }
+                    })
+                }
+                renderUploadBtn("#upload_license", "企业营业执照")
+                renderUploadBtn("#upload_license_sub", "下属企业营业执照")
             }
         });
 
@@ -214,7 +266,7 @@
                     type: 1,
                     title: '企业详细信息',
                     content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                    area: ['1022px', '380px']
+                    area: ['800px', '430px']
                 });
             } else if (obj.event === 'addBtn') {
                 $(".edit_mod").show()
@@ -232,7 +284,7 @@
                     type: 1,
                     title: '企业详细信息',
                     content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                    area: ['1022px', '380px']
+                    area: ['800px', '430px']
                 });
             }
         })
