@@ -28,14 +28,21 @@ if (isset($_SESSION['usertype'])) { // 已经登录
 
     $re2 = mysqli_fetch_array($re2);
     $i = 0;
+    $score_cnt = 0;
     foreach ($re as $f) {
-        if ($f['Field'] != "loginid" && $f['Field'] != "type")
+        if ($f['Field'] != "loginid" && $f['Field'] != "type") {
             array_push($response["data"], array(
                 "indicator" => $f['Field'],
                 "score" => number_format($re2[$i], 2)
             ));
+            $score_cnt += $re2[$i];
+        }
         $i++;
     }
+    array_push($response["data"], array(
+        "indicator" => "得分汇总",
+        "score" => number_format($score_cnt, 2)
+    ));
 }
 
 die(json_encode($response));
