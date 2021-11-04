@@ -61,7 +61,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">企业营业执照</label>
                     <div class="layui-input-inline">
-                        <a target="_blank" class="layui-btn" id="upload_license"><i class="layui-icon">&#xe67c;</i></a>
+                        <a target="_blank" id="upload_license" style="color: red">未上传</a>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">下属企业营业执照</label>
                     <div class="layui-input-inline">
-                        <a target="_blank" class="layui-btn" id="upload_license_sub"><i class="layui-icon">&#xe67c;</i></a>
+                        <a target="_blank" id="upload_license_sub" style="color: red">未上传</a>
                     </div>
                 </div>
             </div>
@@ -218,44 +218,43 @@
                         }
                     }
                 })
-
-                function renderUploadBtn(elem, indicator) {
-                    upload.render({
-                        elem: elem
-                        , url: '../service/attachment_upload.php'
-                        , accept: 'file'
-                        , multiple: false
-                        , data: {
-                            'indicator': indicator
-                        }
-                        , done: function (obj) {
-                            if (obj.status === "isLogin") {
-                                if (obj.data === true) {
-                                    layer.msg("上传成功！")
-                                    $(elem).attr('class', "")
-                                    $(elem).html('点击查看>>>')
-                                    $(elem).attr('style', "color: red")
-                                    $(elem).attr('href', obj.url)
-                                } else
-                                    layer.msg("异常错误！")
-                            } else {
-                                layer.msg("未登录！")
-                            }
-                        }
-                        , choose: function (obj) {
-                            obj.preview(function (index, file, result) {
-                                //对上传失败的单个文件重新上传，一般在某个事件中使用
-                                //obj.upload(index, file);
-                            });
-                        }
-                    })
-                }
-
-                renderUploadBtn("#upload_license", "企业营业执照")
-                renderUploadBtn("#upload_license_sub", "下属企业营业执照")
-
             }
         });
+
+        function renderUploadBtn(elem, indicator) {
+            $(elem).attr('class', "layui-btn")
+            $(elem).html('<i class="layui-icon">&#xe67c;</i>')
+            $(elem).attr('style', "color: white")
+            upload.render({
+                elem: elem
+                , url: '../service/attachment_upload.php'
+                , accept: 'file'
+                , multiple: false
+                , data: {
+                    'indicator': indicator
+                }
+                , done: function (obj) {
+                    if (obj.status === "isLogin") {
+                        if (obj.data === true) {
+                            layer.msg("上传成功！")
+                            $(elem).attr('class', "")
+                            $(elem).html('点击查看>>>')
+                            $(elem).attr('style', "color: red")
+                            $(elem).attr('href', obj.url)
+                        } else
+                            layer.msg("异常错误！")
+                    } else {
+                        layer.msg("未登录！")
+                    }
+                }
+                , choose: function (obj) {
+                    obj.preview(function (index, file, result) {
+                        //对上传失败的单个文件重新上传，一般在某个事件中使用
+                        //obj.upload(index, file);
+                    });
+                }
+            })
+        }
 
         table.on('tool(enterpriseTable)', function (obj) {
             if (obj.event === 'view') {
@@ -306,11 +305,21 @@
                 $("#phone").val(data["phone"]);
                 $("#created_year").val(data["created_year"]);
                 $("#remark").val(data["remark"]);
+                renderUploadBtn("#upload_license", "企业营业执照")
+                renderUploadBtn("#upload_license_sub", "下属企业营业执照")
                 layer.open({
                     type: 1,
-                    title: '企业详细信息',
+                    title: '请完善企业详细信息',
                     content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                    area: ['800px', '430px']
+                    area: ['800px', '430px'],
+                    cancel: function () { // 恢复原样式
+                        $("#upload_license").attr('class', "")
+                        $("#upload_license").html('未上传')
+                        $("#upload_license").attr('style', "color: red")
+                        $("#upload_license_sub").attr('class', "")
+                        $("#upload_license_sub").html('未上传')
+                        $("#upload_license_sub").attr('style', "color: red")
+                    }
                 });
             }
         })
