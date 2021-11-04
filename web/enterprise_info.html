@@ -235,11 +235,11 @@
                 , done: function (obj) {
                     if (obj.status === "isLogin") {
                         if (obj.data === true) {
-                            layer.msg("上传成功！")
-                            $(elem).attr('class', "")
-                            $(elem).html('点击查看>>>')
-                            $(elem).attr('style', "color: red")
-                            $(elem).attr('href', obj.url)
+                            layer.alert("上传成功！如需查看已上传的文件，请点击【查看】按钮!")
+                            // $(elem).attr('class', "")
+                            // $(elem).html('点击查看>>>')
+                            // $(elem).attr('style', "color: red")
+                            // $(elem).attr('href', obj.url)
                         } else
                             layer.msg("异常错误！")
                     } else {
