@@ -272,7 +272,15 @@
                     type: 1,
                     title: '企业详细信息',
                     content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                    area: ['800px', '430px']
+                    area: ['800px', '430px'],
+                    cancel: function () {
+                        $("#upload_license").attr('class', "")
+                        $("#upload_license").html('未上传')
+                        $("#upload_license").attr('style', "color: red")
+                        $("#upload_license_sub").attr('class', "")
+                        $("#upload_license_sub").html('未上传')
+                        $("#upload_license_sub").attr('style', "color: red")
+                    }
                 });
                 $.get({
                     url: "../service/fetch_license.php?user=" + obj.data.loginid,
