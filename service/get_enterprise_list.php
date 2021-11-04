@@ -14,7 +14,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $sql2 = null;
     $query = $_GET['query'];
     $from = ($_GET['page'] - 1) * $_GET['limit'];
-    $to = $_GET['page'] * $_GET['limit'];
+    $to = $_GET['limit'];
     if ($_GET['status'] === '-1') { // 全部
         $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' LIMIT " . $from . "," . $to . ";";
         $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%';";
