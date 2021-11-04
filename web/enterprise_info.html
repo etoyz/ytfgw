@@ -30,7 +30,6 @@
                         <div class="layui-inline s-layuiInline">
                             <button class="layui-btn layui-btn-warm m-mod" style="display: none" id="queryBtn">查询
                             </button>
-                            <button class="layui-btn e-mod" style="display: none" id="addBtn">完善企业信息</button>
                         </div>
                     </div>
                 </form>
@@ -39,7 +38,9 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view">查看</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-warm e-mod" lay-event="addBtn" style="display: none"
+                       id="addBtn">完善企业信息</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="view">查看</a>
                 </script>
             </div>
         </div>
@@ -165,7 +166,7 @@
                 {field: 'created_year', width: '100', title: '报告年度'},
                 {field: 'status', width: '100', title: '申报状态'},
                 {field: 'remark', width: '200', title: '备注'},
-                {field: 'operation', width: '80', title: '操作', toolbar: '#operation', fixed: 'right'}
+                {field: 'operation', width: '150', title: '操作', toolbar: '#operation', fixed: 'right'}
             ]],
             size: 'sm',
             parseData: function (res) {
@@ -181,6 +182,18 @@
                     else if (item.status === "4")
                         item.status = "已通过审核";
                 }
+            },
+            done: function () {
+                $.post({
+                    url: "../service/can_user_submit_info.php",
+                    success: function (res) {
+                        if (res == "1") {
+                            $("#addBtn").click();
+                        } else {
+                            $("#addBtn").html("修改企业信息")
+                        }
+                    }
+                })
             }
         });
 
@@ -191,12 +204,29 @@
                 $("#name").val(data["name"]);
                 $("#mainbus").val(data["mainbus"]);
                 $("#industry").val(data["industry"]);
-                $("#province").val(data["province"]);
-                $("#city").val(data["city"]);
                 $("#address").val(data["address"]);
                 $("#numofsub").val(data["numofsub"]);
                 $("#chargeperson").val(data["chargeperson"]);
                 $("#phone").val(data["phone"]);
+                $("#created_year").val(data["created_year"]);
+                $("#remark").val(data["remark"]);
+                layer.open({
+                    type: 1,
+                    title: '企业详细信息',
+                    content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                    area: ['1022px', '380px']
+                });
+            } else if (obj.event === 'addBtn') {
+                $(".edit_mod").show()
+                let data = obj.data;
+                $("#name").val(data["name"]);
+                $("#mainbus").val(data["mainbus"]);
+                $("#industry").val(data["industry"]);
+                $("#address").val(data["address"]);
+                $("#numofsub").val(data["numofsub"]);
+                $("#chargeperson").val(data["chargeperson"]);
+                $("#phone").val(data["phone"]);
+                $("#created_year").val(data["created_year"]);
                 $("#remark").val(data["remark"]);
                 layer.open({
                     type: 1,
@@ -220,16 +250,6 @@
                 }
             })
         })
-        $("#addBtn").unbind("click").click(function () {
-            $(".edit_mod").show()
-            layer.open({
-                type: 1,
-                title: '请输入企业详细信息',
-                content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                area: ['1022px', '380px']
-            });
-            return false
-        });
         $("#cancelAdd").unbind("click").click(function () {
             layer.closeAll();
         });
@@ -249,17 +269,6 @@
         }, () => {
             $(".e-mod").show();
         });
-
-        $.post({
-            url: "../service/can_user_submit_info.php",
-            success: function (res) {
-                if (res == "1") {
-                    $("#addBtn").click();
-                } else {
-                    $("#addBtn").html("修改企业信息")
-                }
-            }
-        })
 
         $("#queryBtn").unbind("click").click(function () {
             console.log(getQueryString("status"))
