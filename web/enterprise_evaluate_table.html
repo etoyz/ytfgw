@@ -355,14 +355,14 @@
                                 limit: Number.MAX_SAFE_INTEGER,
                                 cols: [[
                                     {type: 'numbers', style: 'background-color: #eee;'},
-                                    {field: 'indicator', width: 300, title: '指标', style: 'background-color: #eee;'},
+                                    {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
                                     {field: 'score', width: 150, title: '成绩', style: 'background-color: #FFFFFF;'},
                                 ]],
                                 size: 'sm',
                                 done: function () {
                                     layer.open({
                                         type: 1,
-                                        title: '机器评判结果',
+                                        title: '电脑评判结果',
                                         content: $('#scoreTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                                         area: ['500x', '90%']
                                     });
@@ -388,7 +388,7 @@
                                 })
                             })
                         } else if (obj.event === 'return') {
-                            layer.prompt({title: "请输入退回原因"}, function (value, index) {
+                            layer.prompt({title: "请输入退回原因", formType: 2}, function (value, index) {
                                 $.post({
                                     url: "../service/check_data.php",
                                     data: {
