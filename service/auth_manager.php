@@ -7,6 +7,5 @@ $arr = array(
 
 if (isset($_SESSION['loginid']) && $_SESSION['usertype'] == "manager") {
     $arr['status'] = 'isLogin';
-}
-
-die(json_encode($arr));
+} else
+    die(json_encode($arr));
