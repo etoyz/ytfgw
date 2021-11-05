@@ -1,4 +1,5 @@
 <?php
+require_once "auth_manager.php";
 $arr = array(
     "nameRepetition" => null,
     "regSuccess" => null,
