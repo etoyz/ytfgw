@@ -128,12 +128,13 @@ function cal_score()
             array_push($data, $data[1]);
         else if ($data[0] == $data[2])
             array_push($data, $data[1] * 0.6);
-        else if ($data[0] == 0)
+        else if ($data[0] <= 0)
             array_push($data, 0);
         else if ($data[0] > 0 && $data[0] < $data[2])
             array_push($data, $data[0] / $data[2] * $data[1] * 0.6);
         else if ($data[0] > $data[2] && $data[0] < $data[3])
             array_push($data, ($data[0] - $data[2]) / ($data[3] - $data[2]) * $data[1] * 0.4 + $data[1] * 0.6);
+//        var_dump("满分", $data[3], "基本", $data[2], "数值", $data[0], "权重", $data[1], "得分", $data[4]);
     }
 
     $sql = "INSERT INTO `enterprise_score`(";
