@@ -12,7 +12,7 @@ class DB
 
     public function __construct()
     {
-        require_once ("../config.php");
+        require "../config.php";
         $this->host = $DB_HOST;
         $this->port = $DB_PORT;
         $this->user = $DB_USER;
