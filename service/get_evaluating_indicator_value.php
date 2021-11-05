@@ -26,7 +26,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
 //    var_dump($re2);
 //    var_dump($sql2);
     $re_indicator_values = mysqli_fetch_array($re_indicator_values);
-    $units = ["loginid", "万元", "万元", "人", "人", "人", "人月", "个", "个", "个", "项", "项", "个", "个", "万元", "项", "项", "项", "项", "项", "项", "项", "万元", "万元", "万元", "项", "项", "万元", "项", "项", "项", "项", "---"];
+    $units = ["loginid", "万元", "万元", "人", "人", "人", "人月", "个", "个", "个", "项", "项", "个", "个", "万元", "项", "项", "项", "项", "项", "项", "项", "万元", "万元", "万元", "项", "项", "万元", "项", "项", "项", "项", "---", "---", "---", "---"];
     $i = 0;
 
     // file code
@@ -51,15 +51,6 @@ if (isset($_SESSION['usertype'])) { // 已经登录
         if (!in_array($f['Field'], $disable_indicators)) {
             $attachment_name = fetch_indicator_attachment_name($f['Field'], $GLOBALS['allFile']);
             $attachment_tag = "<a style='color: #0000FF;text-decoration: underline' target='_blank' href='../uploads/$user/$attachment_name'>" . substr($attachment_name, strlen("附件_$f[Field]_")) . "</a>";
-            if ($f['Field'] == "信用报告证明材料") {
-                array_push($response["data"], array(
-                    "indicator" => $f['Field'],
-                    "value" => "---",
-                    "unit" => "---",
-                    "attachment" => $attachment_tag
-                ));
-                continue;
-            }
             if ($re_indicator_values == null)
                 $value = null;
             else
