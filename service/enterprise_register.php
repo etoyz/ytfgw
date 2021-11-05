@@ -20,7 +20,7 @@ if ($re->num_rows == 1) {
 
 $sql = "INSERT INTO `enterprise` (loginid,loginpw,name,status) 
         VALUES ('{$_POST['loginid']}','" . password_hash($_POST['loginpw'], PASSWORD_DEFAULT)
-    . "','{$_POST['name']}', 0)";
+    . "','{$_POST['name']}', $_GET[status])";
 $re = $db->query($sql);
 if ($re) {
     $arr['regSuccess'] = true;

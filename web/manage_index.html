@@ -21,7 +21,8 @@
             烟台市创新平台申报与评价系统 后台
         </a>
         <ul class="layui-nav layui-layout-right kit-nav">
-            <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="registerEnterprise"> 注册企业用户</a></li>
+            <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="registerEnterprise2"> 注册企业用户（评价）</a></li>
+            <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="registerEnterprise"> 注册企业用户（申报）</a></li>
             <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="changePassword"><i
                     aria-hidden="true" class="fa fa-pencil-square"></i> 修改密码</a></li>
             <li class="layui-nav-item"><a class="s-headPortrait" href="javascript:" id="loginName">正在加载... </a></li>
@@ -105,7 +106,7 @@
 
 <!-- 注册新用户弹窗 -->
 <div class="s-details" id="registerWin">
-    <form action="" autocomplete="off" class="layui-form">
+    <form action="" autocomplete="off" class="layui-form" id="regForm">
         <div class="layui-form-item s-formItem4">
             <label class="layui-form-label">登录账号</label>
             <div class="layui-input-block">
@@ -214,16 +215,45 @@
         });
 
         $('body').on('click', '#registerEnterprise', function () {
+            $("#regForm").trigger("reset")
             var index = layer.open({
                 type: 1,
-                title: '注册企业用户',
+                title: '注册企业用户（申报）',
                 content: $('#registerWin'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                 area: '300px'
             });
             form.on('submit(subForReg)', function (data) {
                 console.log(data)
                 $.post({
-                    url: "../service/enterprise_register.php",
+                    url: "../service/enterprise_register.php?status=0",
+                    data: data.field,
+                    success: function (res) {
+                        if (res.nameRepetition)
+                            layer.alert("名字重复！", {icon: 2})
+                        if (res.regSuccess) {
+                            layer.alert("注册成功！\n企业【" + $("input[name=name]").val() + "】的登录账号为【" + res.username + "】,密码为【" + $("#loginpw").val() + "】", {icon: 1})
+                        }
+
+                    },
+                    dataType: 'json'
+                })
+                // 关闭当前弹出层
+                layer.close(index);
+            });
+        });
+
+        $('body').on('click', '#registerEnterprise2', function () {
+            $("#regForm").trigger("reset")
+            var index = layer.open({
+                type: 1,
+                title: '注册企业用户（评价）',
+                content: $('#registerWin'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                area: '300px'
+            });
+            form.on('submit(subForReg)', function (data) {
+                console.log(data)
+                $.post({
+                    url: "../service/enterprise_register.php?status=5",
                     data: data.field,
                     success: function (res) {
                         if (res.nameRepetition)
