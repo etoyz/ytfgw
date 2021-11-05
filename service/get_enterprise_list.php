@@ -22,10 +22,10 @@ if (isset($_SESSION['usertype'])) { // 已经登录
             $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%';";
         } else if ($_GET['status'] === '0-4') { // 申报状态
             $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` != 5 LIMIT " . $from . "," . $to . ";";
-            $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` != 5;";
-        } else if ($_GET['status'] === '5') {// 评价状态
+            $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` IN (0,1,2,3,4);";
+        } else if ($_GET['status'] === '5-9') {// 评价状态
             $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` = 5 LIMIT " . $from . "," . $to . ";";
-            $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` = 5;";
+            $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` IN (5,6,7,8,9);";
         }
         $re = $db->query($sql);
 //    echo $sql;

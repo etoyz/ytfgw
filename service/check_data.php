@@ -11,12 +11,18 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "manager") {
     require_once 'db.php';
     $db = new DB();
     $sql = null;
+    require_once "common.php";
+
+    if (get_user_status($_POST["loginid"]) <= 4)
+        $pass_status = 4;
+    else
+        $pass_status = 9;
     if ($_POST['operation'] === "pass") {
-        $sql = "UPDATE `enterprise` set `status` = 4 WHERE `loginid` = '" . $db->escape($_POST["loginid"]) . "';";
-        $_SESSION['status'] = 4;
+        $sql = "UPDATE `enterprise` set `status` = $pass_status WHERE `loginid` = '" . $db->escape($_POST["loginid"]) . "';";
+        $_SESSION['status'] = $pass_status;
     } else {
-        $sql = "UPDATE `enterprise` set `status` = 3, `return_reason` = '" . $_POST['return_reason'] . "' WHERE `loginid` = '" . $db->escape($_POST["loginid"]) . "';";
-        $_SESSION['status'] = 3;
+        $sql = "UPDATE `enterprise` set `status` = " . ($pass_status - 1) . ", `return_reason` = '" . $_POST['return_reason'] . "' WHERE `loginid` = '" . $db->escape($_POST["loginid"]) . "';";
+        $_SESSION['status'] = $pass_status - 1;
     }
     $response['data'] = $db->query($sql);
 }
