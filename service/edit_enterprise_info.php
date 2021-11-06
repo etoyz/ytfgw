@@ -12,9 +12,9 @@ if (isset($_SESSION['usertype'])) {
         $dst_status = 6;
     $sql = "UPDATE `enterprise` 
         SET `name` = '" . $db->escape($_POST["name"]) . "', 
-            `address` = '" . $db->query($_POST["address"]) . "', 
+            `address` = '" . $db->escape($_POST["address"]) . "', 
             `numofsub` = '" . $db->escape($_POST["numofsub"]) . "', 
-            `mainbus` = '" . $db->escape($_POST["mainbus"]) . "]', 
+            `mainbus` = '" . $db->escape($_POST["mainbus"]) . "', 
             `industry` = '" . $db->escape($_POST["industry"]) . "', 
             `created_year` = '" . $db->escape($_POST["created_year"]) . "', 
             `chargeperson` = '" . $db->escape($_POST["chargeperson"]) . "', 

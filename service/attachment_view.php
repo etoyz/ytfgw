@@ -13,7 +13,7 @@ if (isset($_SESSION['loginid'])) {  // 验证登录
             header('Content-Disposition: attachment; filename=' . basename($_GET['path']) . '');
 
             readfile($_GET['path']);
-        } else
-            die("403");
+        }
     }
 }
+die("403 无权限访问！");
