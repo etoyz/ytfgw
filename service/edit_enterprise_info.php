@@ -7,9 +7,8 @@ $response = array(
 if (isset($_SESSION['usertype'])) {
     require_once 'db.php';
     $db = new DB();
-    if ($_SESSION['status'] <= 4)
-        $dst_status = 1;
-    else
+    $dst_status = 1;
+    if ($_SESSION['status'] > 4)
         $dst_status = 6;
     $sql = "UPDATE `enterprise` 
         SET `name` = '" . $db->escape($_POST["name"]) . "', 
