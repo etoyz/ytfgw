@@ -280,14 +280,14 @@
                 success: function (res) {
                     if (res.license != null) {
                         $("#upload_license_indicate").html('点击查看>>>')
-                        $("#upload_license_indicate").attr('href', res.license)
+                        $("#upload_license_indicate").attr('href', "../service/attachment_view.php?path=" + encodeURIComponent(res.license))
                     } else {
                         $("#upload_license_indicate").html('未上传')
                         $("#upload_license_indicate").attr('href', "")
                     }
                     if (res.license_sub != null) {
                         $("#upload_license_sub_indicate").html('点击查看>>>')
-                        $("#upload_license_sub_indicate").attr('href', res.license)
+                        $("#upload_license_sub_indicate").attr('href', "../service/attachment_view.php?path=" + encodeURIComponent(res.license_sub))
                     } else {
                         $("#upload_license_sub_indicate").html('未上传')
                         $("#upload_license_sub_indicate").attr('href', "")

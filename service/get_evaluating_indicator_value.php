@@ -51,7 +51,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     foreach ($re_indicators as $f) {
         if (!in_array($f['Field'], $disable_indicators)) {
             $attachment_name = fetch_indicator_attachment_name($f['Field'], $GLOBALS['allFile']);
-            $attachment_tag = "<a style='color: #0000FF;text-decoration: underline' target='_blank' href='../uploads/$user/$attachment_name'>" . substr($attachment_name, strlen("附件_$f[Field]_")) . "</a>";
+            $attachment_tag = "<a style='color: #0000FF;text-decoration: underline' target='_blank' href='../service/attachment_view.php?path=" . urlencode("../uploads/$user/$attachment_name") . "'>" . substr($attachment_name, strlen("附件_$f[Field]_")) . "</a>";
             if ($re_indicator_values == null)
                 $value = null;
             else
