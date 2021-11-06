@@ -61,7 +61,9 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">企业营业执照</label>
                     <div class="layui-input-inline">
-                        <a target="_blank" id="upload_license" style="color: red">未上传</a>
+                        <button class="edit-mod layui-btn" id="upload_license" type="button"><i class="layui-icon">&#xe67c;</i>
+                        </button>
+                        <a target="_blank" id="upload_license_indicate" style="color: red"></a>
                     </div>
                 </div>
             </div>
@@ -76,7 +78,9 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">下属企业营业执照</label>
                     <div class="layui-input-inline">
-                        <a target="_blank" id="upload_license_sub" style="color: red">未上传</a>
+                        <button class="edit-mod layui-btn" id="upload_license_sub" type="button"><i class="layui-icon">&#xe67c;</i>
+                        </button>
+                        <a target="_blank" id="upload_license_sub_indicate" style="color: red"></a>
                     </div>
                 </div>
             </div>
@@ -139,7 +143,7 @@
             </div>
         </div>
         <div class="s-tabBottomButton">
-            <button class="layui-btn edit_mod" id="confirm" lay-filter="confirm" lay-submit type="button">提交</button>
+            <button class="layui-btn edit-mod" id="confirm" lay-filter="confirm" lay-submit type="button">提交</button>
         </div>
     </form>
 </div>
@@ -221,10 +225,7 @@
             }
         });
 
-        function renderUploadBtn(elem, indicator) {
-            $(elem).attr('class', "layui-btn")
-            $(elem).html('<i class="layui-icon">&#xe67c;</i>')
-            $(elem).attr('style', "color: white")
+        function renderUploadBtn(elem, indicator, user) {
             $(elem).click(function () {
                 $.get({
                     url: "../service/attachment_delete.php",
@@ -234,6 +235,7 @@
                     success: function (res) {
                         if (res.data) {
                             layer.msg("已删除上次提交的附件，请重新上传！")
+                            renderUploadIndicator(user)
                         }
                     },
                     dataType: 'json'
@@ -250,7 +252,8 @@
                 , done: function (obj) {
                     if (obj.status === "isLogin") {
                         if (obj.data === true) {
-                            layer.alert("上传成功！如需查看已上传的文件，请点击【查看】按钮!")
+                            layer.alert("上传成功！")
+                            renderUploadIndicator(user)
                             // $(elem).attr('class', "")
                             // $(elem).html('点击查看>>>')
                             // $(elem).attr('style', "color: red")
@@ -270,9 +273,34 @@
             })
         }
 
+        function renderUploadIndicator(user) {
+            $.get({
+                url: "../service/fetch_license.php?user=" + user,
+                success: function (res) {
+                    if (res.license != null) {
+                        $("#upload_license_indicate").html('点击查看>>>')
+                        $("#upload_license_indicate").attr('href', res.license)
+                    } else {
+                        $("#upload_license_indicate").html('未上传')
+                        $("#upload_license_indicate").attr('href', "")
+                    }
+                    if (res.license_sub != null) {
+                        $("#upload_license_sub_indicate").html('点击查看>>>')
+                        $("#upload_license_sub_indicate").attr('href', res.license)
+                    } else {
+                        $("#upload_license_sub_indicate").html('未上传')
+                        $("#upload_license_sub_indicate").attr('href', "")
+                    }
+                },
+                dataType: "json"
+            })
+        }
+
         table.on('tool(enterpriseTable)', function (obj) {
+            // render 附件指示label
+            renderUploadIndicator(obj.data.loginid)
             if (obj.event === 'view') {
-                $(".edit_mod").hide()
+                $(".edit-mod").hide()
                 let data = obj.data;
                 $("#name").val(data["name"]);
                 $("#mainbus").val(data["mainbus"]);
@@ -288,35 +316,11 @@
                     title: '企业详细信息',
                     content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                     area: ['800px', '430px'],
-                    cancel: function () {
-                        $("#upload_license").attr('class', "")
-                        $("#upload_license").html('未上传')
-                        $("#upload_license").attr('style', "color: red")
-                        $("#upload_license_sub").attr('class', "")
-                        $("#upload_license_sub").html('未上传')
-                        $("#upload_license_sub").attr('style', "color: red")
-                    }
                 });
-                $.get({
-                    url: "../service/fetch_license.php?user=" + obj.data.loginid,
-                    success: function (res) {
-                        if (res.license != null) {
-                            $("#upload_license").attr('class', "")
-                            $("#upload_license").html('点击查看>>>')
-                            $("#upload_license").attr('style', "color: red")
-                            $("#upload_license").attr('href', res.license)
-                        }
-                        if (res.license_sub != null) {
-                            $("#upload_license_sub").attr('class', "")
-                            $("#upload_license_sub").html('点击查看>>>')
-                            $("#upload_license_sub").attr('style', "color: red")
-                            $("#upload_license_sub").attr('href', res.license_sub)
-                        }
-                    },
-                    dataType: "json"
-                })
             } else if (obj.event === 'addBtn') {
-                $(".edit_mod").show()
+                renderUploadBtn("#upload_license", "企业营业执照", obj.data.loginid)
+                renderUploadBtn("#upload_license_sub", "下属企业营业执照", obj.data.loginid)
+                $(".edit-mod").show()
                 let data = obj.data;
                 $("#name").val(data["name"]);
                 $("#mainbus").val(data["mainbus"]);
@@ -327,21 +331,11 @@
                 $("#phone").val(data["phone"]);
                 $("#created_year").val(data["created_year"]);
                 $("#remark").val(data["remark"]);
-                renderUploadBtn("#upload_license", "企业营业执照")
-                renderUploadBtn("#upload_license_sub", "下属企业营业执照")
                 layer.open({
                     type: 1,
                     title: '请完善企业详细信息',
                     content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                     area: ['800px', '430px'],
-                    cancel: function () { // 恢复原样式
-                        $("#upload_license").attr('class', "")
-                        $("#upload_license").html('未上传')
-                        $("#upload_license").attr('style', "color: red")
-                        $("#upload_license_sub").attr('class', "")
-                        $("#upload_license_sub").html('未上传')
-                        $("#upload_license_sub").attr('style', "color: red")
-                    }
                 });
             }
         })
