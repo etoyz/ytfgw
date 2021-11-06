@@ -10,6 +10,7 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
     $arr["status"] = "isLogin";
 
     // 检查用户状态
+    $_SESSION['status'] %= 5;
     if ($_SESSION['status'] != "1" && $_SESSION['status'] != "3") {
         if ($_SESSION['status'] == "0")
             $arr["data"] = "请先完善企业信息！";
@@ -44,7 +45,7 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
     if ($arr["data"] === true) {
         // 计算成绩并插入数据库
         cal_score();
-        // update status
+        // update info
         date_default_timezone_set("PRC");
         $sql = "UPDATE `enterprise` set  `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '" . $db->escape($_SESSION["loginid"]) . "'";
         $db->query($sql);
