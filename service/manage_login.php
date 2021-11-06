@@ -5,8 +5,8 @@ $arr = array(
 );
 
 require_once 'db.php';
-$sql = "SELECT * FROM `manager` WHERE `loginid` = '{$_POST['loginid']}' AND `loginpw` = '{$_POST['loginpw']}';";
 $db = new DB();
+$sql = "SELECT * FROM `manager` WHERE `loginid` = '" . $db->escape($_POST['loginid']) . "' AND `loginpw` = '" . $db->escape($_POST['loginpw']) . "';";
 $re = $db->query($sql);
 
 if ($re->num_rows == 1) { // 后台校验成功

@@ -12,11 +12,12 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     } else {
         $user = $_GET['user'];
     }
-
     require_once 'db.php';
+    $db = new DB();
+    $user = $db->escape($user);
+
     $sql = "DESCRIBE enterprise_data;";
     $sql2 = "SELECT * FROM enterprise_data WHERE `loginid` = '$user';";
-    $db = new DB();
     $re_indicators = $db->query($sql);
     $re_indicator_values = $db->query($sql2);
     $response["status"] = "isLogin";

@@ -7,8 +7,8 @@ $arr = array(
 //$response = json_decode(file_get_contents('php://input'));
 
 require_once 'db.php';
-$sql = "SELECT `loginpw`,`status` FROM `enterprise` WHERE `loginid` = '{$_POST['loginid']}';";
 $db = new DB();
+$sql = "SELECT `loginpw`,`status` FROM `enterprise` WHERE `loginid` = '" . $db->escape($_POST['loginid']) . "';";
 $re = $db->query($sql);
 
 if ($re->num_rows == 1) { // 后台校验成功

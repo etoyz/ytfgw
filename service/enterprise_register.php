@@ -10,7 +10,7 @@ require_once 'db.php';
 $db = new DB();
 
 //名字重复
-$sql = "SELECT eid FROM `enterprise` WHERE `loginid` = '{$_POST['loginid']}';";
+$sql = "SELECT eid FROM `enterprise` WHERE `loginid` = '" . $db->escape($_POST['loginid']) . "';";
 $re = $db->query($sql);
 if ($re->num_rows == 1) {
     $arr['nameRepetition'] = true;
@@ -19,8 +19,8 @@ if ($re->num_rows == 1) {
 
 
 $sql = "INSERT INTO `enterprise` (loginid,loginpw,name,status) 
-        VALUES ('{$_POST['loginid']}','" . password_hash($_POST['loginpw'], PASSWORD_DEFAULT)
-    . "','{$_POST['name']}', $_GET[status])";
+        VALUES ('" . $db->escape($_POST['loginid']) . "','" . password_hash($_POST['loginpw'], PASSWORD_DEFAULT)
+    . "','" . $db->escape($_POST['name']) . "', " . $db->escape($_GET['status']) . ")";
 $re = $db->query($sql);
 if ($re) {
     $arr['regSuccess'] = true;

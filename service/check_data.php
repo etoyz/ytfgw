@@ -21,7 +21,7 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "manager") {
         $sql = "UPDATE `enterprise` set `status` = $pass_status WHERE `loginid` = '" . $db->escape($_POST["loginid"]) . "';";
         $_SESSION['status'] = $pass_status;
     } else {
-        $sql = "UPDATE `enterprise` set `status` = " . ($pass_status - 1) . ", `return_reason` = '" . $_POST['return_reason'] . "' WHERE `loginid` = '" . $db->escape($_POST["loginid"]) . "';";
+        $sql = "UPDATE `enterprise` set `status` = " . ($pass_status - 1) . ", `return_reason` = '" . $db->escape($_POST['return_reason']) . "' WHERE `loginid` = '" . $db->escape($_POST["loginid"]) . "';";
         $_SESSION['status'] = $pass_status - 1;
     }
     $response['data'] = $db->query($sql);

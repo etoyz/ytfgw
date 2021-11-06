@@ -14,7 +14,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     if ($_SESSION['usertype'] == "manager") {
         $sql = null;
         $sql2 = null;
-        $query = $_GET['query'];
+        $query = $db->escape($_GET['query']);
         $from = ($_GET['page'] - 1) * $_GET['limit'];
         $to = $_GET['limit'];
         if ($_GET['status'] === '-1') { // 全部

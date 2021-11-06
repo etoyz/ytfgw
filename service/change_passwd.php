@@ -5,10 +5,10 @@ if (isset($_SESSION['usertype'])) {
     require_once "db.php";
     $db = new DB();
     if ($_SESSION['usertype'] === "enterprise") {
-        $sql = "UPDATE `enterprise` SET `loginpw` = '" . password_hash($_POST['loginpw'], PASSWORD_DEFAULT) . "' WHERE `loginid` = '$_SESSION[loginid]'";
+        $sql = "UPDATE `enterprise` SET `loginpw` = '" . password_hash($_POST['loginpw'], PASSWORD_DEFAULT) . "' WHERE `loginid` = '" . $db->escape($_SESSION["loginid"]) . "'";
     } else {
 //        $sql = "UPDATE `manager` SET `loginpw` = " . password_hash($_POST['loginpw'], PASSWORD_DEFAULT . "WHERE `loginid` = $_SESSION[loginid]");
-        $sql = "UPDATE `manager` SET `loginpw` = '" . $_POST['loginpw'] . "'WHERE `loginid` = '$_SESSION[loginid]'";
+        $sql = "UPDATE `manager` SET `loginpw` = '" . $db->escape($_POST['loginpw']) . "'WHERE `loginid` = '" . $db->escape($_SESSION["loginid"]) . "'";
     }
     if ($db->query($sql))
         die("密码修改成功！");
