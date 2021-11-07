@@ -10,5 +10,5 @@ function get_user_status($loginid)
 {
     require_once "db.php";
     $db = new DB();
-    return $db->query("SELECT `status` FROM `enterprise` WHERE `loginid` = " . $db->escape($loginid))->fetch_assoc()['status'];
+    return $db->query("SELECT `status` FROM `enterprise` WHERE `loginid` = '" . $db->escape($loginid) . "'")->fetch_assoc()['status'];
 }
