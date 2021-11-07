@@ -15,17 +15,18 @@ if (isset($_SESSION['usertype'])) { // 已经登录
         $sql = null;
         $sql2 = null;
         $query = $db->escape($_GET['query']);
+        $query_address = $db->escape($_GET['query_address']);
         $from = ($_GET['page'] - 1) * $_GET['limit'];
         $to = $_GET['limit'];
         if ($_GET['status'] === '-1') { // 全部
-            $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' LIMIT " . $from . "," . $to . ";";
-            $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%';";
+            $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' LIMIT " . $from . "," . $to . ";";
+            $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%';";
         } else if ($_GET['status'] === '0-4') { // 申报状态
-            $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` IN (0,1,2,3,4) LIMIT " . $from . "," . $to . ";";
-            $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` IN (0,1,2,3,4);";
+            $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (0,1,2,3,4) LIMIT " . $from . "," . $to . ";";
+            $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (0,1,2,3,4);";
         } else if ($_GET['status'] === '5-9') {// 评价状态
-            $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` IN (5,6,7,8,9) LIMIT " . $from . "," . $to . ";";
-            $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `status` IN (5,6,7,8,9);";
+            $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (5,6,7,8,9) LIMIT " . $from . "," . $to . ";";
+            $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (5,6,7,8,9);";
         }
         $re = $db->query($sql);
 //    echo $sql;
