@@ -48,14 +48,19 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     } else {// 评价体系
         array_push($disable_indicators, "申请报告");
     }
+    $no_input_indicators = ["运行评价报告", "市级企业技术中心认定通知", "申请报告", "信用报告证明材料"];
     foreach ($re_indicators as $f) {
         if (!in_array($f['Field'], $disable_indicators)) {
             $attachment_name = fetch_indicator_attachment_name($f['Field'], $GLOBALS['allFile']);
             $attachment_tag = "<a style='color: #0000FF;text-decoration: underline' target='_blank' href='../service/attachment_view.php?path=" . urlencode("../uploads/$user/$attachment_name") . "'>" . substr($attachment_name, strlen("附件_$f[Field]_")) . "</a>";
-            if ($re_indicator_values == null)
-                $value = null;
-            else
-                $value = $re_indicator_values[$i];
+            if (in_array($f['Field'], $no_input_indicators))
+                $value = "---";
+            else {
+                if ($re_indicator_values == null)
+                    $value = null;
+                else
+                    $value = $re_indicator_values[$i];
+            }
             array_push($response["data"], array(
                 "indicator" => $f['Field'],
                 "value" => $value,
