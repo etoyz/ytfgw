@@ -29,12 +29,12 @@
                 退出登录</a></li>
         </ul>
     </div>
-    <div class="layui-side layui-bg-black kit-side" style="width: 270px">
+    <div class="layui-side layui-bg-black kit-side" style="width: 150px">
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree" kit-nFavbar lay-filter="kitNavbar">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:"><i aria-hidden="true"
-                                                      class="fa fa-plug"></i><span> 烟台市创新平台申报与评价系统</span></a>
+                    <a class="" href="javascript:">
+                        <i aria-hidden="true" class="fa fa-plug"></i><span id="userType"> 加载中...</span></a>
                     <dl class="layui-nav-child">
                         <dd>
                             <a data-options="{url:'tips1.html',icon:'&#xe658;',title:'填报指南',id:'1'}" href="javascript:"
@@ -53,7 +53,7 @@
             </ul>
         </div>
     </div>
-    <div class="layui-body" id="container" style="left: 270px">
+    <div class="layui-body" id="container" style="left: 150px">
         <div style="padding: 15px;">正在加载...</div>
     </div>
 </div>
@@ -102,6 +102,12 @@
             url: "../service/getEnterpriseName.php",
             success: function (res) {
                 $("#name").html(res + " ")
+            }
+        })
+        $.get({
+            url: "../service/get_enterprise_type.php",
+            success: (res) => {
+                $("#userType").html(" " + res)
             }
         })
         $("#logout").unbind("click").click(function () {
