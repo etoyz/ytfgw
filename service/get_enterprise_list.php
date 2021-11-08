@@ -14,8 +14,11 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     if ($_SESSION['usertype'] == "manager") {
         $sql = null;
         $sql2 = null;
+        if ($_SESSION['privilege'] == "0") // 超级管理员
+            $query_address = $db->escape($_GET['query_address']);
+        else
+            $query_address = $_SESSION['privilege'];
         $query = $db->escape($_GET['query']);
-        $query_address = $db->escape($_GET['query_address']);
         $from = ($_GET['page'] - 1) * $_GET['limit'];
         $to = $_GET['limit'];
         if ($_GET['status'] === '-1') { // 全部

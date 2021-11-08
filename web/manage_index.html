@@ -27,6 +27,7 @@
             </li>
             <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="changePassword"><i
                     aria-hidden="true" class="fa fa-pencil-square"></i> 修改密码</a></li>
+            <li class="layui-nav-item"><a class="s-headPortrait" href="javascript:" id="name">正在加载... </a></li>
             <li class="layui-nav-item"><a class="s-headPortrait" href="javascript:" id="loginName">正在加载... </a></li>
             <li class="layui-nav-item"><a class="s-logout" id="logout"><i aria-hidden="true" class="fa fa-sign-out"></i>
                 退出登录</a></li>
@@ -180,7 +181,12 @@
                 }
             }
         });
-
+        $.get({
+            url: "../service/get_manager_name.php",
+            success: function (res) {
+                $("#name").html(res + " ")
+            }
+        })
         $.get({
             url: "../service/getLoginId.php",
             success: function (res) {

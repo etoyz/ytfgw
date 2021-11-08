@@ -3,16 +3,12 @@ session_start();
 $response = array(
     "status" => 'notLogin',
     "data" => null,
-    "code" => 0
+    "code" => 1,
+    "msg" => "无权限查看！"
 );
 
-if (isset($_SESSION['usertype'])) { // 已经登录
-    $user = null;
-    if ($_SESSION['usertype'] === "enterprise") {
-        $user = $_SESSION['loginid'];
-    } else {
-        $user = $_GET['user'];
-    }
+if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "manager" && $_SESSION['privilege'] == "0") { // 已经登录且是管理员
+    $user = $_GET['user'];
 
     require_once 'db.php';
     $db = new DB();
