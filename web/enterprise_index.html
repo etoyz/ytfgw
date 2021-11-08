@@ -37,7 +37,7 @@
                         <i aria-hidden="true" class="fa fa-plug"></i><span id="userType"> 加载中...</span></a>
                     <dl class="layui-nav-child">
                         <dd>
-                            <a data-options="{url:'tips1.html',icon:'&#xe658;',title:'填报指南',id:'1'}" href="javascript:"
+                            <a id="tip" data-options="{url:'tips1.html',icon:'&#xe658;',title:'填报指南',id:'1'}" href="javascript:"
                                kit-target><i class="layui-icon">&#xe658;</i><span> 填报指南</span></a>
                         </dd>
                         <dd>
@@ -108,6 +108,10 @@
             url: "../service/get_enterprise_type.php",
             success: (res) => {
                 $("#userType").html(" " + res)
+                if(res === "评价")
+                    $("#tip").attr('data-options', '{url:\'tips2.html\',icon:\'&#xe658;\',title:\'填报指南\',id:\'1\'}');
+                else
+                    $("#tip").attr('data-options', '{url:\'tips1.html\',icon:\'&#xe658;\',title:\'填报指南\',id:\'1\'}');
             }
         })
         $("#logout").unbind("click").click(function () {
