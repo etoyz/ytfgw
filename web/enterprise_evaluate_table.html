@@ -20,6 +20,14 @@
                 <form action="" autocomplete="off" class="layui-form">
                     <div class="layui-form-item">
                         <div class="layui-inline s-layuiInline m-mod" style="display: none">
+                            <label class="layui-form-label">归属地</label>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" id="addressSearch"
+                                       placeholder="请输入归属地"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="layui-inline s-layuiInline m-mod" style="display: none">
                             <label class="layui-form-label">企业名称</label>
                             <div class="layui-input-inline">
                                 <input autocomplete="off" class="layui-input" id="enterpriseNameSearch"
@@ -452,7 +460,7 @@
 
                     $("#queryBtn").unbind("click").click(function () {
                         maintable.reload({
-                            url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val() + '&status=' + getQueryString("status"),
+                            url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val() + '&status=' + getQueryString("status") + '&query_address=' + $("#addressSearch").val(),
                         })
                         return false;
                     })
