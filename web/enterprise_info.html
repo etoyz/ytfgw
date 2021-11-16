@@ -35,6 +35,19 @@
                                        type="text">
                             </div>
                         </div>
+                        <div class="layui-inline s-layuiInline m-mod" style="display: none">
+                            <label class="layui-form-label">申报状态</label>
+                            <div class="layui-input-inline">
+                                <select id="statusSearch">
+                                    <option value="-1">全部</option>
+                                    <option value="0">未完善信息</option>
+                                    <option value="1">未填报数据</option>
+                                    <option value="2">审核中</option>
+                                    <option value="3">已退回</option>
+                                    <option value="4">已通过审核</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="layui-inline s-layuiInline">
                             <button class="layui-btn layui-btn-warm m-mod" style="display: none" id="queryBtn">查询
                             </button>
@@ -67,7 +80,7 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-			<label class="layui-form-label">企业营业执照<br>(含附表1)</label>
+                    <label class="layui-form-label">企业营业执照<br>(含附表1)</label>
                     <div class="layui-input-inline">
                         <button class="edit-mod layui-btn" id="upload_license" type="button"><i class="layui-icon">&#xe67c;</i>
                         </button>
@@ -377,7 +390,10 @@
 
         $("#queryBtn").unbind("click").click(function () {
             enterpriseTable.reload({
-                url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val() + '&status=' + getQueryString("status") + '&query_address=' + $("#addressSearch").val(),
+                url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val()
+                    + '&status=' + getQueryString("status")
+                    + '&status_detail=' + $("#statusSearch").val()
+                    + '&query_address=' + $("#addressSearch").val(),
                 page: {
                     curr: 1
                 },
