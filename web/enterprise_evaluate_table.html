@@ -46,9 +46,9 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs e-mod" lay-event="submit" id="submit"
+                    <a class="layui-btn layui-btn-xs e-mod submit" lay-event="submit" id="submit"
                        style="display: none">填报数据</a>
-                    <a class="layui-btn layui-btn-xs e-mod" lay-event="view_data" style="display: none">上传附件并提交申报</a>
+                    <a class="layui-btn layui-btn-xs e-mod attachment" lay-event="view_data" style="display: none">上传附件并提交申报</a>
                     <a class="layui-btn layui-btn-xs m-mod" lay-event="view_data" style="display: none">查看提交数据及附件</a>
                     <a class="layui-btn layui-btn-xs layui-btn-warm m-mod" lay-event="view_score_mach"
                        style="display: none">查看分数</a>
@@ -99,7 +99,7 @@
             url: "../service/can_user_submit_info.php",
             success: function (res) {
                 if (res == "1") {
-                    layer.alert("请先完善企业基本信息！\n完善基本信息之后可刷新本页面继续操作！", () => {
+                    layer.alert("请先完善企业基本信息！\n完善基本信息之后可刷新本页面继续操作！", function () {
                     })
                 } else {
                     function getQueryString(name) {
@@ -137,7 +137,7 @@
                         cols: [[
                             {type: 'numbers', style: 'background-color: #eee;'},
                             {field: 'address', width: '180', title: '归属地（县市区）'},
-                            {field: 'name', width: '200', title: '企业名称'},
+                            {field: 'name', width: '300', title: '企业名称'},
                             {field: 'year', width: '100', title: '报告年度'},
                             {field: 'status', width: '100', title: '申报状态'},
                             {field: 'submit_time', width: '160', title: '填报时间'},
@@ -162,17 +162,27 @@
                             }
                         },
                         done: function () {
-                            diffUserDoDiffThing(() => {
+                            diffUserDoDiffThing(function () {
                                 $(".m-mod").show();
-                            }, () => {
+                            }, function () {
                                 $(".e-mod").show();
                                 $.post({
                                     url: "../service/can_user_edit_data.php",
                                     success: function (res) {
+                                        console.log(res == "0")
                                         if (res == "0") {
-                                            $("#submit").hide();
-                                            $(".upload").hide();
+                                            $(".submit").hide();
+                                            $(".attachment").html("修改附件内容");
                                         }
+                                    }
+                                })
+                                $.post({
+                                    url: "../service/can_user_submit_data.php",
+                                    success: function (res) {
+                                        if (res == "1")
+                                            $("#submit").click();
+                                        else
+                                            $(".submit").html("修改填报数据");
                                     }
                                 })
                             });
@@ -233,14 +243,14 @@
                                     success: function (res) {
                                         layer.close(msg)
                                         if (res.data === true) {
-                                            layer.alert("保存成功！请确认无误后上传相关附件,然后提交审核！", {icon: 1}, () => {
+                                            layer.alert("保存成功！请确认无误后上传相关附件,然后提交审核！", {icon: 1}, function () {
                                                 layer.closeAll();
                                                 location.reload();
                                             })
                                         } else if (res.data === 1265 || res.data == 1366) {
                                             layer.alert("请检查数据格式是否正确！", {icon: 2})
                                         } else {
-                                            layer.alert(res.data + '', {icon: 2}, () => {
+                                            layer.alert(res.data + '', {icon: 2}, function () {
                                                 layer.closeAll();
                                             })
                                         }
@@ -257,12 +267,18 @@
                                         url: "../service/submit_data_for_review.php",
                                         success: function (res) {
                                             if (res == 1) {
-                                                layer.alert("提交审核成功！")
-                                                location.reload()
+                                                layer.alert("提交审核成功！", function () {
+                                                    location.reload()
+                                                })
+                                            } else {
+                                                layer.alert("已经提交！", function () {
+                                                    location.reload()
+                                                })
                                             }
                                         }
                                     })
                                 })
+                                return false
                             })
                         }
                     });
@@ -288,7 +304,7 @@
                                     else
                                         layer.msg("异常错误！")
                                     dataTableWithAttach.reload({
-                                        done: () => {
+                                        done: function () {
                                             renderUpload()
                                         }
                                     })
@@ -315,7 +331,7 @@
                             {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
                             {field: 'value', width: 110, title: '数值', style: 'background-color: #eee;'},
                             {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
-                            {field: 'attachment', width: 220, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
+                            {field: 'attachment', width: 120, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
                             {
                                 field: 'operation', width: 170,
                                 title: '操作',
@@ -337,22 +353,22 @@
                             let loadMsg = layer.load(1)
                             dataTableWithAttach.reload({
                                 url: "../service/get_evaluating_indicator_value.php?user=" + obj.data["loginid"],
-                                done: () => {
+                                done: function () {
                                     layer.close(loadMsg)
                                     layer.open({
                                         type: 1,
                                         title: '企业详细数据',
                                         content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                                         area: ['1300px', '90%'],
-                                        cancel: () => {
+                                        cancel: function () {
                                             $("#submitForPreserve").show()
                                             $("#submitForReview").hide()
                                         }
                                     });
                                     renderUpload()
-                                    diffUserDoDiffThing(() => {
+                                    diffUserDoDiffThing(function () {
                                         $(".e-mod").hide()
-                                    }, () => {
+                                    }, function () {
                                     })
                                 }
                             })
@@ -435,7 +451,7 @@
                                     if (res.data) {
                                         layer.msg("删除成功！")
                                         dataTableWithAttach.reload({
-                                            done: () => {
+                                            done: function () {
                                                 renderUpload()
                                             }
                                         })
@@ -448,19 +464,12 @@
                         }
                     })
 
-                    $.post({
-                        url: "../service/can_user_submit_data.php",
-                        success: function (res) {
-                            if (res == "1")
-                                $("#submit").click();
-                            else
-                                $("#submit").html("修改填报数据");
-                        }
-                    })
-
                     $("#queryBtn").unbind("click").click(function () {
                         maintable.reload({
                             url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val() + '&status=' + getQueryString("status") + '&query_address=' + $("#addressSearch").val(),
+                            page: {
+                                curr: 1
+                            },
                         })
                         return false;
                     })

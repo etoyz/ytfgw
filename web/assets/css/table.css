@@ -194,14 +194,8 @@
     word-break: break-all;
 }
 
-/* TODO 尝试修复layui的bug */
-/*.layui-table-tips{*/
-/*    width: 800px!important;*/
-/*}*/
-/*.layui-table-tips-main{*/
-/*    height: 100%;*/
-/*    word-wrap: break-word;*/
-/*}*/
-/*.layui-layer-content{*/
-/*    height: 100px;*/
-/*}*/
+.layui-table-cell {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

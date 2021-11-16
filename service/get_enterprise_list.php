@@ -2,7 +2,7 @@
 session_start();
 $response = array(
     "status" => 'notLogin',
-    "data" => null,
+    "data" => [],
     "code" => 0,
     "count" => 0
 );

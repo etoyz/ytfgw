@@ -124,6 +124,13 @@
             </div>
         </div>
         <div class="layui-form-item s-formItem4">
+            <label class="layui-form-label">归属地</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-verify="required" name="address"
+                       placeholder="请输入归属地，如：莱山区">
+            </div>
+        </div>
+        <div class="layui-form-item s-formItem4">
             <label class="layui-form-label">密码</label>
             <div class="layui-input-block">
                 <input autocomplete="off" class="layui-input" lay-verify="required|pass" name="loginpw" id="loginpw"
@@ -147,7 +154,7 @@
 </div>
 
 <script src="assets/plugins/layui/layui.js"></script>
-<script src="assets/common/js/tab.js"></script>
+<script src="assets/common/js/tab.js?_=sdfgdfh"></script>
 <script>
     layui.use(['form', 'layer'], function () {
         var $ = layui.jquery,
@@ -211,7 +218,7 @@
                         loginpw: data.field.password
                     },
                     success: function (res) {
-                        layer.alert(res, () => {
+                        layer.alert(res, function () {
                             location.href = "../service/logout.php"
                         });
                     }
@@ -230,7 +237,6 @@
                 area: '300px'
             });
             form.on('submit(subForReg)', function (data) {
-                console.log(data)
                 $.post({
                     url: "../service/enterprise_register.php?status=0",
                     data: data.field,

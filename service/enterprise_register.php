@@ -18,9 +18,13 @@ if ($re->num_rows == 1) {
 }
 
 
-$sql = "INSERT INTO `enterprise` (loginid,loginpw,name,status) 
-        VALUES ('" . $db->escape($_POST['loginid']) . "','" . password_hash($_POST['loginpw'], PASSWORD_DEFAULT)
-    . "','" . $db->escape($_POST['name']) . "', " . $db->escape($_GET['status']) . ")";
+$sql = "INSERT INTO `enterprise` (loginid,loginpw,name,status,address) 
+        VALUES ('" . $db->escape($_POST['loginid'])
+    . "', '" . password_hash($_POST['loginpw'], PASSWORD_DEFAULT)
+    . "', '" . $db->escape($_POST['name'])
+    . "', '" . $db->escape($_GET['status'])
+    . "', '" . $db->escape($_POST['address'])
+    . "')";
 $re = $db->query($sql);
 if ($re) {
     $arr['regSuccess'] = true;

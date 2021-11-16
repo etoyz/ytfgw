@@ -67,7 +67,7 @@
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">企业营业执照</label>
+			<label class="layui-form-label">企业营业执照<br>(含附表1)</label>
                     <div class="layui-input-inline">
                         <button class="edit-mod layui-btn" id="upload_license" type="button"><i class="layui-icon">&#xe67c;</i>
                         </button>
@@ -144,8 +144,8 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">备注</label>
                     <div class="layui-input-inline">
-                        <input autocomplete="off" class="layui-input" id="remark"
-                               name="remark" type="text">
+                        <input autocomplete="off" class="layui-input" id="remark" style="width: 500px"
+                               name="remark" type="text" placeholder="若企业名称发生变更，请在此说明原企业名">
                     </div>
                 </div>
             </div>
@@ -192,10 +192,10 @@
             cols: [[
                 {type: 'numbers', style: 'background-color: #eee;'},
                 {field: 'address', width: '180', title: '归属地（县市区）'},
-                {field: 'name', width: '200', title: '企业名称'},
+                {field: 'name', width: '300', title: '企业名称'},
                 {field: 'created_year', width: '100', title: '报告年度'},
                 {field: 'status', width: '100', title: '申报状态'},
-                {field: 'remark', width: '200', title: '备注'},
+                {field: 'remark', width: '400', title: '备注'},
                 {field: 'operation', width: '150', title: '操作', toolbar: '#operation', fixed: 'right'}
             ]],
             size: 'sm',
@@ -215,9 +215,9 @@
                 }
             },
             done: function () {
-                diffUserDoDiffThing(() => {
+                diffUserDoDiffThing(function () {
                     $(".m-mod").show();
-                }, () => {
+                }, function () {
                     $(".e-mod").show();
                 });
                 $.post({
@@ -289,6 +289,7 @@
                     if (res.license != null) {
                         $("#upload_license_indicate").html('点击查看>>>')
                         $("#upload_license_indicate").attr('href', "../service/attachment_view.php?path=" + encodeURIComponent(res.license))
+                        $("#upload_license_indicate").attr('onclick', "return true")
                     } else {
                         $("#upload_license_indicate").html('未上传')
                         $("#upload_license_indicate").attr('onclick', "return false")
@@ -296,6 +297,7 @@
                     if (res.license_sub != null) {
                         $("#upload_license_sub_indicate").html('点击查看>>>')
                         $("#upload_license_sub_indicate").attr('href', "../service/attachment_view.php?path=" + encodeURIComponent(res.license_sub))
+                        $("#upload_license_sub_indicate").attr('onclick', "return true")
                     } else {
                         $("#upload_license_sub_indicate").html('未上传')
                         $("#upload_license_sub_indicate").attr('onclick', "return false")
@@ -355,7 +357,7 @@
                 data: data.field,
                 success: function (res) {
                     if (JSON.parse(res).data)
-                        layer.alert("完善成功！", {icon: 1}, () => {
+                        layer.alert("完善成功！", {icon: 1}, function () {
                             location.reload()
                             layer.closeAll();
                         });
@@ -374,9 +376,11 @@
         }
 
         $("#queryBtn").unbind("click").click(function () {
-            console.log(getQueryString("status"))
             enterpriseTable.reload({
                 url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val() + '&status=' + getQueryString("status") + '&query_address=' + $("#addressSearch").val(),
+                page: {
+                    curr: 1
+                },
             })
             return false;
         })

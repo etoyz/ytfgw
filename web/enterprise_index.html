@@ -37,7 +37,8 @@
                         <i aria-hidden="true" class="fa fa-plug"></i><span id="userType"> 加载中...</span></a>
                     <dl class="layui-nav-child">
                         <dd>
-                            <a id="tip" data-options="{url:'tips1.html',icon:'&#xe658;',title:'填报指南',id:'1'}" href="javascript:"
+                            <a id="tip" data-options="{url:'tips1.html',icon:'&#xe658;',title:'填报指南',id:'1'}"
+                               href="javascript:"
                                kit-target><i class="layui-icon">&#xe658;</i><span> 填报指南</span></a>
                         </dd>
                         <dd>
@@ -72,6 +73,7 @@
             <label class="layui-form-label">确认密码</label>
             <div class="layui-input-block">
                 <input autocomplete="off" class="layui-input" lay-verify="required|repass" name="confirmPassword"
+                       id="confirmPassword"
                        placeholder="请输入确认密码" type="password">
             </div>
         </div>
@@ -91,7 +93,32 @@
         var $ = layui.jquery,
             form = layui.form,
             layer = layui.layer;
+        // 公告
+        layer.open({
+            type: 1
+            ,title: false //不显示标题栏
+            ,closeBtn: false
+            ,area: '300px;'
+            ,shade: 0.8
+            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            ,btn: ['确认']
+            ,btnAlign: 'c'
+            ,moveType: 1 //拖拽模式，0或者1
+            ,content:
+                '<div style="padding: 50px; line-height: 30px; background-color: #393D49; color: #ff0000; font-weight: 500;">' +
+                '重要提醒！<br>' +
+                '若企业名称发生变更，请在备注栏说明原企业名称！<br><br>' +
+                '</div>'
+        });
 
+        form.verify({
+            pass: function (value) {
+                if (!new RegExp(/^[\S]{6,12}$/).test(value))
+                    return "密码必须6到12位，且不能出现空格！";
+                if (value !== $("#confirmPassword").val())
+                    return "两次密码不一致！";
+            }
+        });
         $.get({
             url: "../service/getLoginId.php",
             success: function (res) {
@@ -108,7 +135,7 @@
             url: "../service/get_enterprise_type.php",
             success: (res) => {
                 $("#userType").html(" " + res)
-                if(res === "评价")
+                if (res === "评价")
                     $("#tip").attr('data-options', '{url:\'tips2.html\',icon:\'&#xe658;\',title:\'填报指南\',id:\'1\'}');
                 else
                     $("#tip").attr('data-options', '{url:\'tips1.html\',icon:\'&#xe658;\',title:\'填报指南\',id:\'1\'}');
@@ -131,7 +158,7 @@
                         loginpw: data.field.password
                     },
                     success: function (res) {
-                        layer.alert(res, () => {
+                        layer.alert(res, function () {
                             location.href = "../service/logout.php"
                         });
                     }
