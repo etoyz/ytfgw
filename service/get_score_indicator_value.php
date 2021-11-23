@@ -14,9 +14,13 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "manager" && $_SES
     $db = new DB();
 
     $sql = "DESCRIBE enterprise_score;";
-    $sql2 = "SELECT * FROM enterprise_score WHERE `loginid` = '" . $db->escape($user) . "' AND `type` = 'machine';";
+    $sql2 = "SELECT * FROM enterprise_score WHERE `loginid` = '" . $db->escape($user) . "' AND `type` = '$_GET[type]';";
     $re = $db->query($sql);
     $re2 = $db->query($sql2);
+    if ($re2->num_rows == 0 && $_GET['type'] == "expert") { // 如果专家未打分，则使用机器数据
+        $sql2 = "SELECT * FROM enterprise_score WHERE `loginid` = '" . $db->escape($user) . "' AND `type` = 'machine';";
+        $re2 = $db->query($sql2);
+    }
     $response["status"] = "isLogin";
     $response["data"] = [];
     $response["code"] = 0;

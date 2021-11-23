@@ -68,7 +68,7 @@
                     <a class="layui-btn layui-btn-xs e-mod attachment" lay-event="view_data" style="display: none">上传附件并提交申报</a>
                     <a class="layui-btn layui-btn-xs m-mod" lay-event="view_data" style="display: none">查看提交数据及附件</a>
                     <a class="layui-btn layui-btn-xs layui-btn-warm m-mod" lay-event="view_score_mach"
-                       style="display: none">查看分数</a>
+                       style="display: none">电脑打分</a>
                     <a class="layui-btn layui-btn-xs layui-btn-normal m-mod" style="display: none"
                        lay-event="expert_score">专家打分</a>
                     <a class="layui-btn layui-btn-xs m-mod" style="display: none" lay-event="pass">通过</a>
@@ -404,7 +404,7 @@
                             let msg = layer.load(1)
                             table.render({
                                 elem: '#scoreTable',
-                                url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid,
+                                url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid + '&type=machine',
                                 height: 900,
                                 toolbar: true,
                                 defaultToolbar: ['print', 'exports'],
@@ -468,7 +468,7 @@
                             let scoreToBeSub = {"loginid": obj.data.loginid};
                             table.render({
                                 elem: '#scoreTable',
-                                url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid,
+                                url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid + '&type=expert',
                                 height: 900,
                                 toolbar: false,
                                 limit: Number.MAX_SAFE_INTEGER,
