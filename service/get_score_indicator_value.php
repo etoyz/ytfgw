@@ -31,6 +31,19 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "manager" && $_SES
     $score_cnt = 0;
     foreach ($re as $f) {
         if ($f['Field'] != "loginid" && $f['Field'] != "type") {
+            if ($f['Field'] == '得分汇总' && $re2[$i] == 0) { // 异常情况 TODO 大坑
+                $sql = "UPDATE `enterprise_score` SET `得分汇总` = '$score_cnt'  WHERE `loginid` = '" . $db->escape($user) . "' AND `type` = 'machine'";
+                $db->query($sql);
+                array_push($response["data"], array(
+                    "indicator" => $f['Field'],
+                    "score" => number_format($score_cnt, 2)
+                ));
+                continue;
+                //                var_dump($sql);
+                //                var_dump($db->query($sql));
+                //                var_dump($score_cnt);
+            }
+
             array_push($response["data"], array(
                 "indicator" => $f['Field'],
                 "score" => number_format($re2[$i], 2)
@@ -39,10 +52,10 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "manager" && $_SES
         }
         $i++;
     }
-    array_push($response["data"], array(
-        "indicator" => "得分汇总",
-        "score" => number_format($score_cnt, 2)
-    ));
+//    array_push($response["data"], array(
+//        "indicator" => "得分汇总",
+//        "score" => number_format($score_cnt, 2)
+//    ));
 }
 
 die(json_encode($response));
