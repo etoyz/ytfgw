@@ -69,6 +69,8 @@
                     <a class="layui-btn layui-btn-xs m-mod" lay-event="view_data" style="display: none">查看提交数据及附件</a>
                     <a class="layui-btn layui-btn-xs layui-btn-warm m-mod" lay-event="view_score_mach"
                        style="display: none">查看分数</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-normal m-mod" style="display: none"
+                       lay-event="expert_score">专家打分</a>
                     <a class="layui-btn layui-btn-xs m-mod" style="display: none" lay-event="pass">通过</a>
                     <a class="layui-btn layui-btn-xs layui-btn-danger m-mod" style="display: none"
                        lay-event="return">退回</a>
@@ -158,9 +160,10 @@
                             {field: 'created_year', width: '100', title: '报告年度'},
                             {field: 'status', width: '100', title: '申报状态'},
                             {field: 'submit_time', width: '160', title: '填报时间'},
+                            {field: 'expert_score', width: '150', title: '专家打分'},
                             {field: 'return_reason', width: '150', title: '退回原因'},
                             {field: 'remark', width: '200', title: '备注'},
-                            {field: 'operation', width: '320', title: '操作', toolbar: '#operation', fixed: 'right'}
+                            {field: 'operation', width: '350', title: '操作', toolbar: '#operation', fixed: 'right'}
                         ]],
                         size: 'sm',
                         parseData: function (res) {
@@ -452,6 +455,28 @@
                             });
                         } else if (obj.event === 'submit') {
                             $("#submit").click()
+                        } else if (obj.event === "expert_score") {
+                            layer.prompt({
+                                title: "请输入分数",
+                                formType: 0,
+                                maxlength: 6
+                            }, function (value, index) {
+                                $.post({
+                                    url: "../service/expert_score.php",
+                                    data: {
+                                        "loginid": obj.data.loginid,
+                                        "expert_score": value,
+                                    },
+                                    success: function (res) {
+                                        if (res == "ok") {
+                                            layer.alert("打分成功！")
+                                            maintable.reload()
+                                        } else
+                                            layer.alert(res)
+                                    }
+                                })
+                                layer.close(index);
+                            });
                         }
                     })
 
