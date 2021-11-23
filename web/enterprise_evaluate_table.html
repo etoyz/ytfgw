@@ -100,6 +100,14 @@
 
 <div class="s-details" id="scoreTablePopup">
     <table class="layui-hide" id="scoreTable" lay-filter="scoreTable"></table>
+    <div class="layui-btn-container s-tabBottomButton">
+        <span class="layui-btn" style="display: none" id="submitScore">
+                提交 <svg class="icon" height="21" p-id="6305" t="1623748927861"
+                        version="1.1" viewBox="0 0 1024 620" width="21" xmlns="http://www.w3.org/2000/svg"><path
+                d="M960 260.571L462.222 864 64 512l49.778-100.571 348.444 201.142L960 160z" fill="#ffffff"
+                p-id="6306"></path></svg>
+        </span>
+    </div>
 </div>
 
 </body>
@@ -456,26 +464,62 @@
                         } else if (obj.event === 'submit') {
                             $("#submit").click()
                         } else if (obj.event === "expert_score") {
-                            layer.prompt({
-                                title: "请输入分数",
-                                formType: 0,
-                                maxlength: 6
-                            }, function (value, index) {
-                                $.post({
-                                    url: "../service/expert_score.php",
-                                    data: {
-                                        "loginid": obj.data.loginid,
-                                        "expert_score": value,
+                            let msg = layer.load(1)
+                            let scoreToBeSub = {"loginid": obj.data.loginid};
+                            table.render({
+                                elem: '#scoreTable',
+                                url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid,
+                                height: 900,
+                                toolbar: false,
+                                limit: Number.MAX_SAFE_INTEGER,
+                                cols: [[
+                                    {type: 'numbers', style: 'background-color: #eee;'},
+                                    {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
+                                    {
+                                        field: 'score',
+                                        edit: "number",
+                                        width: 150,
+                                        title: '成绩',
+                                        style: 'background-color: #FFFFFF;'
                                     },
-                                    success: function (res) {
-                                        if (res == "ok") {
-                                            layer.alert("打分成功！")
-                                            maintable.reload()
-                                        } else
-                                            layer.alert(res)
+                                ]],
+                                size: 'sm',
+                                done: function (res) {
+                                    layer.open({
+                                        type: 1,
+                                        title: '电脑评判结果',
+                                        content: $('#scoreTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                                        area: ['500x', '90%'],
+                                        cancel: function () {
+                                            $("#submitScore").hide()
+                                        }
+                                    });
+                                    layer.close(msg)
+                                    for (const d of res.data) {
+                                        scoreToBeSub[d["indicator"]] = d["score"];
                                     }
-                                })
-                                layer.close(index);
+                                    table.on('edit(scoreTable)', function (obj) {
+                                        var data = obj.data;
+                                        scoreToBeSub[data.indicator] = obj.value;
+                                    });
+                                    $("#submitScore").show()
+                                    $("#submitScore").unbind("click").click(function () {
+                                        let msg = layer.load(1)
+                                        $.post({
+                                            url: "../service/submit_score.php",
+                                            data: scoreToBeSub,
+                                            success: function (res) {
+                                                layer.close(msg)
+                                                console.log(typeof res)
+                                                if (res == true || res == 1) {
+                                                    layer.alert("成功！", {icon: 1}, function () {
+                                                        layer.closeAll()
+                                                    })
+                                                } else layer.alert(res)
+                                            }
+                                        })
+                                    })
+                                }
                             });
                         }
                     })
