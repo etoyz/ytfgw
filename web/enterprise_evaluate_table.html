@@ -63,7 +63,7 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs e-mod submit" lay-event="submit" id="submit"
+                    <a class="layui-btn layui-btn-xs submit" lay-event="submit" id="submit"
                        style="display: none">填报数据</a>
                     <a class="layui-btn layui-btn-xs e-mod attachment" lay-event="view_data" style="display: none">上传附件并提交申报</a>
                     <a class="layui-btn layui-btn-xs m-mod" lay-event="view_data" style="display: none">查看提交数据及附件</a>
@@ -122,6 +122,8 @@
             element = layui.element,
             upload = layui.upload;
 
+        let activeLoginId;
+        let dataToBeSub = {};
         $.post({
             url: "../service/can_user_submit_info.php",
             success: function (res) {
@@ -171,7 +173,7 @@
                             {field: 'expert_score', width: '150', title: '专家打分'},
                             {field: 'return_reason', width: '150', title: '退回原因'},
                             {field: 'remark', width: '200', title: '备注'},
-                            {field: 'operation', width: '350', title: '操作', toolbar: '#operation', fixed: 'right'}
+                            {field: 'operation', width: '450', title: '操作', toolbar: '#operation', fixed: 'right'}
                         ]],
                         size: 'sm',
                         parseData: function (res) {
@@ -192,6 +194,7 @@
                         done: function () {
                             diffUserDoDiffThing(function () {
                                 $(".m-mod").show();
+                                $("#submitForPreserve").html("重新判分")
                             }, function () {
                                 $(".e-mod").show();
                                 $.post({
@@ -214,41 +217,6 @@
                                     }
                                 })
                             });
-                            let dataToBeSub = {};
-                            $("#submit").unbind("click").click(function () {
-                                table.render({
-                                    elem: '#dataTable',
-                                    url: "../service/get_evaluating_indicator_value.php",
-                                    height: 1100,
-                                    limit: Number.MAX_SAFE_INTEGER,
-                                    cols: [[
-                                        {type: 'numbers', style: 'background-color: #eee;'},
-                                        {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
-                                        {
-                                            field: 'value',
-                                            width: 110,
-                                            title: '数值',
-                                            edit: "number",
-                                            style: 'background-color: #FFFFFF;'
-                                        },
-                                        {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
-                                    ]],
-                                    size: 'sm',
-                                    done: function (res) {
-                                        for (const d of res.data) {
-                                            if (d["value"] != null)
-                                                dataToBeSub[d["indicator"]] = d["value"];
-                                        }
-                                    }
-                                });
-                                layer.open({
-                                    type: 1,
-                                    title: '请在数值列输入详细数据',
-                                    content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                                    area: ['895px', '90%']
-                                });
-                                return false
-                            });
 
                             let dataLength = 32;
                             table.on('edit(dataTable)', function (obj) {
@@ -260,10 +228,10 @@
                                     delete dataToBeSub[data.indicator]
                             });
                             $("#submitForPreserve").unbind("click").click(function () {
-                                if (Object.keys(dataToBeSub).length < dataLength) {
-                                    layer.msg("请输入全部数据！");
-                                    return false;
-                                }
+                                // if (Object.keys(dataToBeSub).length < dataLength) {
+                                //     layer.msg("请输入全部数据！");
+                                //     return false;
+                                // }
                                 let msg = layer.load(1)
                                 $.post({
                                     url: "../service/submit_data.php",
@@ -273,7 +241,7 @@
                                         if (res.data === true) {
                                             layer.alert("保存成功！请确认无误后上传相关附件,然后提交审核！", {icon: 1}, function () {
                                                 layer.closeAll();
-                                                location.reload();
+                                                maintable.reload();
                                             })
                                         } else if (res.data === 1265 || res.data == 1366) {
                                             layer.alert("请检查数据格式是否正确！", {icon: 2})
@@ -375,8 +343,44 @@
                     });
 
                     table.on('tool(enterpriseTable)', function (obj) {
+                        activeLoginId = obj.data.loginid
+                        dataToBeSub['loginid'] = activeLoginId
+                        $("#submit").unbind("click").click(function () {
+                            table.render({
+                                elem: '#dataTable',
+                                url: "../service/get_evaluating_indicator_value.php?user=" + activeLoginId,
+                                height: 1100,
+                                limit: Number.MAX_SAFE_INTEGER,
+                                cols: [[
+                                    {type: 'numbers', style: 'background-color: #eee;'},
+                                    {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
+                                    {
+                                        field: 'value',
+                                        width: 110,
+                                        title: '数值',
+                                        edit: "number",
+                                        style: 'background-color: #FFFFFF;'
+                                    },
+                                    {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
+                                ]],
+                                size: 'sm',
+                                done: function (res) {
+                                    for (const d of res.data) {
+                                        if (d["value"] != null)
+                                            dataToBeSub[d["indicator"]] = d["value"];
+                                    }
+                                }
+                            });
+                            layer.open({
+                                type: 1,
+                                title: '请在数值列输入详细数据',
+                                content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                                area: ['895px', '90%']
+                            });
+                            return false
+                        });
                         if (obj.event === 'view_data') {
-                            $("#submitForPreserve").hide()
+                            $("#submitForPreserve").show()
                             $("#submitForReview").show()
                             let loadMsg = layer.load(1)
                             dataTableWithAttach.reload({
@@ -400,7 +404,8 @@
                                     })
                                 }
                             })
-                        } else if (obj.event === 'view_score_mach') {
+                        }
+                        else if (obj.event === 'view_score_mach') {
                             let msg = layer.load(1)
                             table.render({
                                 elem: '#scoreTable',
@@ -425,7 +430,8 @@
                                     layer.close(msg)
                                 }
                             });
-                        } else if (obj.event === 'pass') {
+                        }
+                        else if (obj.event === 'pass') {
                             layer.confirm("确认通过【" + obj.data.name + "】的申请吗？", {
                                 btn: ['确认', '取消'] //可以无限个按钮
                             }, function () {
@@ -443,7 +449,8 @@
                                     dataType: "json"
                                 })
                             })
-                        } else if (obj.event === 'return') {
+                        }
+                        else if (obj.event === 'return') {
                             layer.prompt({title: "请输入退回原因", formType: 2}, function (value, index) {
                                 $.post({
                                     url: "../service/check_data.php",
@@ -461,66 +468,43 @@
                                 })
                                 layer.close(index);
                             });
-                        } else if (obj.event === 'submit') {
+                        }
+                        else if (obj.event === 'submit') {
                             $("#submit").click()
-                        } else if (obj.event === "expert_score") {
-                            let msg = layer.load(1)
-                            let scoreToBeSub = {"loginid": obj.data.loginid};
+                        }
+                        else if (obj.event === "expert_score") {
                             table.render({
-                                elem: '#scoreTable',
-                                url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid + '&type=expert',
-                                height: 900,
-                                toolbar: false,
+                                elem: '#dataTable',
+                                url: "../service/get_evaluating_indicator_value.php?user=" + obj.data["loginid"],
+                                height: 1100,
                                 limit: Number.MAX_SAFE_INTEGER,
                                 cols: [[
                                     {type: 'numbers', style: 'background-color: #eee;'},
                                     {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
                                     {
-                                        field: 'score',
+                                        field: 'value',
+                                        width: 110,
+                                        title: '数值',
                                         edit: "number",
-                                        width: 150,
-                                        title: '成绩',
                                         style: 'background-color: #FFFFFF;'
                                     },
+                                    {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
                                 ]],
                                 size: 'sm',
                                 done: function (res) {
-                                    layer.open({
-                                        type: 1,
-                                        title: '专家打分表',
-                                        content: $('#scoreTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                                        area: ['500x', '90%'],
-                                        cancel: function () {
-                                            $("#submitScore").hide()
-                                        }
-                                    });
-                                    layer.close(msg)
                                     for (const d of res.data) {
-                                        scoreToBeSub[d["indicator"]] = d["score"];
+                                        if (d["value"] != null)
+                                            dataToBeSub[d["indicator"]] = d["value"];
                                     }
-                                    table.on('edit(scoreTable)', function (obj) {
-                                        var data = obj.data;
-                                        scoreToBeSub[data.indicator] = obj.value;
-                                    });
-                                    $("#submitScore").show()
-                                    $("#submitScore").unbind("click").click(function () {
-                                        let msg = layer.load(1)
-                                        $.post({
-                                            url: "../service/submit_score.php",
-                                            data: scoreToBeSub,
-                                            success: function (res) {
-                                                layer.close(msg)
-                                                console.log(typeof res)
-                                                if (res == true || res == 1) {
-                                                    layer.alert("成功！", {icon: 1}, function () {
-                                                        layer.closeAll()
-                                                    })
-                                                } else layer.alert(res)
-                                            }
-                                        })
-                                    })
                                 }
                             });
+                            layer.open({
+                                type: 1,
+                                title: '???',
+                                content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                                area: ['895px', '90%']
+                            });
+                            return false
                         }
                     })
 

@@ -4,41 +4,54 @@ $arr = array(
     "status" => 'notLogin',
     "data" => null
 );
-require_once 'db.php';
-$db = new DB();
-if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
+
+$user = null;
+if (isset($_SESSION['usertype'])) {
     $arr["status"] = "isLogin";
+    require_once 'db.php';
+    $db = new DB();
+
+    if ($_SESSION['usertype'] === "enterprise") {
+        $user = $_SESSION['loginid'];
+    } else {
+        $user = $_POST['loginid'];
+        require_once "common.php";
+        $_SESSION['status'] = get_user_status($user);
+    }
 
     // 检查用户状态
     $status = $_SESSION['status'] % 5;
-    if ($status != "1" && $status != "3") {
-        if ($status == "0")
-            $arr["data"] = "请先完善企业信息！";
-        else if ($status == "2")
-            $arr["data"] = "您已经提交，请勿重复提交！";
-        else if ($status == "4")
-            $arr["data"] = "已经通过！";
-        die(json_encode($arr));
-    }
+//    if ($status != "1" && $status != "3") {
+//        if ($status == "0")
+//            $arr["data"] = "请先完善企业信息！";
+//        else if ($status == "2")
+//            $arr["data"] = "您已经提交，请勿重复提交！";
+//        else if ($status == "4")
+//            $arr["data"] = "已经通过！";
+//        die(json_encode($arr));
+//    }
 
     // 数据插入数据库
     $sql = "INSERT INTO `enterprise_data`(";
     foreach (array_keys($_POST) as $key) {
         $sql .= "`" . $db->escape($key) . "`, ";
     }
-    $sql .= "`loginid`) VALUES(";
+    $sql = substr($sql, 0, -2);
+    $sql .= ") VALUES(";
     foreach (array_keys($_POST) as $key) {
         $sql .= "'" . $db->escape($_POST[$key]) . "', ";
     }
-    //$sql = substr($sql, 0, strlen($sql) - 2);
-    $sql .= "'" . $db->escape($_SESSION["loginid"]) . "');";
+    $sql = substr($sql, 0, -2);
+    $sql .= ");";
+//    var_dump($sql);
     $arr["data"] = $db->query($sql); // 成功返回true，失败返回错误码
     if ($arr["data"] == 1062) { // 如果已经存在，则尝试进行更新
         $sql = "UPDATE `enterprise_data` SET ";
         foreach (array_keys($_POST) as $key) {
             $sql .= "`" . $db->escape($key) . "` = '" . $db->escape($_POST[$key]) . "', ";
         }
-        $sql .= "`loginid` = '" . $db->escape($_SESSION["loginid"]) . "' WHERE `loginid` = '" . $db->escape($_SESSION["loginid"]) . "'";
+        $sql = substr($sql, 0, -2);
+        $sql .= " WHERE `loginid` = '" . $db->escape($user) . "'";
         $arr["data"] = $db->query($sql); // 成功返回true，失败返回错误码
     }
 
@@ -47,7 +60,7 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
         cal_score();
         // update info
         date_default_timezone_set("PRC");
-        $sql = "UPDATE `enterprise` set  `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '" . $db->escape($_SESSION["loginid"]) . "'";
+        $sql = "UPDATE `enterprise` set  `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '" . $db->escape($user) . "'";
         $db->query($sql);
     }
 }
@@ -55,6 +68,7 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
 function cal_score()
 {
     // 公式
+    $user = $GLOBALS['user'];
     $metaData = array();
     $metaData["研究人员人均研发经费支出"] = array(
         $_POST["研究与试验发展经费支出"] / $_POST['研究与试验发展人员数'], 8, 20, 40
@@ -122,8 +136,12 @@ function cal_score()
     $metaData["获省级协会以上成果奖励项目数量"] = array( //？？
         $_POST["企业获得省级以上质量标杆，品牌培育示范、试点企业项目数量【国家级】"] + $_POST["企业获得省级以上质量标杆，品牌培育示范、试点企业项目数量【省级】"], 4, 1, 2
     );
+    $metaData["营业收入"] = array( //？？
+        $_POST["主营业务收入"], 5, 5000, 20000
+    );
     //  指标数值0    权重1  基本要求2    满分要求3
     $res = 0;
+    $score_cnt = 0;
     foreach ($metaData as &$data) { // 成绩存储在data[4]
         if ($data[0] >= $data[3])
             array_push($data, $data[1]);
@@ -136,24 +154,27 @@ function cal_score()
         else if ($data[0] > $data[2] && $data[0] < $data[3])
             array_push($data, ($data[0] - $data[2]) / ($data[3] - $data[2]) * $data[1] * 0.4 + $data[1] * 0.6);
 //        var_dump("满分", $data[3], "基本", $data[2], "数值", $data[0], "权重", $data[1], "得分", $data[4]);
+        $score_cnt += $data[4];
     }
 
     $sql = "INSERT INTO `enterprise_score`(";
     foreach (array_keys($metaData) as $key) {
         $sql .= "`$key`, ";
     }
-    $sql .= "`loginid`, `type`) VALUES(";
+    $sql .= "`loginid`, `type`, `得分汇总`) VALUES(";
     foreach (array_keys($metaData) as $key) {
         $sql .= "'" . $metaData[$key][4] . "', ";
     }
-    $sql .= "'$_SESSION[loginid]', 'machine');";
+    $sql .= "'$user', 'machine', '$score_cnt');";
+//    var_dump($sql);
     if ($GLOBALS['db']->query($sql) == 1062) { // 如果已经存在尝试进行更新
         $sql = "UPDATE `enterprise_score` SET ";
         foreach (array_keys($metaData) as $key) {
             $sql .= "`$key` = '" . $metaData[$key][4] . "', ";
         }
-        $sql .= "`type` = 'machine' WHERE `loginid` = '$_SESSION[loginid]'";
+        $sql .= "`type` = 'machine', `得分汇总` = '$score_cnt' WHERE `loginid` = '$user'";
         $GLOBALS['db']->query($sql);
+//        var_dump($sql);
     }
 }
 
