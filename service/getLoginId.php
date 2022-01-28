@@ -1,3 +1,5 @@
 <?php
 session_start();
-die($_SESSION['loginid']);
+if (isset($_SESSION['loginid']))
+    die($_SESSION['loginid']);
+die("");

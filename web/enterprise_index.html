@@ -96,15 +96,15 @@
         // 公告
         layer.open({
             type: 1
-            ,title: false //不显示标题栏
-            ,closeBtn: false
-            ,area: '300px;'
-            ,shade: 0.8
-            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-            ,btn: ['确认']
-            ,btnAlign: 'c'
-            ,moveType: 1 //拖拽模式，0或者1
-            ,content:
+            , title: false //不显示标题栏
+            , closeBtn: false
+            , area: '300px;'
+            , shade: 0.8
+            , id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            , btn: ['确认']
+            , btnAlign: 'c'
+            , moveType: 1 //拖拽模式，0或者1
+            , content:
                 '<div style="padding: 50px; line-height: 30px; background-color: #393D49; color: #ff0000; font-weight: 500;">' +
                 '重要提醒！<br>' +
                 '若企业名称发生变更，请在备注栏说明原企业名称！<br><br>' +
@@ -123,6 +123,10 @@
             url: "../service/getLoginId.php",
             success: function (res) {
                 $("#loginName").html(res + " ")
+                if (res === "")
+                    layer.alert("登录已经过期，请重新登录！", {icon: 3}, function () {
+                        location.href = "enterprise_login.html"
+                    })
             }
         })
         $.get({
@@ -142,7 +146,7 @@
             }
         })
         $("#logout").unbind("click").click(function () {
-            location.href = "../service/logout.php";
+            location.href = "../service/enterprise_logout.php";
         })
         $('body').on('click', '#changePassword', function () {
             var index = layer.open({
@@ -159,7 +163,7 @@
                     },
                     success: function (res) {
                         layer.alert(res, function () {
-                            location.href = "../service/logout.php"
+                            location.href = "../service/manage_logout.php"
                         });
                     }
                 })

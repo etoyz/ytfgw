@@ -198,10 +198,14 @@
             url: "../service/getLoginId.php",
             success: function (res) {
                 $("#loginName").html(res + " ")
+                if (res === "")
+                    layer.alert("登录已经过期，请重新登录！", {icon: 3}, function () {
+                        location.href = "manage_login.html"
+                    })
             }
         })
         $("#logout").unbind("click").click(function () {
-            location.href = "../service/logout.php";
+            location.href = "../service/manage_logout.php";
         })
         // 显示“修改密码”弹窗
         $('body').on('click', '#changePassword', function () {
@@ -219,7 +223,7 @@
                     },
                     success: function (res) {
                         layer.alert(res, function () {
-                            location.href = "../service/logout.php"
+                            location.href = "../service/manage_logout.php"
                         });
                     }
                 })

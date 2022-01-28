@@ -228,10 +228,10 @@
                                     delete dataToBeSub[data.indicator]
                             });
                             $("#submitForPreserve").unbind("click").click(function () {
-                                // if (Object.keys(dataToBeSub).length < dataLength) {
-                                //     layer.msg("请输入全部数据！");
-                                //     return false;
-                                // }
+                                if (Object.keys(dataToBeSub).length < dataLength) {
+                                    layer.msg("请输入全部数据！");
+                                    return false;
+                                }
                                 let msg = layer.load(1)
                                 $.post({
                                     url: "../service/submit_data.php",
