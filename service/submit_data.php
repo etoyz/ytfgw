@@ -6,7 +6,7 @@ $arr = array(
 );
 
 $user = null;
-$type= 0;
+$type = 0;
 if (isset($_SESSION['usertype'])) {
     $arr["status"] = "isLogin";
     require_once 'db.php';
@@ -58,10 +58,12 @@ if (isset($_SESSION['usertype'])) {
     if ($arr["data"] === true) {
         // 计算成绩并插入数据库
         cal_score();
-        // update info TODO 企业修改才改提交时间
-        date_default_timezone_set("PRC");
-        $sql = "UPDATE `enterprise` set  `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '" . $db->escape($user) . "'";
-        $db->query($sql);
+        // update info 企业修改才改提交时间
+        if ($_SESSION['usertype'] === "enterprise") {
+            date_default_timezone_set("PRC");
+            $sql = "UPDATE `enterprise` set  `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '" . $db->escape($user) . "'";
+            $db->query($sql);
+        }
     }
 }
 
