@@ -91,6 +91,16 @@
     </script>
     <div class="layui-btn-container s-tabBottomButton">
         <span class="layui-btn e-mod" id="submitForPreserve"> 保存</span>
+    </div>
+</div>
+
+<div class="s-details" id="dataTableWithAttachmentPopup">
+    <table class="layui-hide" id="dataTableWithAttachment" lay-filter="dataTableWithAttachment"></table>
+    <script id="operationDataTableWithAttachment" type="text/html">
+        <a class="layui-btn layui-btn-xs file_upload e-mod" lay-event="file_upload"><i class="layui-icon">&#xe67c;</i>上传附件</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger e-mod" lay-event="file_del">删除附件</a>
+    </script>
+    <div class="layui-btn-container s-tabBottomButton">
         <span class="layui-btn layui-btn-warm e-mod" id="submitForReview">
                 提交申报 <svg class="icon" height="21" p-id="6305" t="1623748927861"
                           version="1.1" viewBox="0 0 1024 620" width="21" xmlns="http://www.w3.org/2000/svg"><path
@@ -230,7 +240,7 @@
                                     success: function (res) {
                                         layer.close(msg)
                                         if (res.data === true) {
-                                            layer.alert("保存成功！请确认无误后上传相关附件,然后提交审核！", {icon: 1}, function () {
+                                            layer.alert("保存成功！", {icon: 1}, function () {
                                                 layer.closeAll();
                                                 maintable.reload();
                                             })
@@ -290,7 +300,7 @@
                                         layer.msg("上传成功！")
                                     else
                                         layer.msg("异常错误！")
-                                    dataTableWithAttach.reload({
+                                    dataTableWithAttachment.reload({
                                         done: function () {
                                             renderUpload()
                                         }
@@ -308,8 +318,8 @@
                         });
                     }
 
-                    let dataTableWithAttach = table.render({
-                        elem: '#dataTable',
+                    let dataTableWithAttachment = table.render({
+                        elem: '#dataTableWithAttachment',
                         url: "../service/get_evaluating_indicator.php",
                         height: 1150,
                         limit: Number.MAX_SAFE_INTEGER,
@@ -336,71 +346,62 @@
                     table.on('tool(enterpriseTable)', function (obj) {
                         activeLoginId = obj.data.loginid
                         dataToBeSub['loginid'] = activeLoginId
-                        $("#fill_in").unbind("click").click(function () {
-                            $("#submitForReview").css("display", "none")
-                            table.render({
-                                elem: '#dataTable',
-                                url: "../service/get_evaluating_indicator_value.php?type=0&user=" + activeLoginId,
-                                height: 1150,
-                                limit: Number.MAX_SAFE_INTEGER,
-                                cols: [[
-                                    {type: 'numbers', style: 'background-color: #eee;'},
-                                    {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
-                                    {
-                                        field: 'value',
-                                        width: 110,
-                                        title: '数值',
-                                        edit: "number",
-                                        style: 'background-color: #FFFFFF;'
-                                    },
-                                    {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
-                                ]],
-                                size: 'sm',
-                                done: function (res) {
-                                    for (const d of res.data) {
-                                        if (d["value"] != null)
-                                            dataToBeSub[d["indicator"]] = d["value"];
-                                    }
+                        let dataTable = table.render({
+                            elem: '#dataTable',
+                            url: "../service/get_evaluating_indicator_value.php?type=0&user=" + activeLoginId,
+                            height: 1150,
+                            limit: Number.MAX_SAFE_INTEGER,
+                            cols: [[
+                                {type: 'numbers', style: 'background-color: #eee;'},
+                                {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
+                                {
+                                    field: 'value',
+                                    width: 110,
+                                    title: '数值',
+                                    edit: "number",
+                                    style: 'background-color: #FFFFFF;'
+                                },
+                                {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
+                            ]],
+                            size: 'sm',
+                            done: function (res) {
+                                for (const d of res.data) {
+                                    if (d["value"] != null)
+                                        dataToBeSub[d["indicator"]] = d["value"];
                                 }
-                            });
+                            }
+                        });
+                        $("#fill_in").unbind("click").click(function () {
+                            dataTable.reload()
                             layer.open({
                                 type: 1,
                                 title: '请在数值列输入详细数据',
                                 content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                                 area: ['895px', '90%'],
-                                cancel: function (){
-                                    $("#submitForReview").css("display", "inline-block")
-                                }
                             });
                             return false
                         });
                         if (obj.event === 'view_data' || obj.event === 'upload_attachment') { //查看提交数据及附件或者企业用户上传附件
                             let loadMsg = layer.load(1)
-                            dataTableWithAttach.reload({
+                            dataTableWithAttachment.reload({
                                 url: "../service/get_evaluating_indicator_value.php?type=0&user=" + obj.data["loginid"],
                                 done: function () {
                                     layer.close(loadMsg)
                                     layer.open({
                                         type: 1,
                                         title: '企业详细数据',
-                                        content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                                        area: ['1187px', '90%'],
-                                        cancel: function () {
-                                            $("#submitForPreserve").css("display", "inline-block")
-                                            $("#submitForReview").css("display", "inline-block")
-                                        }
+                                        content: $('#dataTableWithAttachmentPopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                                        area: ['1187px', '90%']
                                     });
                                     renderUpload()
                                     diffUserDoDiffThing(function () {
                                     }, function () {
                                         $(".e-mod").css("display", "inline-block") //显示对应元素
-                                        $("#submitForPreserve").css("display", "none") //隐藏某些元素
                                         $.post({ // patch
                                             url: "../service/can_user_edit_data.php",
                                             success: function (res) {
                                                 if (res == "0") {
                                                     $(".fill_in").css("display", "none");
-                                                    $("#submitForReview").css("display", "none")
                                                 }
                                             }
                                         })
@@ -480,37 +481,15 @@
                         else if (obj.event === "fix_data") {
                             $("#submitForPreserve").css("display", "inline-block")
                             dataToBeSub['type'] = 1 // 专家核定数据
-                            table.render({
-                                elem: '#dataTable',
-                                url: "../service/get_evaluating_indicator_value.php?type=1&user=" + obj.data["loginid"],
-                                height: 1150,
-                                limit: Number.MAX_SAFE_INTEGER,
-                                cols: [[
-                                    {type: 'numbers', style: 'background-color: #eee;'},
-                                    {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
-                                    {
-                                        field: 'value',
-                                        width: 110,
-                                        title: '数值',
-                                        edit: "number",
-                                        style: 'background-color: #FFFFFF;'
-                                    },
-                                    {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
-                                ]],
-                                size: 'sm',
-                                done: function (res) {
-                                    for (const d of res.data) {
-                                        if (d["value"] != null)
-                                            dataToBeSub[d["indicator"]] = d["value"];
-                                    }
-                                }
-                            });
+                            dataTable.reload({
+                                url: "../service/get_evaluating_indicator_value.php?type=1&user=" + activeLoginId,
+                            })
                             layer.open({
                                 type: 1,
                                 title: '修正企业提交的数据',
                                 content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                                 area: ['895px', '90%'],
-                                cancel: function () {
+                                cancel: function (){
                                     $("#submitForPreserve").css("display", "none")
                                 }
                             });
@@ -530,7 +509,7 @@
                                 success: function (res) {
                                     if (res.data) {
                                         layer.msg("删除成功！")
-                                        dataTableWithAttach.reload({
+                                        dataTableWithAttachment.reload({
                                             done: function () {
                                                 renderUpload()
                                             }
