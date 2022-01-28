@@ -11,6 +11,15 @@
     <link href="assets/plugins/adjust/css/adjustLayui.css" media="all" rel="stylesheet">
     <link href="assets/css/form.css" media="all" rel="stylesheet">
     <link href="assets/css/common.css" media="all" rel="stylesheet">
+    <style>
+        .e-mod {
+            display: none;
+        }
+
+        .m-mod {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <div class="layui-fluid main">
@@ -19,7 +28,7 @@
             <div class="s-headerSearch" id="headArea">
                 <form action="" autocomplete="off" class="layui-form">
                     <div class="layui-form-item">
-                        <div class="layui-inline s-layuiInline m-mod" style="display: none">
+                        <div class="layui-inline s-layuiInline m-mod">
                             <label class="layui-form-label">归属地</label>
                             <div class="layui-input-inline">
                                 <input autocomplete="off" class="layui-input" id="addressSearch"
@@ -27,7 +36,7 @@
                                        type="text">
                             </div>
                         </div>
-                        <div class="layui-inline s-layuiInline m-mod" style="display: none">
+                        <div class="layui-inline s-layuiInline m-mod">
                             <label class="layui-form-label">企业名称</label>
                             <div class="layui-input-inline">
                                 <input autocomplete="off" class="layui-input" id="enterpriseNameSearch"
@@ -35,7 +44,7 @@
                                        type="text">
                             </div>
                         </div>
-                        <div class="layui-inline s-layuiInline m-mod" style="display: none">
+                        <div class="layui-inline s-layuiInline m-mod">
                             <label class="layui-form-label">申报状态</label>
                             <div class="layui-input-inline">
                                 <select id="statusSearch">
@@ -49,12 +58,10 @@
                             </div>
                         </div>
                         <div class="layui-inline s-layuiInline">
-                            <button class="layui-btn layui-btn-warm m-mod" style="display: none" id="queryBtn">查询
-                            </button>
+                            <button class="layui-btn layui-btn-warm m-mod" id="queryBtn">查询</button>
                         </div>
                         <div class="layui-inline s-layuiInline" style="float: right">
-                            <button class="layui-btn m-mod" style="display: none;" id="exportAll">导出全部
-                            </button>
+                            <button class="layui-btn m-mod" id="exportAll">导出全部</button>
                         </div>
                     </div>
                 </form>
@@ -63,16 +70,13 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs submit" lay-event="submit" id="submit">填报数据</a>
-                    <a class="layui-btn layui-btn-xs e-mod attachment" lay-event="view_data" style="display: none">上传附件并提交申报</a>
-                    <a class="layui-btn layui-btn-xs layui-btn-normal m-mod" lay-event="view_data" style="display: none">查看提交数据及附件</a>
-                    <a class="layui-btn layui-btn-xs m-mod" style="display: none"
-                       lay-event="fix_data">核定数据</a>
-                    <a class="layui-btn layui-btn-xs layui-btn-warm m-mod" lay-event="view_score"
-                       style="display: none">得分汇总</a>
-                    <a class="layui-btn layui-btn-xs m-mod" style="display: none" lay-event="pass">通过</a>
-                    <a class="layui-btn layui-btn-xs layui-btn-danger m-mod" style="display: none"
-                       lay-event="return">退回</a>
+                    <a class="layui-btn layui-btn-xs submit e-mod fill_in" lay-event="fill_in" id="fill_in">填报数据</a>
+                    <a class="layui-btn layui-btn-xs e-mod attachment" lay-event="upload_attachment">上传附件并提交申报</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-normal m-mod" lay-event="view_data">查看提交数据及附件</a>
+                    <a class="layui-btn layui-btn-xs m-mod" lay-event="fix_data">核定数据</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-warm m-mod" lay-event="view_score">得分汇总</a>
+                    <a class="layui-btn layui-btn-xs m-mod" lay-event="pass">通过</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-danger m-mod" lay-event="return">退回</a>
                 </script>
             </div>
         </div>
@@ -82,13 +86,12 @@
 <div class="s-details" id="dataTablePopup">
     <table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
     <script id="operationDataTable" type="text/html">
-        <a class="layui-btn layui-btn-xs file_upload e-mod" lay-event="file_upload"><i
-                class="layui-icon">&#xe67c;</i>上传附件</a>
+        <a class="layui-btn layui-btn-xs file_upload e-mod" lay-event="file_upload"><i class="layui-icon">&#xe67c;</i>上传附件</a>
         <a class="layui-btn layui-btn-xs layui-btn-danger e-mod" lay-event="file_del">删除附件</a>
     </script>
     <div class="layui-btn-container s-tabBottomButton">
-        <span class="layui-btn" id="submitForPreserve"> 保存</span>
-        <span class="layui-btn layui-btn-warm" style="display: none" id="submitForReview">
+        <span class="layui-btn e-mod" id="submitForPreserve"> 保存</span>
+        <span class="layui-btn layui-btn-warm e-mod" id="submitForReview">
                 提交申报 <svg class="icon" height="21" p-id="6305" t="1623748927861"
                           version="1.1" viewBox="0 0 1024 620" width="21" xmlns="http://www.w3.org/2000/svg"><path
                 d="M960 260.571L462.222 864 64 512l49.778-100.571 348.444 201.142L960 160z" fill="#ffffff"
@@ -99,14 +102,6 @@
 
 <div class="s-details" id="scoreTablePopup">
     <table class="layui-hide" id="scoreTable" lay-filter="scoreTable"></table>
-    <div class="layui-btn-container s-tabBottomButton">
-        <span class="layui-btn" style="display: none" id="submitScore">
-                打分 <svg class="icon" height="21" p-id="6305" t="1623748927861"
-                        version="1.1" viewBox="0 0 1024 620" width="21" xmlns="http://www.w3.org/2000/svg"><path
-                d="M960 260.571L462.222 864 64 512l49.778-100.571 348.444 201.142L960 160z" fill="#ffffff"
-                p-id="6306"></path></svg>
-        </span>
-    </div>
 </div>
 
 </body>
@@ -192,16 +187,14 @@
                         },
                         done: function () {
                             diffUserDoDiffThing(function () {
-                                $(".m-mod").show();
-                                $(".submit").html("重新判分")
+                                $(".m-mod").css("display", "inline-block")
                             }, function () {
-                                $(".e-mod").show();
+                                $(".e-mod").css("display", "inline-block")
                                 $.post({
                                     url: "../service/can_user_edit_data.php",
                                     success: function (res) {
-                                        console.log(res == "0")
                                         if (res == "0") {
-                                            $(".submit").hide();
+                                            $(".fill_in").css("display", "none");
                                             $(".attachment").html("修改附件内容");
                                         }
                                     }
@@ -210,13 +203,12 @@
                                     url: "../service/can_user_submit_data.php",
                                     success: function (res) {
                                         if (res == "1")
-                                            $("#submit").click();
+                                            $("#fill_in").click();
                                         else
                                             $(".submit").html("修改填报数据");
                                     }
                                 })
-                            });
-
+                            })
                             let dataLength = 32;
                             table.on('edit(dataTable)', function (obj) {
                                 var value = obj.value //得到修改后的值
@@ -344,7 +336,8 @@
                     table.on('tool(enterpriseTable)', function (obj) {
                         activeLoginId = obj.data.loginid
                         dataToBeSub['loginid'] = activeLoginId
-                        $("#submit").unbind("click").click(function () {
+                        $("#fill_in").unbind("click").click(function () {
+                            $("#submitForReview").css("display", "none")
                             table.render({
                                 elem: '#dataTable',
                                 url: "../service/get_evaluating_indicator_value.php?type=0&user=" + activeLoginId,
@@ -374,13 +367,14 @@
                                 type: 1,
                                 title: '请在数值列输入详细数据',
                                 content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                                area: ['895px', '90%']
+                                area: ['895px', '90%'],
+                                cancel: function (){
+                                    $("#submitForReview").css("display", "inline-block")
+                                }
                             });
                             return false
                         });
-                        if (obj.event === 'view_data') {
-                            $("#submitForPreserve").hide()
-                            $("#submitForReview").show()
+                        if (obj.event === 'view_data' || obj.event === 'upload_attachment') { //查看提交数据及附件或者企业用户上传附件
                             let loadMsg = layer.load(1)
                             dataTableWithAttach.reload({
                                 url: "../service/get_evaluating_indicator_value.php?type=0&user=" + obj.data["loginid"],
@@ -392,14 +386,24 @@
                                         content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                                         area: ['1187px', '90%'],
                                         cancel: function () {
-                                            $("#submitForPreserve").show()
-                                            $("#submitForReview").hide()
+                                            $("#submitForPreserve").css("display", "inline-block")
+                                            $("#submitForReview").css("display", "inline-block")
                                         }
                                     });
                                     renderUpload()
                                     diffUserDoDiffThing(function () {
-                                        $(".e-mod").hide()
                                     }, function () {
+                                        $(".e-mod").css("display", "inline-block") //显示对应元素
+                                        $("#submitForPreserve").css("display", "none") //隐藏某些元素
+                                        $.post({ // patch
+                                            url: "../service/can_user_edit_data.php",
+                                            success: function (res) {
+                                                if (res == "0") {
+                                                    $(".fill_in").css("display", "none");
+                                                    $("#submitForReview").css("display", "none")
+                                                }
+                                            }
+                                        })
                                     })
                                 }
                             })
@@ -469,11 +473,12 @@
                                 layer.close(index);
                             });
                         }
-                        else if (obj.event === 'submit') {
+                        else if (obj.event === 'fill_in') {
                             dataToBeSub['type'] = 0 // 企业原始数据
-                            $("#submit").click()
+                            $("#fill_in").click()
                         }
                         else if (obj.event === "fix_data") {
+                            $("#submitForPreserve").css("display", "inline-block")
                             dataToBeSub['type'] = 1 // 专家核定数据
                             table.render({
                                 elem: '#dataTable',
@@ -504,7 +509,10 @@
                                 type: 1,
                                 title: '修正企业提交的数据',
                                 content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                                area: ['895px', '90%']
+                                area: ['895px', '90%'],
+                                cancel: function () {
+                                    $("#submitForPreserve").css("display", "none")
+                                }
                             });
                             return false
                         }
