@@ -68,7 +68,7 @@
                     <a class="layui-btn layui-btn-xs layui-btn-normal m-mod" lay-event="view_data" style="display: none">查看提交数据及附件</a>
                     <a class="layui-btn layui-btn-xs m-mod" style="display: none"
                        lay-event="fix_data">核定数据</a>
-                    <a class="layui-btn layui-btn-xs layui-btn-warm m-mod" lay-event="view_score_mach"
+                    <a class="layui-btn layui-btn-xs layui-btn-warm m-mod" lay-event="view_score"
                        style="display: none">得分汇总</a>
                     <a class="layui-btn layui-btn-xs m-mod" style="display: none" lay-event="pass">通过</a>
                     <a class="layui-btn layui-btn-xs layui-btn-danger m-mod" style="display: none"
@@ -319,7 +319,7 @@
                     let dataTableWithAttach = table.render({
                         elem: '#dataTable',
                         url: "../service/get_evaluating_indicator.php",
-                        height: 1100,
+                        height: 1150,
                         limit: Number.MAX_SAFE_INTEGER,
                         cols: [[
                             {type: 'numbers', style: 'background-color: #eee;'},
@@ -348,7 +348,7 @@
                             table.render({
                                 elem: '#dataTable',
                                 url: "../service/get_evaluating_indicator_value.php?type=0&user=" + activeLoginId,
-                                height: 1100,
+                                height: 1150,
                                 limit: Number.MAX_SAFE_INTEGER,
                                 cols: [[
                                     {type: 'numbers', style: 'background-color: #eee;'},
@@ -390,7 +390,7 @@
                                         type: 1,
                                         title: '企业详细数据',
                                         content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                                        area: ['1300px', '90%'],
+                                        area: ['1187px', '90%'],
                                         cancel: function () {
                                             $("#submitForPreserve").show()
                                             $("#submitForReview").hide()
@@ -404,7 +404,7 @@
                                 }
                             })
                         }
-                        else if (obj.event === 'view_score_mach') {
+                        else if (obj.event === 'view_score') {
                             let msg = layer.load(1)
                             table.render({
                                 elem: '#scoreTable',
@@ -415,9 +415,9 @@
                                 limit: Number.MAX_SAFE_INTEGER,
                                 cols: [[
                                     {type: 'numbers', style: 'background-color: #eee;'},
-                                    {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
-                                    {field: 'score_0', width: 150, title: '填报得分', style: 'background-color: #eee;'},
-                                    {field: 'score_1', width: 150, title: '核定得分', style: 'background-color: #eee;'},
+                                    {field: 'indicator', width: 550, title: '指标', style: 'background-color: #eee;'},
+                                    {field: 'score_0', width: 110, title: '填报得分', style: 'background-color: #eee;'},
+                                    {field: 'score_1', width: 110, title: '核定得分', style: 'background-color: #eee;'},
                                 ]],
                                 size: 'sm',
                                 done: function () {
@@ -425,7 +425,7 @@
                                         type: 1,
                                         title: '电脑评判结果',
                                         content: $('#scoreTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                                        area: ['500x', '90%']
+                                        area: ['866px', '90%']
                                     });
                                     layer.close(msg)
                                 }
@@ -478,7 +478,7 @@
                             table.render({
                                 elem: '#dataTable',
                                 url: "../service/get_evaluating_indicator_value.php?type=1&user=" + obj.data["loginid"],
-                                height: 1100,
+                                height: 1150,
                                 limit: Number.MAX_SAFE_INTEGER,
                                 cols: [[
                                     {type: 'numbers', style: 'background-color: #eee;'},
