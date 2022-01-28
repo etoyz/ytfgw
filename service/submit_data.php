@@ -169,13 +169,12 @@ function cal_score()
         $sql .= "'" . $metaData[$key][4] . "', ";
     }
     $sql .= "'$user', $type, '$score_cnt');";
-//    var_dump($sql);
     if ($GLOBALS['db']->query($sql) == 1062) { // 如果已经存在尝试进行更新
         $sql = "UPDATE `enterprise_score` SET ";
         foreach (array_keys($metaData) as $key) {
             $sql .= "`$key` = '" . $metaData[$key][4] . "', ";
         }
-        $sql .= "`type` = $type, `得分汇总` = '$score_cnt' WHERE `loginid` = '$user'";
+        $sql .= "`type` = $type, `得分汇总` = '$score_cnt' WHERE `loginid` = '$user' AND `type` = '$type'";
         $GLOBALS['db']->query($sql);
 //        var_dump($sql);
     }
