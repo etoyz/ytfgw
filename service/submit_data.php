@@ -11,25 +11,22 @@ if (isset($_SESSION['usertype'])) {
     require_once 'db.php';
     $db = new DB();
 
+    // 若是企业用户，则只能提交自己的数据，且会进行状态校验
     if ($_SESSION['usertype'] === "enterprise") {
         $user = $_SESSION['loginid'];
-    } else {
+        // 检查用户状态
+        $status = $_SESSION['status'] % 5;
+        if ($status != "1" && $status != "3") {
+            if ($status == "0")
+                $arr["data"] = "请先完善企业信息！";
+            else if ($status == "2")
+                $arr["data"] = "您已经提交，请勿重复提交！";
+            else if ($status == "4")
+                $arr["data"] = "已经通过！";
+            die(json_encode($arr));
+        }
+    } else // 如果是管理员，可以提交任意用户数据
         $user = $_POST['loginid'];
-        require_once "common.php";
-        $_SESSION['status'] = get_user_status($user);
-    }
-
-    // 检查用户状态
-    $status = $_SESSION['status'] % 5;
-//    if ($status != "1" && $status != "3") {
-//        if ($status == "0")
-//            $arr["data"] = "请先完善企业信息！";
-//        else if ($status == "2")
-//            $arr["data"] = "您已经提交，请勿重复提交！";
-//        else if ($status == "4")
-//            $arr["data"] = "已经通过！";
-//        die(json_encode($arr));
-//    }
 
     // 数据插入数据库
     $sql = "INSERT INTO `enterprise_data`(";

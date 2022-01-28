@@ -65,11 +65,11 @@
                 <script id="operation" type="text/html">
                     <a class="layui-btn layui-btn-xs submit" lay-event="submit" id="submit">填报数据</a>
                     <a class="layui-btn layui-btn-xs e-mod attachment" lay-event="view_data" style="display: none">上传附件并提交申报</a>
-                    <a class="layui-btn layui-btn-xs m-mod" lay-event="view_data" style="display: none">查看提交数据及附件</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-normal m-mod" lay-event="view_data" style="display: none">查看提交数据及附件</a>
+                    <a class="layui-btn layui-btn-xs m-mod" style="display: none"
+                       lay-event="fix_data">核定数据</a>
                     <a class="layui-btn layui-btn-xs layui-btn-warm m-mod" lay-event="view_score_mach"
-                       style="display: none">电脑打分</a>
-                    <a class="layui-btn layui-btn-xs layui-btn-disabled m-mod" style="display: none"
-                       lay-event="??expert_score??" onclick="return false">专家打分</a>
+                       style="display: none">得分汇总</a>
                     <a class="layui-btn layui-btn-xs m-mod" style="display: none" lay-event="pass">通过</a>
                     <a class="layui-btn layui-btn-xs layui-btn-danger m-mod" style="display: none"
                        lay-event="return">退回</a>
@@ -193,7 +193,6 @@
                         done: function () {
                             diffUserDoDiffThing(function () {
                                 $(".m-mod").show();
-                                $("#submitForPreserve").html("重新判分")
                                 $(".submit").html("重新判分")
                             }, function () {
                                 $(".e-mod").show();
@@ -417,7 +416,8 @@
                                 cols: [[
                                     {type: 'numbers', style: 'background-color: #eee;'},
                                     {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
-                                    {field: 'score', width: 150, title: '成绩', style: 'background-color: #eee;'},
+                                    {field: 'score', width: 150, title: '填报得分', style: 'background-color: #eee;'},
+                                    {field: 'score', width: 150, title: '核定得分', style: 'background-color: #eee;'},
                                 ]],
                                 size: 'sm',
                                 done: function () {
@@ -472,7 +472,7 @@
                         else if (obj.event === 'submit') {
                             $("#submit").click()
                         }
-                        else if (obj.event === "expert_score") {
+                        else if (obj.event === "fix_data") {
                             table.render({
                                 elem: '#dataTable',
                                 url: "../service/get_evaluating_indicator_value.php?user=" + obj.data["loginid"],
@@ -500,7 +500,7 @@
                             });
                             layer.open({
                                 type: 1,
-                                title: '???',
+                                title: '修正企业提交的数据',
                                 content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                                 area: ['895px', '90%']
                             });
