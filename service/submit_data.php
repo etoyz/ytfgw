@@ -6,6 +6,7 @@ $arr = array(
 );
 
 $user = null;
+$type= 0;
 if (isset($_SESSION['usertype'])) {
     $arr["status"] = "isLogin";
     require_once 'db.php';
@@ -25,8 +26,10 @@ if (isset($_SESSION['usertype'])) {
                 $arr["data"] = "已经通过！";
             die(json_encode($arr));
         }
-    } else // 如果是管理员，可以提交任意用户数据
+    } else { // 如果是管理员：可以提交任意用户数据，用于重新判分; 可以提交专家的评分
         $user = $_POST['loginid'];
+        $type = $_POST['type'];
+    }
 
     // 数据插入数据库
     $sql = "INSERT INTO `enterprise_data`(";
@@ -48,14 +51,14 @@ if (isset($_SESSION['usertype'])) {
             $sql .= "`" . $db->escape($key) . "` = '" . $db->escape($_POST[$key]) . "', ";
         }
         $sql = substr($sql, 0, -2);
-        $sql .= " WHERE `loginid` = '" . $db->escape($user) . "'";
+        $sql .= " WHERE `loginid` = '" . $db->escape($user) . "' AND `type` = '" . $db->escape($type) . "'";
         $arr["data"] = $db->query($sql); // 成功返回true，失败返回错误码
     }
 
     if ($arr["data"] === true) {
         // 计算成绩并插入数据库
         cal_score();
-        // update info
+        // update info TODO 企业修改才改提交时间
         date_default_timezone_set("PRC");
         $sql = "UPDATE `enterprise` set  `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '" . $db->escape($user) . "'";
         $db->query($sql);
@@ -66,6 +69,7 @@ function cal_score()
 {
     // 公式
     $user = $GLOBALS['user'];
+    $type = $GLOBALS['type'];
     $metaData = array();
     $metaData["研究人员人均研发经费支出"] = array(
         $_POST["研究与试验发展经费支出"] / $_POST['研究与试验发展人员数'], 8, 20, 40
@@ -162,14 +166,14 @@ function cal_score()
     foreach (array_keys($metaData) as $key) {
         $sql .= "'" . $metaData[$key][4] . "', ";
     }
-    $sql .= "'$user', 'machine', '$score_cnt');";
+    $sql .= "'$user', $type, '$score_cnt');";
 //    var_dump($sql);
     if ($GLOBALS['db']->query($sql) == 1062) { // 如果已经存在尝试进行更新
         $sql = "UPDATE `enterprise_score` SET ";
         foreach (array_keys($metaData) as $key) {
             $sql .= "`$key` = '" . $metaData[$key][4] . "', ";
         }
-        $sql .= "`type` = 'machine', `得分汇总` = '$score_cnt' WHERE `loginid` = '$user'";
+        $sql .= "`type` = $type, `得分汇总` = '$score_cnt' WHERE `loginid` = '$user'";
         $GLOBALS['db']->query($sql);
 //        var_dump($sql);
     }
