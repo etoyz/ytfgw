@@ -15,12 +15,10 @@ if (isset($_SESSION['usertype'])) { // 已经登录
         $sql = null;
         $sql2 = null;
         if ($_SESSION['privilege'] == "0") // 超级管理员
-            $query_address = $db->escape($_GET['query_address']);
+            $query_address = $_GET['query_address'] ?? "";
         else
             $query_address = $_SESSION['privilege'];
-        $status_detail = $_GET['status_detail'];
-        if ($status_detail == null)
-            $status_detail = -1;
+        $status_detail = $_GET['status_detail'] ?? -1;
         $query = $db->escape($_GET['query']);
         $from = ($_GET['page'] - 1) * $_GET['limit'];
         $to = $_GET['limit'];

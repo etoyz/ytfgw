@@ -27,7 +27,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
 //    var_dump($re2);
 //    var_dump($sql2);
     $re_indicator_values = mysqli_fetch_array($re_indicator_values);
-    $units = ["loginid", "万元", "万元", "人", "人", "人", "人月", "个", "个", "个", "项", "项", "个", "个", "万元", "项", "项", "项", "项", "项", "项", "项", "万元", "万元", "万元", "项", "项", "万元", "项", "项", "项", "项", "---", "---", "---", "---", "---"];
+    $units = ["loginid", "type", "万元", "万元", "人", "人", "人", "人月", "个", "个", "个", "项", "项", "个", "个", "万元", "项", "项", "项", "项", "项", "项", "项", "万元", "万元", "万元", "项", "项", "万元", "项", "项", "项", "项", "---", "---", "---", "---", "---"];
     $i = 0;
 
     // file code
@@ -41,7 +41,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     require_once "common.php";
 //    var_dump($re);
 //    var_dump($re2);
-    $disable_indicators = ["loginid"];
+    $disable_indicators = ["loginid", "type"];
     if (get_user_status($user) <= 4) {// 申报体系
         array_push($disable_indicators, "运行评价报告");
         array_push($disable_indicators, "市级企业技术中心认定通知");
