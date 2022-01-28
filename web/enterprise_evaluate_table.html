@@ -347,7 +347,7 @@
                         $("#submit").unbind("click").click(function () {
                             table.render({
                                 elem: '#dataTable',
-                                url: "../service/get_evaluating_indicator_value.php?user=" + activeLoginId,
+                                url: "../service/get_evaluating_indicator_value.php?type=0&user=" + activeLoginId,
                                 height: 1100,
                                 limit: Number.MAX_SAFE_INTEGER,
                                 cols: [[
@@ -383,7 +383,7 @@
                             $("#submitForReview").show()
                             let loadMsg = layer.load(1)
                             dataTableWithAttach.reload({
-                                url: "../service/get_evaluating_indicator_value.php?user=" + obj.data["loginid"],
+                                url: "../service/get_evaluating_indicator_value.php?type=0&user=" + obj.data["loginid"],
                                 done: function () {
                                     layer.close(loadMsg)
                                     layer.open({
@@ -475,7 +475,7 @@
                         else if (obj.event === "fix_data") {
                             table.render({
                                 elem: '#dataTable',
-                                url: "../service/get_evaluating_indicator_value.php?user=" + obj.data["loginid"],
+                                url: "../service/get_evaluating_indicator_value.php?type=1&user=" + obj.data["loginid"],
                                 height: 1100,
                                 limit: Number.MAX_SAFE_INTEGER,
                                 cols: [[

@@ -6,6 +6,10 @@ $response = array(
 );
 
 if (isset($_SESSION['usertype'])) { // 已经登录
+    $response["status"] = "isLogin";
+    $response["data"] = [];
+    $response["code"] = 0;
+
     $user = null;
     if ($_SESSION['usertype'] === "enterprise") {
         $user = $_SESSION['loginid'];
@@ -15,18 +19,23 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     require_once 'db.php';
     $db = new DB();
     $user = $db->escape($user);
+    $type = $db->escape($_GET['type']);
 
     $sql = "DESCRIBE enterprise_data;";
-    $sql2 = "SELECT * FROM enterprise_data WHERE `loginid` = '$user';";
+    $sql2 = "SELECT * FROM enterprise_data WHERE `loginid` = '$user' AND `type` = '$type';";
     $re_indicators = $db->query($sql);
     $re_indicator_values = $db->query($sql2);
-    $response["status"] = "isLogin";
-    $response["data"] = [];
-    $response["code"] = 0;
     $re_indicators = $re_indicators->fetch_all(MYSQLI_ASSOC);
 //    var_dump($re2);
 //    var_dump($sql2);
+    if ($re_indicator_values->num_rows == 0 && $type == 1) // 若查询专家核定数据，而专家还未操作过，则返回企业原数据
+    {
+        $sql2 = "SELECT * FROM enterprise_data WHERE `loginid` = '$user' AND `type` = '0';";
+        $re_indicator_values = $db->query($sql2);
+    }
+//    var_dump($re_indicator_values);
     $re_indicator_values = mysqli_fetch_array($re_indicator_values);
+//    var_dump($re_indicator_values);
     $units = ["loginid", "type", "万元", "万元", "人", "人", "人", "人月", "个", "个", "个", "项", "项", "个", "个", "万元", "项", "项", "项", "项", "项", "项", "项", "万元", "万元", "万元", "项", "项", "万元", "项", "项", "项", "项", "---", "---", "---", "---", "---"];
     $i = 0;
 
