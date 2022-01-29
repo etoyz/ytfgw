@@ -12,15 +12,21 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md6">
             <div class="layui-card">
-                <div class="layui-card-header" style="font-size: 30px;color: red">重要提醒</div>
-                <div class="layui-card-body" style="font-size: 20px">
-                    申报截止时间为2021年11月15日晚23点59分。过期不可申报！<br>
-                    技术服务电话：0535-6257103, 15154503319<br>
-                    邮箱：gczx209@126.com
+                <div class="layui-card-header" style="font-size: 35px;color: red">重要提醒</div>
+                <div class="layui-card-body" style="font-size: 20px" id="board">
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script>
+    $.ajax({
+        url: "../service/get_announcement.php",
+        success: function (res){
+            $("#board").html(res)
+        }
+    })
+</script>
 </body>
 </html>
