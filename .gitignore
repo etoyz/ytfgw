@@ -7,7 +7,7 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 
-config.php
+app.ini
 web/doc/*
 .idea/*
 uploads/*

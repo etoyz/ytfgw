@@ -12,12 +12,13 @@ class DB
 
     public function __construct()
     {
-        require "../config.php";
-        $this->host = $DB_HOST;
-        $this->port = $DB_PORT;
-        $this->user = $DB_USER;
-        $this->pass = $DB_PASSWORD;
-        $this->db = $DB_NAME;
+        include "INI.class.php";
+        $db_config = (new INI('../app.ini'))->data['Database'];
+        $this->host = $db_config['DB_HOST'];
+        $this->port = $db_config['DB_PORT'];
+        $this->user = $db_config['DB_USER'];
+        $this->pass = $db_config['DB_PASSWORD'];
+        $this->db = $db_config['DB_NAME'];
         $this->charset = 'utf8';
         //连接数据库
         $this->db_connect();
