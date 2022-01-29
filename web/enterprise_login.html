@@ -95,7 +95,7 @@
                     if (res.status === "isLogin")
                         location.href = "enterprise_index.html";
                     else
-                        layer.alert("用户名或密码错误！");
+                        layer.alert(res.msg);
                 },
                 dataType: 'json'
             })
