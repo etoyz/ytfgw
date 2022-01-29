@@ -12,7 +12,7 @@ class DB
 
     public function __construct()
     {
-        include "INI.class.php";
+        include_once "INI.class.php";
         $db_config = (new INI('../app.ini'))->data['Database'];
         $this->host = $db_config['DB_HOST'];
         $this->port = $db_config['DB_PORT'];

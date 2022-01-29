@@ -31,7 +31,7 @@ body {
     position: absolute;
     right: 10%;
     top: 22%;
-    z-index: 99999999;
+    z-index: 0;
 }
 
 .zyl_lofo_icon {
