@@ -160,14 +160,16 @@
 <div class="s-details" id="controlPanelWin">
     <div class="layui-form">
         <hr>
-        <textarea style="min-height: 250px" placeholder="请输入公告内容" class="layui-textarea"></textarea>
+        <textarea id="announcement_input" name="announcement" style="min-height: 250px" placeholder="请输入公告内容"
+                  class="layui-textarea"></textarea>
         <br>
         <div class="layui-input-block">
             <label class="layui-form-label" style="width: 150px;">是否允许企业登录：</label>
-            <input type="checkbox" name="zzz" lay-skin="switch" lay-text="允许登录|禁止登录">
+            <input type="checkbox" name="allowLogin" lay-skin="switch" lay-text="允许登录|禁止登录">
         </div>
         <hr>
-        <div class="layui-btn" style="margin-left: 249px;width: 70px;">保存</div>
+        <div class="layui-btn" id="config" lay-filter="config" lay-submit style="margin-left: 249px;width: 70px;">保存
+        </div>
     </div>
 </div>
 
@@ -313,11 +315,32 @@
         });
 
         $('body').on('click', '#controlPanel', function () {
+            $.get({
+                url: "../service/get_func_config.php",
+                dataType: "json",
+                success: function (res) {
+                    $("#announcement_input").val(res.announcement)
+                }
+            })
             layer.open({
                 type: 1,
                 title: '控制面板',
                 content: $('#controlPanelWin'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                 area: ['600px', '460px']
+            });
+            form.on('submit(config)', function (data) {
+                $.post({
+                    url: "../service/set_func_config.php",
+                    data: data.field,
+                    success: function (res) {
+                        if (res == "1")
+                            layer.alert("操作成功，请刷新页面！", {icon: 1}, function () {
+                                location.reload();
+                            })
+                        else
+                            layer.alert(res)
+                    }
+                })
             });
         });
     }).config({

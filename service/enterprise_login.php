@@ -8,8 +8,8 @@ $arr = array(
 require_once '../include/db.php';
 $db = new DB();
 
-$is_lock = (new INI("../app.ini"))->data['Ability']['SYSTEM_LOCK'];
-if($is_lock){
+$is_lock = (new INI("../app.ini"))->data['Function']['SYSTEM_LOCK'];
+if($is_lock == "ON"){
     $arr['msg'] = '当前系统已锁定，如需登录，请联系管理人员！';
     die(json_encode($arr));
 }
