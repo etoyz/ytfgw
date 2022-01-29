@@ -93,23 +93,6 @@
         var $ = layui.jquery,
             form = layui.form,
             layer = layui.layer;
-        // 公告
-        layer.open({
-            type: 1
-            , title: false //不显示标题栏
-            , closeBtn: false
-            , area: '300px;'
-            , shade: 0.8
-            , id: 'LAY_layuipro' //设定一个id，防止重复弹出
-            , btn: ['确认']
-            , btnAlign: 'c'
-            , moveType: 1 //拖拽模式，0或者1
-            , content:
-                '<div style="padding: 50px; line-height: 30px; background-color: #393D49; color: #ff0000; font-weight: 500;">' +
-                '重要提醒！<br>' +
-                '若企业名称发生变更，请在备注栏说明原企业名称！<br><br>' +
-                '</div>'
-        });
 
         form.verify({
             pass: function (value) {
