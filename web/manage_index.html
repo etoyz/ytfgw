@@ -165,7 +165,7 @@
         <br>
         <div class="layui-input-block">
             <label class="layui-form-label" style="width: 150px;">是否允许企业登录：</label>
-            <input type="checkbox" name="allowLogin" lay-skin="switch" lay-text="允许登录|禁止登录">
+            <input type="checkbox" name="allowLogin" id="allowLogin" lay-skin="switch" lay-text="允许登录|禁止登录">
         </div>
         <hr>
         <div class="layui-btn" id="config" lay-filter="config" lay-submit style="margin-left: 249px;width: 70px;">保存
@@ -320,6 +320,11 @@
                 dataType: "json",
                 success: function (res) {
                     $("#announcement_input").val(res.announcement)
+                    if (res.SYSTEM_LOCK == "ON")
+                        $("#allowLogin").prop("checked", false);
+                    else
+                        $("#allowLogin").prop("checked", true);
+                    form.render()
                 }
             })
             layer.open({
