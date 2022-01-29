@@ -1,6 +1,6 @@
 <?php
 session_start();
-if($_SESSION['status'] <= 4)
+if ($_SESSION['status'] <= 4)
     $dst_status = 2;
 else
     $dst_status = 7;

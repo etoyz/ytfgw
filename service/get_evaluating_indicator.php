@@ -6,7 +6,7 @@ $response = array(
 );
 
 if (isset($_SESSION['usertype'])) { // 已经登录
-    require_once 'db.php';
+    require_once '../include/db.php';
     $sql = "DESCRIBE enterprise_data;";
     $db = new DB();
     $re = $db->query($sql);

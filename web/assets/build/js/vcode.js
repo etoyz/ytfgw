@@ -33,7 +33,8 @@ function createCode(length) {
 //     validateCode();
 // }
 //检查验证码是否正确
-function validateCode() { return true; // TODO
+function validateCode() {
+    return true; // TODO
     //获取显示区生成的验证码
     var checkCode = document.querySelector(".vcode");
     //获取输入的验证码

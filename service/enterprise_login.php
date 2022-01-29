@@ -6,7 +6,7 @@ $arr = array(
 
 //$response = json_decode(file_get_contents('php://input'));
 
-require_once 'db.php';
+require_once '../include/db.php';
 $db = new DB();
 $sql = "SELECT `loginpw`,`status` FROM `enterprise` WHERE `loginid` = '" . $db->escape($_POST['loginid']) . "';";
 $re = $db->query($sql);

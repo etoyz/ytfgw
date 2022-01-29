@@ -6,7 +6,7 @@ $arr = array(
     "username" => null
 );
 
-require_once 'db.php';
+require_once '../include/db.php';
 $db = new DB();
 
 //名字重复

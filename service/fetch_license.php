@@ -18,7 +18,7 @@ try {
 //    var_dump($e);
     $allFile = array();
 }
-require_once "common.php";
+require_once "../include/common.php";
 if (fetch_indicator_attachment_name("企业营业执照", $allFile) != "未上传")
     $response['license'] = "../uploads/$user/" . fetch_indicator_attachment_name("企业营业执照", $allFile);
 if (fetch_indicator_attachment_name("下属企业营业执照", $allFile) != "未上传")

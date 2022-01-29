@@ -16,7 +16,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     } else {
         $user = $_GET['user'];
     }
-    require_once 'db.php';
+    require_once '../include/db.php';
     $db = new DB();
     $user = $db->escape($user);
     $type = $db->escape($_GET['type']);
@@ -47,7 +47,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
 //        var_dump($e);
         $allFile = array();
     }
-    require_once "common.php";
+    require_once "../include/common.php";
 //    var_dump($re);
 //    var_dump($re2);
     $disable_indicators = ["loginid", "type"];

@@ -9,7 +9,7 @@ $user = null;
 $type = 0;
 if (isset($_SESSION['usertype'])) {
     $arr["status"] = "isLogin";
-    require_once 'db.php';
+    require_once '../include/db.php';
     $db = new DB();
 
     // 若是企业用户，则只能提交自己的数据，且会进行状态校验

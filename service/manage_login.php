@@ -4,7 +4,7 @@ $arr = array(
     "status" => 'notLogin'
 );
 
-require_once 'db.php';
+require_once '../include/db.php';
 $db = new DB();
 $sql = "SELECT * FROM `manager` WHERE `loginid` = '" . $db->escape($_POST['loginid']) . "' AND `loginpw` = '" . $db->escape($_POST['loginpw']) . "';";
 $re = $db->query($sql);

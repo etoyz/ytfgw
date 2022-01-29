@@ -14,7 +14,7 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "manager" && $_SES
 
     $user = $_GET['user'];
 
-    require_once 'db.php';
+    require_once '../include/db.php';
     $db = new DB();
 
     $sql = "DESCRIBE enterprise_score;";

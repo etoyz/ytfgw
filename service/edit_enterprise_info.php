@@ -5,7 +5,7 @@ $response = array(
     "data" => null
 );
 if (isset($_SESSION['usertype'])) {
-    require_once 'db.php';
+    require_once '../include/db.php';
     $db = new DB();
     $dst_status = 1;
     if ($_SESSION['status'] > 4)

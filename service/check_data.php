@@ -8,10 +8,10 @@ $response = array(
 if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "manager") {
     $response['status'] = "isLogin";
 
-    require_once 'db.php';
+    require_once '../include/db.php';
     $db = new DB();
     $sql = null;
-    require_once "common.php";
+    require_once "../include/common.php";
 
     if (get_user_status($_POST["loginid"]) <= 4)
         $pass_status = 4;

@@ -9,7 +9,7 @@ $response = array(
 
 if (isset($_SESSION['usertype'])) { // 已经登录
     $response["status"] = "isLogin";
-    require_once 'db.php';
+    require_once '../include/db.php';
     $db = new DB();
     if ($_SESSION['usertype'] == "manager") {
         $sql = null;

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db.php';
+require_once '../include/db.php';
 $db = new DB();
 $res = "无权限";
 
