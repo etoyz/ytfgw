@@ -21,6 +21,9 @@
             烟台市创新平台申报与评价系统 后台
         </a>
         <ul class="layui-nav layui-layout-right kit-nav">
+            <li class="layui-nav-item"><a class="s-logout" style="display: none;" href="javascript:" id="controlPanel">
+                控制面板</a>
+            </li>
             <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="registerEnterprise2"> 注册企业用户（评价）</a>
             </li>
             <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="registerEnterprise"> 注册企业用户（申报）</a>
@@ -153,6 +156,32 @@
     </form>
 </div>
 
+<!-- 控制面板弹窗 -->
+<div class="s-details" id="controlPanelWin">
+    <form class="layui-form">
+        <div class="layui-form-item s-formItem4">
+            <label class="layui-form-label">新密码</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-verify="required|pass" name="password"
+                       placeholder="请输入6到12位新密码" type="password">
+            </div>
+        </div>
+        <div class="layui-form-item s-formItem4">
+            <label class="layui-form-label">确认密码</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-verify="required|repass" name="confirmPassword"
+                       placeholder="请输入确认密码" type="password">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block s-submitButton5">
+                <button class="layui-btn" lay-filter="save" lay-submit type="button">确认</button>
+            </div>
+        </div>
+    </form>
+</div>
+
 <script src="assets/plugins/layui/layui.js"></script>
 <script src="assets/common/js/tab.js?_=sdfgdfh"></script>
 <script>
@@ -202,6 +231,13 @@
                     layer.alert("登录已经过期，请重新登录！", {icon: 3}, function () {
                         location.href = "manage_login.html"
                     })
+            }
+        })
+        $.get({
+            url: "../service/can_user_control_system.php",
+            success: function (res) {
+                if (res == "1")
+                    $("#controlPanel").show()
             }
         })
         $("#logout").unbind("click").click(function () {
@@ -284,6 +320,15 @@
                 })
                 // 关闭当前弹出层
                 layer.close(index);
+            });
+        });
+
+        $('body').on('click', '#controlPanel', function () {
+            layer.open({
+                type: 1,
+                title: '控制面板',
+                content: $('#controlPanelWin'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                area: '300px'
             });
         });
     }).config({
