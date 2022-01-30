@@ -53,7 +53,7 @@ class DB
     /**
      * 执行sql语句
      * @param string $sql sql语句
-     * @return bool|mysqli_result For successful SELECT, SHOW, DESCRIBE or EXPLAIN queries, mysqli_query() will return a mysqli_result object. For other successful queries mysqli_query() will return TRUE. Returns ERROR CODE on failure.
+     * @return bool|mysqli_result For successful SELECT, SHOW, DESCRIBE or EXPLAIN queries, query() will return a mysqli_result object. For other queries query() will return TRUE on success, returns ERROR CODE on failure.
      */
     public function query($sql)
     {
