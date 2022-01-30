@@ -2,7 +2,7 @@
 session_start();
 
 if (!(isset($_SESSION['usertype']) && $_SESSION['usertype'] == "manager" && $_SESSION['privilege'] == "0")) {
-    die("无权限执行此操作！");
+    die(json_encode("无权限执行此操作！"));
 }
 
 $response = array(
