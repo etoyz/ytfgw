@@ -143,7 +143,6 @@ function cal_score()
         $_POST["主营业务收入"], 5, 5000, 20000
     );
     //  指标数值0    权重1  基本要求2    满分要求3
-    $res = 0;
     $score_cnt = 0;
     foreach ($metaData as &$data) { // 成绩存储在data[4]
         if ($data[0] >= $data[3])
@@ -177,6 +176,8 @@ function cal_score()
         $sql .= "`type` = $type, `得分汇总` = '$score_cnt' WHERE `loginid` = '$user' AND `type` = '$type'";
         $GLOBALS['db']->query($sql);
 //        var_dump($sql);
+        $sql1 = "UPDATE `enterprise` set `expert_score` = '" . number_format($score_cnt, 2) . "' WHERE `loginid` = '$user'";
+        $GLOBALS['db']->query($sql1);
     }
 }
 
