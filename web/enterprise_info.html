@@ -395,11 +395,14 @@
                             data: {
                                 "loginid": obj.data.loginid
                             },
+                            dataType: 'json',
                             success: function (res) {
                                 if (res.db === true) {
-                                    layer.alert("删除成功！")
+                                    layer.alert("删除成功！", function (){
+                                        layer.closeAll()
+                                    })
                                 } else {
-                                    layer.alert("删除失败！错误：" + res)
+                                    layer.alert("删除失败！错误：" + JSON.stringify(res))
                                 }
                             }
                         })
