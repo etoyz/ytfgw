@@ -11,6 +11,15 @@
     <link href="assets/plugins/adjust/css/adjustLayui.css" media="all" rel="stylesheet">
     <link href="assets/css/form.css" media="all" rel="stylesheet">
     <link href="assets/css/common.css" media="all" rel="stylesheet">
+    <style>
+        .e-mod {
+            display: none;
+        }
+
+        .m-mod {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <div class="layui-fluid main">
@@ -19,7 +28,7 @@
             <div class="s-headerSearch" id="headArea">
                 <form action="" autocomplete="off" class="layui-form">
                     <div class="layui-form-item">
-                        <div class="layui-inline s-layuiInline m-mod" style="display: none">
+                        <div class="layui-inline s-layuiInline m-mod">
                             <label class="layui-form-label">归属地</label>
                             <div class="layui-input-inline">
                                 <input autocomplete="off" class="layui-input" id="addressSearch"
@@ -27,7 +36,7 @@
                                        type="text">
                             </div>
                         </div>
-                        <div class="layui-inline s-layuiInline m-mod" style="display: none">
+                        <div class="layui-inline s-layuiInline m-mod">
                             <label class="layui-form-label">企业名称</label>
                             <div class="layui-input-inline">
                                 <input autocomplete="off" class="layui-input" id="enterpriseNameSearch"
@@ -35,7 +44,7 @@
                                        type="text">
                             </div>
                         </div>
-                        <div class="layui-inline s-layuiInline m-mod" style="display: none">
+                        <div class="layui-inline s-layuiInline m-mod">
                             <label class="layui-form-label">申报状态</label>
                             <div class="layui-input-inline">
                                 <select id="statusSearch">
@@ -49,7 +58,7 @@
                             </div>
                         </div>
                         <div class="layui-inline s-layuiInline">
-                            <button class="layui-btn layui-btn-warm m-mod" style="display: none" id="queryBtn">查询
+                            <button class="layui-btn layui-btn-warm m-mod" id="queryBtn">查询
                             </button>
                         </div>
                     </div>
@@ -59,9 +68,9 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs layui-btn-warm e-mod" lay-event="addBtn" style="display: none"
-                       id="addBtn">完善企业信息</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-warm e-mod" lay-event="addBtn" id="addBtn">完善企业信息</a>
                     <a class="layui-btn layui-btn-xs" lay-event="view">查看</a>
+                    <a class="layui-btn layui-btn-xs m-mod layui-btn-danger" lay-event="delete">删除账号</a>
                 </script>
             </div>
         </div>
@@ -229,9 +238,9 @@
             },
             done: function () {
                 diffUserDoDiffThing(function () {
-                    $(".m-mod").show();
+                    $(".m-mod").css("display", "inline-block");
                 }, function () {
-                    $(".e-mod").show();
+                    $(".e-mod").css("display", "inline-block");
                 });
                 $.post({
                     url: "../service/can_user_submit_info.php",
@@ -341,10 +350,11 @@
                     content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                     area: ['800px', '430px'],
                 });
-            } else if (obj.event === 'addBtn') {
+            }
+            else if (obj.event === 'addBtn') {
+                $(".edit-mod").show()
                 renderUploadBtn("#upload_license", "企业营业执照", obj.data.loginid)
                 renderUploadBtn("#upload_license_sub", "下属企业营业执照", obj.data.loginid)
-                $(".edit-mod").show()
                 let data = obj.data;
                 $("#name").val(data["name"]);
                 $("#mainbus").val(data["mainbus"]);
