@@ -72,9 +72,9 @@
                 <script id="operation" type="text/html">
                     <a class="layui-btn layui-btn-xs submit e-mod fill_in" lay-event="fill_in" id="fill_in">填报数据</a>
                     <a class="layui-btn layui-btn-xs e-mod attachment" lay-event="upload_attachment">上传附件并提交申报</a>
-                    <a class="layui-btn layui-btn-xs layui-btn-normal m-mod" lay-event="view_data">查看提交数据及附件</a>
-                    <a class="layui-btn layui-btn-xs m-mod" lay-event="fix_data">核定数据</a>
-                    <a class="layui-btn layui-btn-xs layui-btn-warm m-mod" lay-event="view_score">得分汇总</a>
+                    <a class="layui-btn layui-btn-xs m-mod" lay-event="view_data">查看提交数据及附件</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-warm m-mod" lay-event="fix_data">核定数据</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-normal m-mod" lay-event="view_score">得分汇总</a>
                     <a class="layui-btn layui-btn-xs m-mod" lay-event="pass">通过</a>
                     <a class="layui-btn layui-btn-xs layui-btn-danger m-mod" lay-event="return">退回</a>
                 </script>
@@ -177,7 +177,7 @@
                             {field: 'expert_score', width: '100', title: '专家打分'},
                             {field: 'return_reason', width: '220', title: '退回原因'},
                             {field: 'remark', width: '220', title: '备注'},
-                            {field: 'operation', width: '430', title: '操作', toolbar: '#operation', fixed: 'right'}
+                            {field: 'operation', width: '350', title: '操作', toolbar: '#operation', fixed: 'right'}
                         ]],
                         size: 'sm',
                         parseData: function (res) {
