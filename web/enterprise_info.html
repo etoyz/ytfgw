@@ -400,6 +400,7 @@
                                 if (res.db === true) {
                                     layer.alert("删除成功！", function (){
                                         layer.closeAll()
+                                        enterpriseTable.reload()
                                     })
                                 } else {
                                     layer.alert("删除失败！错误：" + JSON.stringify(res))
