@@ -1,4 +1,7 @@
 <?php
+/**
+ * 获取企业名称
+ */
 session_start();
 require_once '../include/db.php';
 $db = new DB();

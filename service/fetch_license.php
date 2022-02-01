@@ -1,4 +1,7 @@
 <?php
+/**
+ * 获取指定企业的营业执照信息（相对路径）
+ */
 $response = array(
     "license" => null,
     "license_sub" => null
@@ -11,7 +14,7 @@ if ($_SESSION['usertype'] === "enterprise") {
 } else {
     $user = $_GET['user'];
 }
-require_once "define_error_handler_to_catch_warnings.php";
+require_once "../include/define_error_handler_to_catch_warnings.php";
 try {
     $allFile = scandir("../uploads/$user");
 } catch (Exception $e) {

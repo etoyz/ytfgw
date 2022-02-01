@@ -1,4 +1,7 @@
 <?php
+/**
+ * 查看附件
+ */
 session_start();
 if (isset($_SESSION['loginid'])) {  // 验证登录
     if ($_SESSION['usertype'] == "manager") {  // 管理员

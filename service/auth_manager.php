@@ -1,4 +1,7 @@
 <?php
+/**
+ * 验证是否为管理员
+ */
 session_start();
 
 $arr = array(

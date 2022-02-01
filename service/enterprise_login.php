@@ -1,4 +1,7 @@
 <?php
+/**
+ * 企业登录
+ */
 session_start();
 $arr = array(
     "status" => 'notLogin',

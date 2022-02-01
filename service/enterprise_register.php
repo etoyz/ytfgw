@@ -1,4 +1,7 @@
 <?php
+/**
+ * 企业注册（需要管理员权限）
+ */
 require_once "auth_manager.php";
 $arr = array(
     "nameRepetition" => null,

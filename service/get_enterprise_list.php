@@ -1,4 +1,7 @@
 <?php
+/**
+ * 获取企业列表
+ */
 session_start();
 $response = array(
     "status" => 'notLogin',

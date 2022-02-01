@@ -1,4 +1,7 @@
 <?php
+/**
+ * 获取当前的功能配置
+ */
 session_start();
 include "../include/INI.class.php";
 

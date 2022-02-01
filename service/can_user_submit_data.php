@@ -1,4 +1,7 @@
 <?php
+/**
+ * 用户是否为首次提交评判数据
+ */
 session_start();
 if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
     require_once "../include/db.php";

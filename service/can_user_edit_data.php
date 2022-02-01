@@ -1,4 +1,7 @@
 <?php
+/**
+ * 用户是否可以编辑评判数据
+ */
 session_start();
 if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
     $status = $_SESSION['status'] % 5;

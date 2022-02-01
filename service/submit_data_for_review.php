@@ -1,4 +1,7 @@
 <?php
+/**
+ * 提交审核（之后不可更改评判数据）
+ */
 session_start();
 if ($_SESSION['status'] <= 4)
     $dst_status = 2;

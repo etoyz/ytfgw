@@ -1,4 +1,7 @@
 <?php
+/**
+ * 通过或退回企业的申请
+ */
 session_start();
 $response = array(
     "status" => 'notLogin',

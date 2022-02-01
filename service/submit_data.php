@@ -1,4 +1,7 @@
 <?php
+/**
+ * 保存评判数据
+ */
 session_start();
 $arr = array(
     "status" => 'notLogin',

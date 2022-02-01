@@ -1,4 +1,7 @@
 <?php
+/**
+ * 企业&管理员 修改密码
+ */
 session_start();
 if (isset($_SESSION['usertype'])) {
     $sql = null;

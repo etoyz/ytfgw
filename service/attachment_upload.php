@@ -1,4 +1,7 @@
 <?php
+/**
+ * 上传附件
+ */
 session_start();
 
 $response = array(
@@ -12,7 +15,7 @@ if (!isset($_SESSION['usertype']) || $_SESSION['usertype'] === "manager") {
 }
 $response["status"] = "isLogin";
 
-require_once "define_error_handler_to_catch_warnings.php";
+require_once "../include/define_error_handler_to_catch_warnings.php";
 
 try {
     mkdir("../uploads/" . $_SESSION['loginid']);

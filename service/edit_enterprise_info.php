@@ -1,4 +1,7 @@
 <?php
+/**
+ * 编辑企业信息
+ */
 session_start();
 $response = array(
     "status" => 'notLogin',

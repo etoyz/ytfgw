@@ -1,4 +1,7 @@
 <?php
+/**
+ * 获取指标成绩
+ */
 session_start();
 $response = array(
     "status" => 'notLogin',

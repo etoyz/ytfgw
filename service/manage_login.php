@@ -1,4 +1,7 @@
 <?php
+/**
+ * 管理员登录
+ */
 session_start();
 $arr = array(
     "status" => 'notLogin'

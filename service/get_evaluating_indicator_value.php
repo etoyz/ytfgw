@@ -1,4 +1,7 @@
 <?php
+/**
+ * 获取评价指标与对应的值
+ */
 session_start();
 $response = array(
     "status" => 'notLogin',
@@ -40,7 +43,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $i = 0;
 
     // file code
-    require_once "define_error_handler_to_catch_warnings.php";
+    require_once "../include/define_error_handler_to_catch_warnings.php";
     try {
         $allFile = scandir("../uploads/$user");
     } catch (Exception $e) {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * 删除附件
+ */
 session_start();
 $response = array(
     "status" => 'notLogin',
@@ -9,7 +12,7 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") { //
     $response["status"] = "isLogin";
 
     require_once "../include/common.php";
-    require_once "define_error_handler_to_catch_warnings.php";
+    require_once "../include/define_error_handler_to_catch_warnings.php";
     try {
         $response['data'] = unlink("../uploads/$_SESSION[loginid]/" . fetch_indicator_attachment_name($_GET['indicator'], scandir("../uploads/$_SESSION[loginid]")));
     } catch (Exception $e) {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * 配置功能
+ */
 session_start();
 if (isset($_SESSION['usertype']) && $_SESSION['usertype'] == "manager" && $_SESSION['privilege'] == "0") {
     include "../include/INI.class.php";
