@@ -8,7 +8,7 @@ if ($_SESSION['status'] <= 4)
 else
     $dst_status = 7;
 $_SESSION['status'] = $dst_status;
-require_once "db.php";
+require_once "../include/db.php";
 $db = new DB();
 $sql = "UPDATE `enterprise` set  `status` = $dst_status WHERE `loginid` = '" . $db->escape($_SESSION["loginid"]) . "'";
 die($db->query($sql));

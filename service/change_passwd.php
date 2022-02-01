@@ -5,7 +5,7 @@
 session_start();
 if (isset($_SESSION['usertype'])) {
     $sql = null;
-    require_once "db.php";
+    require_once "../include/db.php";
     $db = new DB();
     if ($_SESSION['usertype'] === "enterprise") {
         $sql = "UPDATE `enterprise` SET `loginpw` = '" . password_hash($_POST['loginpw'], PASSWORD_DEFAULT) . "' WHERE `loginid` = '" . $db->escape($_SESSION["loginid"]) . "'";
