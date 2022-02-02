@@ -13,7 +13,9 @@ if (isset($_SESSION['usertype'])) {
 //        $sql = "UPDATE `manager` SET `loginpw` = " . password_hash($_POST['loginpw'], PASSWORD_DEFAULT . "WHERE `loginid` = $_SESSION[loginid]");
         $sql = "UPDATE `manager` SET `loginpw` = '" . $db->escape($_POST['loginpw']) . "'WHERE `loginid` = '" . $db->escape($_SESSION["loginid"]) . "'";
     }
-    if ($db->query($sql))
+    if ($db->query($sql)){
+        session_destroy();
         die("密码修改成功！");
+    }
 }
 die("未登录");
