@@ -85,10 +85,6 @@
 
 <div class="s-details" id="dataTablePopup">
     <table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
-    <script id="operationDataTable" type="text/html">
-        <a class="layui-btn layui-btn-xs file_upload e-mod" lay-event="file_upload"><i class="layui-icon">&#xe67c;</i>上传附件</a>
-        <a class="layui-btn layui-btn-xs layui-btn-danger e-mod" lay-event="file_del">删除附件</a>
-    </script>
     <div class="layui-btn-container s-tabBottomButton">
         <span class="layui-btn e-mod" id="submitForPreserve"> 保存</span>
     </div>
@@ -96,7 +92,7 @@
 
 <div class="s-details" id="dataTableWithAttachmentPopup">
     <table class="layui-hide" id="dataTableWithAttachment" lay-filter="dataTableWithAttachment"></table>
-    <script id="operationDataTableWithAttachment" type="text/html">
+    <script id="operationDataTable" type="text/html">
         <a class="layui-btn layui-btn-xs file_upload e-mod" lay-event="file_upload"><i class="layui-icon">&#xe67c;</i>上传附件</a>
         <a class="layui-btn layui-btn-xs layui-btn-danger e-mod" lay-event="file_del">删除附件</a>
     </script>
@@ -302,6 +298,10 @@
                                         layer.msg("异常错误！")
                                     dataTableWithAttachment.reload({
                                         done: function () {
+                                            diffUserDoDiffThing(function () {
+                                            }, function () {
+                                                $(".e-mod").css("display", "inline-block")
+                                            })
                                             renderUpload()
                                         }
                                     })
@@ -490,7 +490,7 @@
                                 title: '修正企业提交的数据',
                                 content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                                 area: ['895px', '90%'],
-                                cancel: function (){
+                                cancel: function () {
                                     $("#submitForPreserve").css("display", "none")
                                 }
                             });
@@ -512,6 +512,10 @@
                                         layer.msg("删除成功！")
                                         dataTableWithAttachment.reload({
                                             done: function () {
+                                                diffUserDoDiffThing(function () {
+                                                }, function () {
+                                                    $(".e-mod").css("display", "inline-block")
+                                                })
                                                 renderUpload()
                                             }
                                         })
