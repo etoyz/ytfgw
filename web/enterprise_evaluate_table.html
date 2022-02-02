@@ -498,7 +498,7 @@
                         }
                     })
 
-                    table.on('tool(dataTable)', function (obj) { // 监听的tool在页面元素中被标记为dataTable
+                    table.on('tool(dataTableWithAttachment)', function (obj) { // 监听的tool在页面元素中被标记为dataTableWithAttachment
                         if (obj.event === 'file_upload') {
                             indicator_selected = obj.data.indicator;
                         } else if (obj.event === "file_del") {
