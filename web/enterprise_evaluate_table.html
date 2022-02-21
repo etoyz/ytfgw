@@ -72,9 +72,8 @@
                 <script id="operation" type="text/html">
                     <a class="layui-btn layui-btn-xs submit e-mod fill_in" lay-event="fill_in" id="fill_in">填报数据</a>
                     <a class="layui-btn layui-btn-xs e-mod attachment" lay-event="upload_attachment">上传附件并提交申报</a>
-                    <a class="layui-btn layui-btn-xs m-mod" lay-event="view_data">查看提交数据及附件</a>
-                    <a class="layui-btn layui-btn-xs layui-btn-warm m-mod" lay-event="fix_data">核定数据</a>
-                    <a class="layui-btn layui-btn-xs layui-btn-normal m-mod" lay-event="view_score">得分汇总</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-normal m-mod" lay-event="view_data">查看评价数据及附件</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-warm m-mod" lay-event="view_score">得分汇总</a>
                     <a class="layui-btn layui-btn-xs m-mod" lay-event="pass">通过</a>
                     <a class="layui-btn layui-btn-xs layui-btn-danger m-mod" lay-event="return">退回</a>
                 </script>
@@ -320,7 +319,6 @@
 
                     let dataTableWithAttachment = table.render({
                         elem: '#dataTableWithAttachment',
-                        url: "../service/get_evaluating_indicator_value.php",
                         height: 1150,
                         limit: Number.MAX_SAFE_INTEGER,
                         cols: [[
@@ -381,7 +379,7 @@
                             });
                             return false
                         });
-                        if (obj.event === 'view_data' || obj.event === 'upload_attachment') { //查看提交数据及附件或者企业用户上传附件
+                        if (obj.event === 'upload_attachment') { //查看提交数据及附件或者企业用户上传附件
                             let loadMsg = layer.load(1)
                             dataTableWithAttachment.reload({
                                 url: "../service/get_evaluating_indicator_value.php?type=0&user=" + obj.data["loginid"],
@@ -409,6 +407,61 @@
                                     })
                                 }
                             })
+                        }
+                        else if(obj.event === 'view_data') { // 查看全部数据，包括核定数据
+                            let loadMsg = layer.load(1)
+                            table.render({
+                                elem: '#dataTableWithAttachment',
+                                url: "../service/get_evaluating_indicator_value.php?type=0&user=" + obj.data["loginid"],
+                                height: 1150,
+                                limit: Number.MAX_SAFE_INTEGER,
+                                cols: [[
+                                    {type: 'numbers', style: 'background-color: #eee;'},
+                                    {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
+                                    {field: 'value', width: 110, title: '提报数值', style: 'background-color: #eee;'},
+                                    {field: 'value_fixed', width: 110, title: '核定数值', style: 'background-color: #eee;'},
+                                    {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
+                                    {field: 'attachment', width: 120, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
+                                ]],
+                                size: 'sm',
+                                done: function () {
+                                    layer.close(loadMsg)
+                                    layer.open({
+                                        type: 1,
+                                        title: '企业详细数据',
+                                        content: $('#dataTableWithAttachmentPopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                                        area: ['1187px', '90%']
+                                    });
+                                    diffUserDoDiffThing(function () {
+                                    }, function () {
+                                        $(".e-mod").css("display", "inline-block") //显示对应元素
+                                        $.post({ // patch
+                                            url: "../service/can_user_edit_data.php",
+                                            success: function (res) {
+                                                if (res == "0") {
+                                                    $(".fill_in").css("display", "none");
+                                                    $("#submitForReview").css("display", "none");
+                                                }
+                                            }
+                                        })
+                                    })
+                                },
+                                parseData: function (res) {
+                                    $.post({
+                                        url: "../service/get_evaluating_indicator_value.php?type=1&user=" + obj.data["loginid"],
+                                        async: false,
+                                        dataType: 'json',
+                                        success: function (resp){
+                                            let i = 0
+                                            for (const d of resp.data) {
+                                                res.data[i]['value_fixed'] = d["value"];
+                                                i++
+                                            }
+                                        }
+                                    })
+                                    return res
+                                }
+                            });
                         }
                         else if (obj.event === 'view_score') {
                             let msg = layer.load(1)
@@ -478,23 +531,6 @@
                         else if (obj.event === 'fill_in') {
                             dataToBeSub['type'] = 0 // 企业原始数据
                             $("#fill_in").click()
-                        }
-                        else if (obj.event === "fix_data") {
-                            $("#submitForPreserve").css("display", "inline-block")
-                            dataToBeSub['type'] = 1 // 专家核定数据
-                            dataTable.reload({
-                                url: "../service/get_evaluating_indicator_value.php?type=1&user=" + activeLoginId,
-                            })
-                            layer.open({
-                                type: 1,
-                                title: '修正企业提交的数据',
-                                content: $('#dataTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                                area: ['895px', '90%'],
-                                cancel: function () {
-                                    $("#submitForPreserve").css("display", "none")
-                                }
-                            });
-                            return false
                         }
                     })
 
