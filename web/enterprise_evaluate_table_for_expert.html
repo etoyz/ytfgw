@@ -58,7 +58,7 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="view_data">查看提交数据及附件</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="view_data">查看填报数据及附件</a>
                     <a class="layui-btn layui-btn-xs" lay-event="fix_data">核定数据</a>
                     <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view_score">得分汇总</a>
                 </script>
@@ -164,8 +164,7 @@
                                         field: 'value',
                                         width: 110,
                                         title: '数值',
-                                        edit: "number",
-                                        style: 'background-color: #FFFFFF;'
+                                        style: 'background-color: #eee;'
                                     },
                                     {field: 'unit', width: 120, title: '单位', style: 'background-color: #eee;'},
                                     {field: 'attachment', width: 120, title: '附件', style: 'background-color: #eee;'}
@@ -175,7 +174,7 @@
                                     layer.close(loadMsg)
                                     layer.open({
                                         type: 1,
-                                        title: '企业提报数据',
+                                        title: '企业填报的原始数据',
                                         content: $('#dataTableWithAttachmentPopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                                         area: ['1050px', '90%']
                                     });
