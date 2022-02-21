@@ -29,9 +29,9 @@
             <li class="layui-nav-item"><a class="s-logout" style="display: none;" href="javascript:" id="controlPanel">
                 控制面板</a>
             </li>
-            <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="registerEnterprise2"> 注册企业用户（评价）</a>
+            <li class="layui-nav-item"><a class="s-logout" style="display: none;" href="javascript:" id="registerEnterprise2"> 注册企业用户（评价）</a>
             </li>
-            <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="registerEnterprise"> 注册企业用户（申报）</a>
+            <li class="layui-nav-item"><a class="s-logout" style="display: none;" href="javascript:" id="registerEnterprise"> 注册企业用户（申报）</a>
             </li>
             <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="changePassword"><i
                     aria-hidden="true" class="fa fa-pencil-square"></i> 修改密码</a></li>
@@ -240,8 +240,11 @@
         $.get({
             url: "../service/can_user_control_system.php",
             success: function (res) {
-                if (res == "1")
+                if (res == "1"){
                     $("#controlPanel").show()
+                    $("#registerEnterprise2").show()
+                    $("#registerEnterprise").show()
+                }
             }
         })
         $.get({
