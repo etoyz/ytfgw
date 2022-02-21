@@ -24,6 +24,11 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $user = $db->escape($user);
     $type = $db->escape($_GET['type']);
 
+    // patch
+    if ($type == 1 && $_SESSION['privilege'] !== '0') { // 超级管理员用户才能看核定数据
+        die(json_encode($response));
+    }
+
     $sql = "DESCRIBE enterprise_data;";
     $sql2 = "SELECT * FROM enterprise_data WHERE `loginid` = '$user' AND `type` = '$type';";
     $re_indicators = $db->query($sql);
