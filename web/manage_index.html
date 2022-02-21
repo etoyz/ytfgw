@@ -12,6 +12,11 @@
     <link href="assets/css/table.css" media="all" rel="stylesheet">
     <link href="assets/css/form.css" media="all" rel="stylesheet">
     <link href="assets/plugins/adjust/css/colorTheme.css" media="all" rel="stylesheet">
+    <style>
+        .m-mod{
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -43,15 +48,15 @@
                     <a class="" href="javascript:"><i aria-hidden="true"
                                                       class="fa fa-plug"></i><span> 申报</span></a>
                     <dl class="layui-nav-child">
-                        <dd>
+                        <dd class="m-mod">
                             <a data-options="{url:'tips1.html',icon:'&#xe658;',title:'填报指南',id:'1'}" href="javascript:"
                                kit-target><i class="layui-icon">&#xe658;</i><span> 填报指南</span></a>
                         </dd>
-                        <dd>
+                        <dd class="m-mod">
                             <a data-options="{url:'enterprise_info.html?status=0-4',icon:'&#xe658;',title:'企业基本信息',id:'2'}"
                                href="javascript:" kit-target><i class="layui-icon">&#xe658;</i><span> 企业基本信息</span></a>
                         </dd>
-                        <dd>
+                        <dd class="m-mod">
                             <a data-options="{url:'enterprise_evaluate_table.html?status=0-4',icon:'&#xe658;',title:'企业数据汇总',id:'3'}"
                                href="javascript:" kit-target><i class="layui-icon">&#xe658;</i><span> 企业数据汇总</span></a>
                         </dd>
@@ -65,15 +70,15 @@
                     <a class="" href="javascript:"><i aria-hidden="true"
                                                       class="fa fa-plug"></i><span> 评价</span></a>
                     <dl class="layui-nav-child">
-                        <dd>
+                        <dd class="m-mod">
                             <a data-options="{url:'tips2.html',icon:'&#xe658;',title:'填报指南',id:'4'}" href="javascript:"
                                kit-target><i class="layui-icon">&#xe658;</i><span> 填报指南</span></a>
                         </dd>
-                        <dd>
+                        <dd class="m-mod">
                             <a data-options="{url:'enterprise_info.html?status=5-9',icon:'&#xe658;',title:'企业基本信息',id:'5'}"
                                href="javascript:" kit-target><i class="layui-icon">&#xe658;</i><span> 企业基本信息</span></a>
                         </dd>
-                        <dd>
+                        <dd class="m-mod">
                             <a data-options="{url:'enterprise_evaluate_table.html?status=5-9',icon:'&#xe658;',title:'企业数据汇总',id:'6'}"
                                href="javascript:" kit-target><i class="layui-icon">&#xe658;</i><span> 企业数据汇总</span></a>
                         </dd>
@@ -237,6 +242,13 @@
             success: function (res) {
                 if (res == "1")
                     $("#controlPanel").show()
+            }
+        })
+        $.get({
+            url: "../service/get_manager_type.php",
+            success: function (res) {
+                if (res != "expert")
+                    $(".m-mod").show()
             }
         })
         $("#logout").unbind("click").click(function () {

@@ -16,7 +16,9 @@ if ($re->num_rows == 1) { // 后台校验成功
     $arr['status'] = 'isLogin';
     $_SESSION['usertype'] = "manager";
     $_SESSION['loginid'] = $_POST['loginid'];
-    $_SESSION['privilege'] = $re->fetch_assoc()['privilege'];
+    $re = $re->fetch_assoc();
+    $_SESSION['privilege'] = $re['privilege'];
+    $_SESSION['type'] = $re['type'];
 }
 
 die(json_encode($arr));
