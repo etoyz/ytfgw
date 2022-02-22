@@ -58,7 +58,7 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs" lay-event="fix_data">核定企业数据</a>
+                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="fix_data">核定企业数据</a>
                     <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view_score">得分汇总</a>
                 </script>
             </div>
@@ -160,8 +160,8 @@
                                 limit: Number.MAX_SAFE_INTEGER,
                                 cols: [[
                                     {type: 'numbers', style: 'background-color: #eee;'},
-                                    {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
-                                    {field: 'value', width: 110, title: '原始数值', style: 'background-color: #eee;'},
+                                    {field: 'indicator', width: 580, title: '指标', style: 'background-color: #eee;'},
+                                    {field: 'value', width: 110, title: '填报数值', style: 'background-color: #eee;'},
                                     {
                                         field: 'value_fixed',
                                         width: 110,
@@ -170,7 +170,7 @@
                                         style: 'background-color: #FFFFFF;'
                                     },
                                     {field: 'unit', width: 120, title: '单位', style: 'background-color: #eee;'},
-                                    {field: 'attachment', width: 114, title: '附件', style: 'background-color: #eee;'}
+                                    {field: 'attachment', width: 135, title: '附件', style: 'background-color: #eee;'}
                                 ]],
                                 size: 'sm',
                                 done: function (res) {
@@ -215,13 +215,11 @@
                             table.render({
                                 elem: '#scoreTable',
                                 url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid,
-                                height: 900,
-                                toolbar: true,
-                                defaultToolbar: ['print', 'exports'],
+                                height: 850,
                                 limit: Number.MAX_SAFE_INTEGER,
                                 cols: [[
                                     {type: 'numbers', style: 'background-color: #eee;'},
-                                    {field: 'indicator', width: 550, title: '指标', style: 'background-color: #eee;'},
+                                    {field: 'indicator', width: 553, title: '指标', style: 'background-color: #eee;'},
                                     {field: 'score_0', width: 110, title: '填报得分', style: 'background-color: #eee;'},
                                     {field: 'score_1', width: 110, title: '核定得分', style: 'background-color: #eee;'},
                                 ]],
