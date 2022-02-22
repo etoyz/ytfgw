@@ -188,6 +188,8 @@
                                     item.status = "已退回";
                                 else if (item.status == "4")
                                     item.status = "已通过审核";
+                                if(item.expert_score === null)
+                                    item.expert_score = "暂未评审"
                             }
                         },
                         done: function () {

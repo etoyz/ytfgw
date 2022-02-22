@@ -58,8 +58,7 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="view_data">查看填报数据及附件</a>
-                    <a class="layui-btn layui-btn-xs" lay-event="fix_data">核定数据</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="fix_data">核定企业数据</a>
                     <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view_score">得分汇总</a>
                 </script>
             </div>
@@ -124,9 +123,9 @@
                             {field: 'created_year', width: '80', title: '报告年度'},
                             {field: 'status', width: '95', title: '申报状态'},
                             {field: 'submit_time', width: '170', title: '填报时间'},
-                            {field: 'expert_score', width: '100', title: '专家打分'},
-                            {field: 'remark', width: '220', title: '备注'},
-                            {field: 'operation', width: '260', title: '操作', toolbar: '#operation', fixed: 'right'}
+                            {field: 'expert_score', width: '90', title: '专家评审'},
+                            {field: 'remark', width: '250', title: '备注'},
+                            {field: 'operation', width: '180', title: '操作', toolbar: '#operation', fixed: 'right'}
                         ]],
                         size: 'sm',
                         parseData: function (res) {
@@ -142,6 +141,8 @@
                                     item.status = "已退回";
                                 else if (item.status == "4")
                                     item.status = "已通过审核";
+                                if(item.expert_score === null)
+                                    item.expert_score = "暂未评审"
                             }
                         }
                     })
@@ -149,65 +150,33 @@
                     table.on('tool(enterpriseTable)', function (obj) {
                         activeLoginId = obj.data.loginid
                         dataToBeSub['loginid'] = activeLoginId
-                        if (obj.event === 'view_data') { //查看提交数据及附件或者企业用户上传附件
-                            $("#submitForPreserve").css("display", "none")
-                            let loadMsg = layer.load(1)
-                            table.render({
-                                url: "../service/get_evaluating_indicator_value.php?type=0&user=" + obj.data["loginid"],
-                                elem: '#dataTableWithAttachment',
-                                height: 1150,
-                                limit: Number.MAX_SAFE_INTEGER,
-                                cols: [[
-                                    {type: 'numbers', style: 'background-color: #eee;'},
-                                    {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
-                                    {
-                                        field: 'value',
-                                        width: 110,
-                                        title: '数值',
-                                        style: 'background-color: #eee;'
-                                    },
-                                    {field: 'unit', width: 120, title: '单位', style: 'background-color: #eee;'},
-                                    {field: 'attachment', width: 120, title: '附件', style: 'background-color: #eee;'}
-                                ]],
-                                size: 'sm',
-                                done: function () {
-                                    layer.close(loadMsg)
-                                    layer.open({
-                                        type: 1,
-                                        title: '企业填报的原始数据',
-                                        content: $('#dataTableWithAttachmentPopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                                        area: ['1050px', '90%']
-                                    });
-                                }
-                            })
-                        }
-                        else if (obj.event === "fix_data") {
-                            $("#submitForPreserve").css("display", "inline-block")
+                        if (obj.event === "fix_data") {
                             let loadMsg = layer.load(1)
                             dataToBeSub['type'] = 1 // 专家核定数据
                             table.render({
-                                url: "../service/get_evaluating_indicator_value.php?type=1&user=" + activeLoginId,
+                                url: "../service/get_evaluating_indicator_value.php?type=0&user=" + activeLoginId,
                                 elem: '#dataTableWithAttachment',
                                 height: 1150,
                                 limit: Number.MAX_SAFE_INTEGER,
                                 cols: [[
                                     {type: 'numbers', style: 'background-color: #eee;'},
                                     {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
+                                    {field: 'value', width: 110, title: '原始数值', style: 'background-color: #eee;'},
                                     {
-                                        field: 'value',
+                                        field: 'value_fixed',
                                         width: 110,
-                                        title: '数值',
+                                        title: '核定数值',
                                         edit: "number",
                                         style: 'background-color: #FFFFFF;'
                                     },
                                     {field: 'unit', width: 120, title: '单位', style: 'background-color: #eee;'},
-                                    {field: 'attachment', width: 120, title: '附件', style: 'background-color: #eee;'}
+                                    {field: 'attachment', width: 114, title: '附件', style: 'background-color: #eee;'}
                                 ]],
                                 size: 'sm',
                                 done: function (res) {
                                     for (const d of res.data) {
-                                        if (d["value"] != null)
-                                            dataToBeSub[d["indicator"]] = d["value"];
+                                        if (d["value_fixed"] != null)
+                                            dataToBeSub[d["indicator"]] = d["value_fixed"];
                                     }
                                     table.on('edit(dataTableWithAttachment)', function (obj) {
                                         var value = obj.value //得到修改后的值
@@ -221,8 +190,23 @@
                                         type: 1,
                                         title: '核定数据',
                                         content: $('#dataTableWithAttachmentPopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                                        area: ['1050px', '90%']
+                                        area: ['1150px', '90%']
                                     });
+                                },
+                                parseData: function (res) {
+                                    $.post({
+                                        url: "../service/get_evaluating_indicator_value.php?type=1&user=" + obj.data["loginid"],
+                                        async: false,
+                                        dataType: 'json',
+                                        success: function (resp) {
+                                            let i = 0
+                                            for (const d of resp.data) {
+                                                res.data[i]['value_fixed'] = d["value"];
+                                                i++
+                                            }
+                                        }
+                                    })
+                                    return res
                                 }
                             })
                         }
