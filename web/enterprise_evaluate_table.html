@@ -254,7 +254,7 @@
                                 return false
                             })
                             $("#submitForReview").unbind("click").click(function () {
-                                layer.confirm("提交申报后不可修改，确认提交吗？", {
+                                layer.confirm("提交审核后不可修改，确认提交吗？", {
                                     btn: ['确认', '取消'] //可以无限个按钮
                                 }, function () {
                                     $.get({
@@ -307,7 +307,7 @@
                                         }
                                     })
                                 } else {
-                                    layer.msg("请先申报数据！")
+                                    layer.msg("请刷新页面重试！")
                                 }
                             }
                             , choose: function (obj) {
