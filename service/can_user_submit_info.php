@@ -4,8 +4,8 @@
  */
 session_start();
 if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
-    $status = $_SESSION['status'] % 5;
-    if ($status == 0)
+    require_once "../include/common.php";
+    if (get_user_status($_SESSION['loginid']) % 5 == 0)
         die("1");
 }
 die("0");

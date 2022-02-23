@@ -4,7 +4,8 @@
  */
 session_start();
 if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") {
-    $status = $_SESSION['status'] % 5;
+    require_once "../include/common.php";
+    $status = get_user_status($_SESSION['loginid']) % 5;
     if ($status == 1 || $status == 3)  // 首次申报 或者 退回
         die("1");
 }

@@ -11,7 +11,8 @@ if (isset($_SESSION['usertype'])) {
     require_once '../include/db.php';
     $db = new DB();
     $dst_status = 1;
-    if ($_SESSION['status'] > 4)
+    require_once "../include/common.php";
+    if (get_user_status($_SESSION['loginid']) > 4)
         $dst_status = 6;
     $sql = "UPDATE `enterprise` 
         SET `name` = '" . $db->escape($_POST["name"]) . "', 
@@ -25,7 +26,6 @@ if (isset($_SESSION['usertype'])) {
             `remark` = '" . $db->escape($_POST["remark"]) . "',
             `status` = $dst_status
         WHERE `loginid` = '" . $db->escape($_SESSION["loginid"]) . "';";
-    $_SESSION['status'] = $dst_status;
     $response['status'] = "isLogin";
     $response['data'] = $db->query($sql);
 }

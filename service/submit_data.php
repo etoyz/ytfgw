@@ -19,7 +19,8 @@ if (isset($_SESSION['usertype'])) {
     if ($_SESSION['usertype'] === "enterprise") {
         $user = $_SESSION['loginid'];
         // 检查用户状态
-        $status = $_SESSION['status'] % 5;
+        require_once "../include/common.php";
+        $status = get_user_status($_SESSION['loginid']) % 5;
         if ($status != "1" && $status != "3") {
             if ($status == "0")
                 $arr["data"] = "请先完善企业信息！";
@@ -29,7 +30,7 @@ if (isset($_SESSION['usertype'])) {
                 $arr["data"] = "已经通过！";
             die(json_encode($arr));
         }
-    } else if ($_SESSION['usertype'] === "manager" && $_SESSION['privilege'] == '0'){ // 如果是超级管理员：可以提交任意用户数据，用于重新判分; 可以提交专家的评分
+    } else if ($_SESSION['usertype'] === "manager" && $_SESSION['privilege'] == '0') { // 如果是超级管理员：可以提交任意用户数据，用于重新判分; 可以提交专家的评分
         $user = $_POST['loginid'];
         $type = $_POST['type'];
     } else {
