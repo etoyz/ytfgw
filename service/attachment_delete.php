@@ -12,11 +12,9 @@ if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise") { //
     $response["status"] = "isLogin";
 
     require_once "../include/common.php";
-    require_once "../include/define_error_handler_to_catch_warnings.php";
     try {
-        $response['data'] = unlink("../uploads/$_SESSION[loginid]/" . fetch_indicator_attachment_name($_GET['indicator'], scandir("../uploads/$_SESSION[loginid]")));
+        $response['data'] = unlink("../uploads/$_SESSION[loginid]/" . fetch_attachment_name($_SESSION['loginid'], $_GET['indicator']));
     } catch (Exception $e) {
-//        var_dump($e);
         $response['data'] = false;
     }
 }
