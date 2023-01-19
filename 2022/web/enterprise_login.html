@@ -72,8 +72,8 @@
 
         form.verify({
             userName: function (value) {
-                if (value.length < 5) {
-                    return '账号至少得5个字符';
+                if (value.length < 4) {
+                    return '账号至少得4个字符';
                 }
             }
             , pass: [/^[\S]{6,12}$/, '密码必须6到12位，且不能出现空格']
