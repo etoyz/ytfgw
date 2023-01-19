@@ -1,2 +1,2 @@
 <?php
-header("Location: web/manage_login.html");
+header("Location: 2022/web/manage_login.html");

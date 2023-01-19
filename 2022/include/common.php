@@ -1,9 +1,9 @@
 <?php
 /**
- * 获取某用户上传的附件名
+ * 获取某用户上传的附件的文件名
  * @param string $user 用户的loginid
  * @param string $indicator 指标名
- * @return mixed|string 附件文件名 | “未上传”
+ * @return mixed|string 附件文件名 || “未上传”
  */
 function fetch_attachment_name(string $user, string $indicator)
 {

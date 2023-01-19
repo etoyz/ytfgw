@@ -1,13 +1,4 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-# Datasource local storage ignored files
-/dataSources/
-/dataSources.local.xml
-# Editor-based HTTP Client requests
-/httpRequests/
-
-app.ini
-web/doc/*
+2022/app.ini
+2022/web/doc/*
+2022/uploads/*
 .idea/*
-uploads/*
