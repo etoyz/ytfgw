@@ -1,5 +1,5 @@
 <?php
-$url = $_SERVER['HTTP_HOST'] . str_replace("get_evaluating_indicator_value_all.php", "get_evaluating_indicator_value.php", $_SERVER['PHP_SELF']);
+$url = $_SERVER['HTTP_HOST'] . str_replace(".php", "get_evaluating_indicator_value.php", $_SERVER['PHP_SELF']);
 
 $params = '?' . http_build_query($_GET) . "&type=0";
 

@@ -440,7 +440,7 @@
             enterpriseTable.reload({
                 url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val()
                     + '&status=' + getQueryString("status")
-                    + '&status_detail=' + $("#statusSearch").val()
+                    + '&status_specific=' + $("#statusSearch").val()
                     + '&query_address=' + $("#addressSearch").val(),
                 page: {
                     curr: 1

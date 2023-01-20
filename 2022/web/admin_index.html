@@ -22,7 +22,7 @@
 <body>
 <div class="layui-layout layui-layout-admin kit-layout-admin">
     <div class="layui-header">
-        <a class="layui-logo" style=":line-height 60px;margin-left: 5px;width: 330px" href="./admin_index.html">
+        <a class="layui-logo" style=":line-height 60px;margin-left: 5px;width: 330px" href="admin_index.html">
             烟台市创新平台申报与评价系统后台(2022)
         </a>
         <ul class="layui-nav layui-layout-right kit-nav">
@@ -256,7 +256,7 @@
             success: (res) => {
                 if (res == 0)
                     layer.alert("登录已经过期，请重新登录！", {icon: 3}, function () {
-                        location.href = "../../index_admin.php"
+                        location.href = "../web/admin_login.html"
                     })
             }
         })
