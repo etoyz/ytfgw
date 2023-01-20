@@ -426,11 +426,11 @@
             })
         })
 
-        function diffUserDoDiffThing(managerDo, enterpriseDo) {
+        function diffUserDoDiffThing(adminDo, enterpriseDo) {
             $.get({
                 url: "../service/get_user_type.php",
                 success: function (res) {
-                    if (res === "manager") managerDo()
+                    if (res === "admin") adminDo()
                     if (res === "enterprise") enterpriseDo()
                 }
             })

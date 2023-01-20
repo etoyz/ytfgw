@@ -2,7 +2,18 @@
 /**
  * 企业注册（需要管理员权限）
  */
-require_once "auth_manager.php";
+
+session_start();
+
+$arr = array(
+    "status" => 'notLogin'
+);
+
+if (isset($_SESSION['loginid']) && $_SESSION['usertype'] == "admin") {
+    $arr['status'] = 'isLogin';
+} else
+    die(json_encode($arr));
+
 $arr = array(
     "nameRepetition" => null,
     "regSuccess" => null,

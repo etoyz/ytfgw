@@ -10,7 +10,7 @@ $response = array(
     "msg" => "无权限查看！"
 );
 
-if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "manager" && $_SESSION['privilege'] == "0") { // 已经登录且是管理员
+if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "admin" && $_SESSION['privilege'] == "0") { // 超管才可操作
     $response["status"] = "isLogin";
     $response["data"] = [];
     $response["code"] = 0;

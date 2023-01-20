@@ -4,9 +4,9 @@
  */
 session_start();
 if (isset($_SESSION['loginid'])) {
-    require_once '../include/db.php';
+    require_once 'db.php';
     $db = new DB();
-    $sql = "SELECT `name` FROM `manager` WHERE `loginid` = '" . $db->escape($_SESSION['loginid']) . "';";
+    $sql = "SELECT `name` FROM `user` WHERE `loginid` = '" . $db->escape($_SESSION['loginid']) . "';";
     $re = $db->query($sql);
     die($re->fetch_array()['name']);
 }

@@ -7,18 +7,17 @@ $arr = array(
     "status" => 'notLogin'
 );
 
-require_once '../include/db.php';
+require_once 'db.php';
 $db = new DB();
-$sql = "SELECT * FROM `manager` WHERE `loginid` = '" . $db->escape($_POST['loginid']) . "' AND `loginpw` = '" . $db->escape($_POST['loginpw']) . "';";
+$sql = "SELECT * FROM `user` WHERE `loginid` = '" . $db->escape($_POST['loginid']) . "' AND `loginpw` = '" . $db->escape($_POST['loginpw']) . "';";
 $re = $db->query($sql);
 
-if ($re->num_rows == 1) { // 后台校验成功
+if ($re->num_rows == 1) { // 校验成功
     $arr['status'] = 'isLogin';
-    $_SESSION['usertype'] = "manager";
+    $_SESSION['usertype'] = "admin";
     $_SESSION['loginid'] = $_POST['loginid'];
     $re = $re->fetch_assoc();
     $_SESSION['privilege'] = $re['privilege'];
-    $_SESSION['type'] = $re['type'];
 }
 
 die(json_encode($arr));

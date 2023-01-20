@@ -4,7 +4,7 @@
  */
 session_start();
 if (isset($_SESSION['loginid'])) {  // 验证登录
-    if ($_SESSION['usertype'] == "manager") {  // 管理员
+    if ($_SESSION['usertype'] == "admin") {  // 管理员
         header('Content-Type: application/pdf');
         header('Content-Disposition: inline;');
 

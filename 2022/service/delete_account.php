@@ -4,7 +4,7 @@
  */
 session_start();
 
-if (!(isset($_SESSION['usertype']) && $_SESSION['usertype'] == "manager" && $_SESSION['privilege'] == "0")) {
+if (!(isset($_SESSION['usertype']) && $_SESSION['usertype'] == "admin" && $_SESSION['privilege'] == "0")) {
     die(json_encode("无权限执行此操作！"));
 }
 

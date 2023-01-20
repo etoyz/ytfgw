@@ -8,7 +8,7 @@ $response = array(
     "data" => null
 );
 
-if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "manager") {
+if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "admin") {
     $response['status'] = "isLogin";
 
     require_once '../include/db.php';

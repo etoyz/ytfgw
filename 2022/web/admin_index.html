@@ -13,7 +13,7 @@
     <link href="assets/css/form.css" media="all" rel="stylesheet">
     <link href="assets/plugins/adjust/css/colorTheme.css" media="all" rel="stylesheet">
     <style>
-        .m-mod{
+        .m-mod {
             display: none;
         }
     </style>
@@ -29,9 +29,11 @@
             <li class="layui-nav-item"><a class="s-logout" style="display: none;" href="javascript:" id="controlPanel">
                 控制面板</a>
             </li>
-            <li class="layui-nav-item"><a class="s-logout" style="display: none;" href="javascript:" id="registerEnterprise2"> 注册企业用户（评价）</a>
+            <li class="layui-nav-item"><a class="s-logout" style="display: none;" href="javascript:"
+                                          id="registerEnterprise2"> 注册企业用户（评价）</a>
             </li>
-            <li class="layui-nav-item"><a class="s-logout" style="display: none;" href="javascript:" id="registerEnterprise"> 注册企业用户（申报）</a>
+            <li class="layui-nav-item"><a class="s-logout" style="display: none;" href="javascript:"
+                                          id="registerEnterprise"> 注册企业用户（申报）</a>
             </li>
             <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="changePassword"><i
                     aria-hidden="true" class="fa fa-pencil-square"></i> 修改密码</a></li>
@@ -222,7 +224,7 @@
             }
         });
         $.get({
-            url: "../service/get_manager_name.php",
+            url: "../../service_admin/get_name.php",
             success: function (res) {
                 $("#name").html(res + " ")
             }
@@ -233,14 +235,14 @@
                 $("#loginName").html(res + " ")
                 if (res === "")
                     layer.alert("登录已经过期，请重新登录！", {icon: 3}, function () {
-                        location.href = "manage_login.html"
+                        location.href = "../../index_admin.php"
                     })
             }
         })
         $.get({
             url: "../service/can_user_control_system.php",
             success: function (res) {
-                if (res == "1"){
+                if (res == "1") {
                     $("#controlPanel").show()
                     $("#registerEnterprise2").show()
                     $("#registerEnterprise").show()
@@ -248,14 +250,14 @@
             }
         })
         $.get({
-            url: "../service/get_manager_type.php",
+            url: "../../service_admin/get_privilege_level.php",
             success: function (res) {
-                if (res != "expert")
+                if (res != "专家")
                     $(".m-mod").show()
             }
         })
         $("#logout").unbind("click").click(function () {
-            location.href = "../service/manage_logout.php";
+            location.href = "../../service_admin/logout.php";
         })
         // 显示“修改密码”弹窗
         $('body').on('click', '#changePassword', function () {

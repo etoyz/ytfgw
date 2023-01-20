@@ -3,7 +3,7 @@
  * 配置功能
  */
 session_start();
-if (isset($_SESSION['usertype']) && $_SESSION['usertype'] == "manager" && $_SESSION['privilege'] == "0") {
+if (isset($_SESSION['usertype']) && $_SESSION['usertype'] == "admin" && $_SESSION['privilege'] == "0") { // 超管才可操作
     include "../include/INI.class.php";
     $ini = new INI("../app.ini");
     $ini->data['Function']['announcement'] = $_POST['announcement'];

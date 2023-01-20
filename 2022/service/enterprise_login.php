@@ -2,20 +2,21 @@
 /**
  * 企业登录
  */
-session_start();
 $arr = array(
     "status" => 'notLogin',
     "msg" => ''
 );
 
-require_once '../include/db.php';
-$db = new DB();
-
 $is_lock = (new INI("../app.ini"))->data['Function']['SYSTEM_LOCK'];
-if($is_lock == "ON"){
+if ($is_lock == "ON") {
     $arr['msg'] = '当前系统已锁定，如需登录，请联系管理人员！';
     die(json_encode($arr));
 }
+
+session_start();
+
+require_once '../include/db.php';
+$db = new DB();
 
 $sql = "SELECT `loginpw`,`status` FROM `enterprise` WHERE `loginid` = '" . $db->escape($_POST['loginid']) . "';";
 $re = $db->query($sql);

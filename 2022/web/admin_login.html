@@ -87,11 +87,11 @@
 
         form.on('submit(loginnow)', function (data) {
             $.post({
-                url: "../service/manage_login.php",
+                url: "../../service_admin/login.php",
                 data: data.field,
                 success: function (res) {
                     if (res.status === "isLogin")
-                        location.href = "manage_index.html";
+                        location.href = "admin_index.html";
                     else
                         layer.alert("用户名或密码错误！");
                 },

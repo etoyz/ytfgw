@@ -30,9 +30,11 @@ if (isset($_SESSION['usertype'])) {
                 $arr["data"] = "已经通过！";
             die(json_encode($arr));
         }
-    } else if ($_SESSION['usertype'] === "manager" && $_SESSION['privilege'] == '0') { // 如果是超级管理员：可以提交任意用户数据，用于重新判分; 可以提交专家的评分
-        $user = $_POST['loginid'];
-        $type = $_POST['type'];
+    } else if ($_SESSION['usertype'] === "admin") { // 若是管理员用户
+        if (($_SESSION['privilege'] == '0' || $_SESSION['privilege'] == '专家')) { // 超管可以提交任意用户数据，用于重新判分; 专家也可以提交
+            $user = $_POST['loginid'];
+            $type = $_POST['type'];
+        }
     } else {
         $arr['data'] = "无权限进行此操作！";
         die(json_encode($arr));
