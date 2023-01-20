@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>烟台市创新平台申报与评价系统</title>
+    <link href="assets/plugins/layui/css/layui.css" media="all" rel="stylesheet">
+    <link href="assets/plugins/layui/css/layui.css" media="all" rel="stylesheet">
+    <link href="assets/plugins/font-awesome/css/font-awesome.min.css" media="all" rel="stylesheet">
+    <link href="assets/common/css/app.css" media="all" rel="stylesheet"/>
+    <link href="assets/common/css/default.css" id="skin" kit-skin media="all" rel="stylesheet"/>
+    <link href="assets/css/table.css" media="all" rel="stylesheet">
+    <link href="assets/css/form.css" media="all" rel="stylesheet">
+    <link href="assets/plugins/adjust/css/colorTheme.css" media="all" rel="stylesheet">
+    <style>
+        .m-mod {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="layui-layout layui-layout-admin kit-layout-admin">
+    <div class="layui-header">
+        <a class="layui-logo" style=":line-height 60px;margin-left: 5px;width: 330px" href="./admin_index.html">
+            烟台市创新平台申报与评价系统后台(2023)
+        </a>
+        <ul class="layui-nav layui-layout-right kit-nav">
+            <li class="layui-nav-item"><a class="s-logout" style="display: none;" href="javascript:" id="controlPanel">
+                控制面板</a>
+            </li>
+            <li class="layui-nav-item"><a class="s-logout" style="display: none;" href="javascript:"
+                                          id="registerEnterprise2"> 注册企业用户（评价）</a>
+            </li>
+            <li class="layui-nav-item"><a class="s-logout" style="display: none;" href="javascript:"
+                                          id="registerEnterprise"> 注册企业用户（申报）</a>
+            </li>
+            <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="changePassword"><i
+                    aria-hidden="true" class="fa fa-pencil-square"></i> 修改密码</a></li>
+            <li class="layui-nav-item"><a class="s-headPortrait" href="javascript:" id="name">正在加载... </a></li>
+            <li class="layui-nav-item"><a class="s-headPortrait" href="javascript:" id="loginName">正在加载... </a></li>
+            <li class="layui-nav-item"><a class="s-logout" id="logout"><i aria-hidden="true" class="fa fa-sign-out"></i>
+                退出登录</a></li>
+        </ul>
+    </div>
+    <div class="layui-side layui-bg-black kit-side" style="width: 150px">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree" kit-nFavbar lay-filter="kitNavbar">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:"><span> 申报</span></a>
+                    <dl class="layui-nav-child">
+                        <dd class="m-mod">
+                            <a data-options="{url:'tips1.html',icon:'&#xe658;',title:'填报指南',id:'1'}" href="javascript:"
+                               kit-target> <span> 填报指南</span></a>
+                        </dd>
+                        <dd class="m-mod">
+                            <a data-options="{url:'enterprise_info.html?status=0-4',icon:'&#xe658;',title:'企业基本信息',id:'2'}"
+                               href="javascript:" kit-target> <span> 企业基本信息</span></a>
+                        </dd>
+                        <dd class="m-mod">
+                            <a data-options="{url:'enterprise_evaluate_table.html?status=0-4',icon:'&#xe658;',title:'企业数据汇总',id:'3'}"
+                               href="javascript:" kit-target> <span> 企业数据汇总</span></a>
+                        </dd>
+                        <dd>
+                            <a data-options="{url:'enterprise_evaluate_table_for_expert.html?status=0-4',icon:'&#xe658;',title:'专家评审',id:'7'}"
+                               href="javascript:" kit-target> <span> 专家评审</span></a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:"><i aria-hidden="true"
+                                                      class="fa fa-plug"></i><span> 评价</span></a>
+                    <dl class="layui-nav-child">
+                        <dd class="m-mod">
+                            <a data-options="{url:'tips2.html',icon:'&#xe658;',title:'填报指南',id:'4'}" href="javascript:"
+                               kit-target> <span> 填报指南</span></a>
+                        </dd>
+                        <dd class="m-mod">
+                            <a data-options="{url:'enterprise_info.html?status=5-9',icon:'&#xe658;',title:'企业基本信息',id:'5'}"
+                               href="javascript:" kit-target> <span> 企业基本信息</span></a>
+                        </dd>
+                        <dd class="m-mod">
+                            <a data-options="{url:'enterprise_evaluate_table.html?status=5-9',icon:'&#xe658;',title:'企业数据汇总',id:'6'}"
+                               href="javascript:" kit-target> <span> 企业数据汇总</span></a>
+                        </dd>
+                        <dd>
+                            <a data-options="{url:'enterprise_evaluate_table_for_expert.html?status=5-9',icon:'&#xe658;',title:'专家评审',id:'8'}"
+                               href="javascript:" kit-target> <span> 专家评审</span></a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-body" id="container" style="left: 150px">
+        <div style="padding: 15px;">正在加载...</div>
+    </div>
+</div>
+
+<!-- 修改密码弹窗 -->
+<div class="s-details" id="changePasswordWin">
+    <form action="" autocomplete="off" class="layui-form">
+        <div class="layui-form-item s-formItem4">
+            <label class="layui-form-label">新密码</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-verify="required|pass" name="password"
+                       placeholder="请输入6到12位新密码" type="password">
+            </div>
+        </div>
+        <div class="layui-form-item s-formItem4">
+            <label class="layui-form-label">确认密码</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-verify="required|repass" name="confirmPassword"
+                       placeholder="请输入确认密码" type="password">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block s-submitButton5">
+                <button class="layui-btn" lay-filter="save" lay-submit type="button">确认</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 注册新用户弹窗 -->
+<div class="s-details" id="registerWin">
+    <form action="" autocomplete="off" class="layui-form" id="regForm">
+        <div class="layui-form-item s-formItem4">
+            <label class="layui-form-label">登录账号</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-verify="required" name="loginid"
+                       placeholder="请输入登录账号">
+            </div>
+        </div>
+        <div class="layui-form-item s-formItem4">
+            <label class="layui-form-label">企业名</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-verify="required" name="name"
+                       placeholder="请输入企业名">
+            </div>
+        </div>
+        <div class="layui-form-item s-formItem4">
+            <label class="layui-form-label">归属地</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-verify="required" name="address"
+                       placeholder="请输入归属地，如：莱山区">
+            </div>
+        </div>
+        <div class="layui-form-item s-formItem4">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-verify="required|pass" name="loginpw" id="loginpw"
+                       placeholder="请输入6到12位密码" type="password">
+            </div>
+        </div>
+        <div class="layui-form-item s-formItem4">
+            <label class="layui-form-label">确认密码</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-verify="required|repass2" name="confirmPassword"
+                       placeholder="请确认密码" type="password">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block s-submitButton5">
+                <button class="layui-btn" lay-filter="subForReg" lay-submit type="button">确认</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 控制面板弹窗 -->
+<div class="s-details" id="controlPanelWin">
+    <div class="layui-form">
+        <hr>
+        <textarea id="announcement_input" name="announcement" style="min-height: 250px" placeholder="请输入公告内容"
+                  class="layui-textarea"></textarea>
+        <br>
+        <div class="layui-input-block">
+            <label class="layui-form-label" style="width: 150px;">是否允许企业登录：</label>
+            <input type="checkbox" name="allowLogin" id="allowLogin" lay-skin="switch" lay-text="允许登录|禁止登录">
+        </div>
+        <hr>
+        <div class="layui-btn" id="config" lay-filter="config" lay-submit style="margin-left: 249px;width: 70px;">保存
+        </div>
+    </div>
+</div>
+
+<script src="assets/plugins/layui/layui.js"></script>
+<script src="assets/common/js/tab.js?_=sdfgdfh"></script>
+<script>
+    layui.use(['form', 'layer'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            layer = layui.layer;
+
+        form.verify({
+
+            // 既支持上述函数式的方式，也支持下述数组的形式
+            // 数组的两个值分别代表:[正则匹配、匹配不符时的提示文字]
+            // 密码验证
+            pass: [
+                /^[\S]{6,12}$/,
+                '密码必须6到12位，且不能出现空格'
+            ],
+
+            // 确认密码验证
+            repass: function (value, item) { //value:表单的值、item:表单的DOM对象
+                var passwordValue = $('input[name=password]').val();
+                // 判断条件也可为:!new RegExp(passwordValue).test(value)
+                if (value != passwordValue) {
+                    return '两次输入的密码不一致!';
+                }
+            },
+
+            repass2: function (value) {
+                var passwordValue = $('input[name=loginpw]').val();
+                // 判断条件也可为:!new RegExp(passwordValue).test(value)
+                if (value != passwordValue) {
+                    return '两次输入的密码不一致!';
+                }
+            }
+        });
+        $.get({
+            url: "../../service_admin/get_name.php",
+            success: function (res) {
+                $("#name").html(res + " ")
+            }
+        })
+        $.get({
+            url: "../service/get_loginid.php",
+            success: function (res) {
+                $("#loginName").html(res + " ")
+            }
+        })
+        $.get({
+            url: "../service/can_user_control_system.php",
+            success: function (res) {
+                if (res == "1") {
+                    $("#controlPanel").show()
+                    $("#registerEnterprise2").show()
+                    $("#registerEnterprise").show()
+                }
+            }
+        })
+        $.get({
+            url: "../../service_admin/get_privilege_level.php",
+            success: function (res) {
+                if (res != "专家")
+                    $(".m-mod").show()
+            }
+        })
+        $.get({
+            url: "../../service_admin/get_login_status.php",
+            success: (res) => {
+                if (res == 0)
+                    layer.alert("登录已经过期，请重新登录！", {icon: 3}, function () {
+                        location.href = "../../index_admin.php"
+                    })
+            }
+        })
+        $("#logout").unbind("click").click(function () {
+            location.href = "../../service_admin/logout.php";
+        })
+        // 显示“修改密码”弹窗
+        $('body').on('click', '#changePassword', function () {
+            var index = layer.open({
+                type: 1,
+                title: '修改密码',
+                content: $('#changePasswordWin'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                area: '300px'
+            });
+            form.on('submit(save)', function (data) {
+                $.post({
+                    url: "../service/change_passwd.php",
+                    data: {
+                        loginpw: data.field.password
+                    },
+                    success: function (res) {
+                        layer.alert(res, function () {
+                            location.reload()
+                        });
+                    }
+                })
+                // 关闭当前弹出层
+                layer.close(index);
+            });
+        });
+
+        $('body').on('click', '#registerEnterprise', function () {
+            $("#regForm").trigger("reset")
+            var index = layer.open({
+                type: 1,
+                title: '注册企业用户（申报）',
+                content: $('#registerWin'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                area: '300px'
+            });
+            form.on('submit(subForReg)', function (data) {
+                $.post({
+                    url: "../service/enterprise_register.php?status=0",
+                    data: data.field,
+                    success: function (res) {
+                        if (res.nameRepetition)
+                            layer.alert("名字重复！", {icon: 2})
+                        if (res.regSuccess) {
+                            layer.alert("注册成功！\n企业【" + $("input[name=name]").val() + "】的登录账号为【" + res.username + "】,密码为【" + $("#loginpw").val() + "】", {icon: 1})
+                        }
+
+                    },
+                    dataType: 'json'
+                })
+                // 关闭当前弹出层
+                layer.close(index);
+            });
+        });
+
+        $('body').on('click', '#registerEnterprise2', function () {
+            $("#regForm").trigger("reset")
+            var index = layer.open({
+                type: 1,
+                title: '注册企业用户（评价）',
+                content: $('#registerWin'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                area: '300px'
+            });
+            form.on('submit(subForReg)', function (data) {
+                console.log(data)
+                $.post({
+                    url: "../service/enterprise_register.php?status=5",
+                    data: data.field,
+                    success: function (res) {
+                        if (res.nameRepetition)
+                            layer.alert("名字重复！", {icon: 2})
+                        if (res.regSuccess) {
+                            layer.alert("注册成功！\n企业【" + $("input[name=name]").val() + "】的登录账号为【" + res.username + "】,密码为【" + $("#loginpw").val() + "】", {icon: 1})
+                        }
+
+                    },
+                    dataType: 'json'
+                })
+                // 关闭当前弹出层
+                layer.close(index);
+            });
+        });
+
+        $('body').on('click', '#controlPanel', function () {
+            $.get({
+                url: "../service/get_func_config.php",
+                dataType: "json",
+                success: function (res) {
+                    $("#announcement_input").val(res.announcement)
+                    if (res.SYSTEM_LOCK == "ON")
+                        $("#allowLogin").prop("checked", false);
+                    else
+                        $("#allowLogin").prop("checked", true);
+                    form.render()
+                }
+            })
+            layer.open({
+                type: 1,
+                title: '控制面板',
+                content: $('#controlPanelWin'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                area: ['600px', '460px']
+            });
+            form.on('submit(config)', function (data) {
+                $.post({
+                    url: "../service/set_func_config.php",
+                    data: data.field,
+                    success: function (res) {
+                        if (res == "1")
+                            layer.alert("操作成功，请刷新页面！", {icon: 1}, function () {
+                                location.reload();
+                            })
+                        else
+                            layer.alert(res)
+                    }
+                })
+            });
+        });
+    }).config({
+        base: 'assets/common/js/'
+    }).use(['app'], function () {
+        var app = layui.app;
+        //主入口
+        app.set({
+            type: 'iframe'
+        }).init();
+    });
+</script>
+</body>
+</html>

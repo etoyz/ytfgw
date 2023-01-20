@@ -1,0 +1,11 @@
+.layui-layout-admin .layui-header {
+    border-top: #015de6 3px solid;
+}
+
+.layui-layout-admin .layui-logo {
+    color: #e60122;
+}
+
+.layui-nav-tree .layui-nav-bar {
+    background-color: #015de6;
+}

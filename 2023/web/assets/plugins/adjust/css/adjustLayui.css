@@ -1,0 +1,315 @@
+/* 通用样式 */
+body {
+    overflow-y: scroll;
+}
+
+.main {
+    margin-top: 25px;
+}
+
+.main .layui-row {
+    margin: 10px 0;
+    margin-bottom: 0;
+}
+
+/* <h1> - <h4>标题标签样式 */
+h1, h2, h3, h4 {
+    margin-bottom: 8px;
+}
+
+h1 {
+    font-size: 24px;
+    line-height: 32px;
+}
+
+h2 {
+    font-size: 20px;
+    line-height: 28px;
+}
+
+h3 {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+h4 {
+    font-size: 14px;
+    line-height: 22px;
+}
+
+/* 清除浮动 */
+.blank0px {
+    background: none;
+    clear: both;
+    height: 0;
+    font-size: 0;
+    overflow: hidden
+}
+
+/* layui-header */
+.layui-layout-admin .s-layuiLogo {
+    text-align: left;
+}
+
+.s-layuiLogo img {
+    width: 120px;
+    height: auto;
+    margin-left: 20px;
+}
+
+.s-systematicName {
+    width: 200px;
+    line-height: 50px;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    margin-left: -100px;
+    text-align: center;
+    color: #009688;
+    font-size: 16px;
+}
+
+/* 标题 */
+.s-title {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 24px;
+}
+
+.s-title h1 {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 27px;
+}
+
+/* layui-nav */
+.layui-nav .layui-nav-item a {
+    height: 50px;
+    line-height: 50px;
+}
+
+.layui-nav .layui-nav-item a .fa {
+    line-height: 50px;
+}
+
+.layui-body {
+    overflow-y: scroll;
+}
+
+.layui-input, .layui-select, .layui-textarea {
+    height: 32px;
+}
+
+/* 添加输入框只读样式 */
+/*.layui-input:read-only{*/
+/*background-color: #eee;*/
+/*color: #999;*/
+/*}*/
+/* 输入框禁用样式 */
+.layui-input:disabled {
+    background-color: #eee;
+    color: #999;
+}
+
+.layui-form-item {
+    margin-bottom: 0;
+    padding-bottom: 8px;
+}
+
+.layui-form-item .s-layuiInline {
+    margin-right: 0;
+    margin-bottom: 8px;
+}
+
+.layui-form-label {
+    width: 86px;
+    padding: 6px 8px;
+}
+
+.layui-form-label i {
+    display: inline-block;
+    width: auto;
+    margin-right: 8px;
+    color: rgb(255, 0, 0);
+}
+
+.s-layuiInline .layui-form-label, .s-layuiInline11 .layui-form-label {
+    width: auto;
+    padding: 6px 8px;
+}
+
+.layui-form-item .s-layuiInline2 {
+    margin: 0;
+}
+
+.s-layuiInline2 .layui-form-label {
+    width: 119px;
+}
+
+.s-layuiInline2 .layui-input-inline {
+    width: 242px;
+}
+
+.s-layuiInline2 .layui-input-block {
+    margin-left: 135px;
+}
+
+.s-layuiInline2 .layui-textarea {
+    width: 633px;
+}
+
+.layui-form-item .s-layuiInline .layui-input-inline {
+    margin-right: 8px;
+}
+
+.layui-form-item .s-layuiInline .s-layuiInputInline {
+    width: 100px;
+}
+
+.layui-form-select dl {
+    top: 36px;
+}
+
+.layui-form-select dl dd, .layui-form-select dl dt {
+    line-height: 32px;
+}
+
+.layui-form-selectup dl, .s-selectUp .layui-form-select dl {
+    top: auto;
+    bottom: 36px;
+}
+
+.layui-nav-child {
+    top: 55px;
+}
+
+/* form */
+.layui-btn {
+    height: 32px;
+    line-height: 32px;
+}
+
+.layui-btn + .layui-btn {
+    margin-left: 2px;
+}
+
+.layui-btn-xs {
+    height: 22px;
+    line-height: 22px;
+}
+
+.layui-btn-lg {
+    height: 44px;
+    line-height: 44px;
+}
+
+.layui-form-switch {
+    margin-top: 4px;
+}
+
+.s-layuiFormLabel {
+    width: 147px;
+}
+
+.layui-input-block {
+    margin-left: 102px;
+}
+
+.s-layuiInputBlock {
+    width: 258px;
+}
+
+.s-layuiInputBlock1 {
+    width: 100px;
+    margin-left: 163px;
+}
+
+.layui-form-checkbox {
+    height: 26px;
+    line-height: 26px;
+}
+
+.layui-form-checkbox span {
+    padding: 0 8px;
+}
+
+.layui-form-checkbox i {
+    height: 24px;
+}
+
+.layui-form-radio {
+    line-height: 32px;
+    margin: 0;
+}
+
+.layui-form-radio i {
+    font-size: 18px;
+}
+
+.layui-form-pane .layui-form-label {
+    padding: 0 15px;
+    height: 32px;
+    line-height: 32px;
+}
+
+.layui-form-pane .layui-input-block {
+    min-height: 32px;
+}
+
+.layui-form-switch {
+    height: 18px;
+    line-height: 18px;
+    min-width: 32px;
+}
+
+.layui-form-switch i {
+    top: 2px;
+    width: 14px;
+    height: 14px;
+}
+
+.layui-form-onswitch i {
+    margin-left: -18px;
+}
+
+.layui-form-mid {
+    padding: 6px 0 !important;
+}
+
+/* layer 解决滚动条出现页面跳动问题 */
+/*.layui-layer-page .layui-layer-content{*/
+/*!* 直接显示出右侧滚动条 *!*/
+/*overflow-y: scroll !important;*/
+/*}*/
+.kit-tab .layui-tab-content {
+    top: 40px;
+}
+
+/* layui-colorpicker */
+.layui-colorpicker.layui-colorpicker-xs {
+    width: 20px;
+    height: 20px;
+    line-height: 19px;
+}
+
+/* 表格禁用复选框样式 */
+.layui-checkbox-disbaled, .layui-checkbox-disbaled i {
+    background-color: #ededed !important;
+    color: #ededed !important;
+}
+
+/* 服务器端表格文字图标端上浮问题 */
+.layui-table-cell .layui-form-checkbox[lay-skin=primary] {
+    margin-top: 2px;
+}
+
+/* table */
+.layui-table-view {
+    margin-bottom: 0;
+}
+
+/* layui-layer */
+/*.layui-layer {*/
+/*    max-height: 100%;*/
+/*    overflow: auto;*/
+/*}*/
