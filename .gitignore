@@ -1,4 +1,9 @@
+.idea/*
+
 2022/app.ini
 2022/web/doc/*
 2022/uploads/*
-.idea/*
+
+2023/app.ini
+2023/web/doc/*
+2023/uploads/*
