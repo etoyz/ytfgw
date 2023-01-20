@@ -7,7 +7,9 @@ $arr = array(
     "msg" => ''
 );
 
-$is_lock = (new INI("../app.ini"))->data['Function']['SYSTEM_LOCK'];
+include_once "../include/INI.class.php";
+$ini = new INI("../app.ini");
+$is_lock = $ini->data['Function']['SYSTEM_LOCK'];
 if ($is_lock == "ON") {
     $arr['msg'] = '当前系统已锁定，如需登录，请联系管理人员！';
     die(json_encode($arr));
