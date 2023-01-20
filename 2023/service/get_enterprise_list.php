@@ -14,47 +14,37 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $response["status"] = "isLogin";
     require_once '../include/db.php';
     $db = new DB();
-    if ($_SESSION['usertype'] == "admin") {
-        $sql = null;
-        $sql2 = null;
-        if ($_SESSION['privilege'] == "0") // 超级管理员
+    if ($_SESSION['usertype'] == "admin") { // 管理员用户
+        if ($_SESSION['privilege'] == "0" || $_SESSION['privilege'] == "专家") // 超管或专家，地址null转为“”
             $query_address = $_GET['query_address'] ?? "";
-        else
+        else // 各地区管理员，只能查看各自地区的企业
             $query_address = $_SESSION['privilege'];
-        $status_detail = $_GET['status_detail'] ?? -1;
+        $status_specific = $_GET['status_specific'] ?? -1; // status为null，用户未指定status，则查全部
         $query = $db->escape($_GET['query']);
-        $from = ($_GET['page'] - 1) * $_GET['limit'];
-        $to = $_GET['limit'];
-        if ($_GET['status'] === '-1') { // 全部
-            $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' LIMIT " . $from . "," . $to . ";";
-            $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%';";
-            if ($status_detail != '-1') {
-                $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` = '$status_detail' LIMIT " . $from . "," . $to . ";";
-                $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` = '$status_detail';";
+        $start = ($_GET['page'] - 1) * $_GET['limit'];
+        $limit = $_GET['limit'];
+        $sql_fetch_data = null;
+        $sql_fetch_cnt = null;
+        if ($status_specific == '-1') { //若用户查询全部status
+            if ($_GET['status'] === '0-4') { // 申报状态
+                $sql_fetch_data = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (0,1,2,3,4) LIMIT " . $start . "," . $limit . ";";
+                $sql_fetch_cnt = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (0,1,2,3,4);";
+            } else if ($_GET['status'] === '5-9') {// 评价状态
+                $sql_fetch_data = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (5,6,7,8,9) LIMIT " . $start . "," . $limit . ";";
+                $sql_fetch_cnt = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (5,6,7,8,9);";
             }
-        } else if ($_GET['status'] === '0-4') { // 申报状态
-            $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (0,1,2,3,4) LIMIT " . $from . "," . $to . ";";
-            $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (0,1,2,3,4);";
-            if ($status_detail != '-1') {
-                $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (0,1,2,3,4) AND `status` = '$status_detail' LIMIT " . $from . "," . $to . ";";
-                $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (0,1,2,3,4) AND `status` = '$status_detail';";
+        } else { //用户查询某特定status
+            if ($_GET['status'] === '5-9') {// 评价状态
+                $status_specific += 5;
             }
-        } else if ($_GET['status'] === '5-9') {// 评价状态
-            $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (5,6,7,8,9) LIMIT " . $from . "," . $to . ";";
-            $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (5,6,7,8,9);";
-            if ($status_detail != '-1') {
-                $status_detail += 5;
-                $sql = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (5,6,7,8,9) AND `status` = '$status_detail' LIMIT " . $from . "," . $to . ";";
-                $sql2 = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` IN (5,6,7,8,9) AND `status` = '$status_detail';";
-            }
+            $sql_fetch_data = "SELECT * FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` = '$status_specific' LIMIT " . $start . "," . $limit . ";";
+            $sql_fetch_cnt = "SELECT COUNT(*) AS cnt FROM `enterprise` WHERE `name` LIKE '%$query%' AND `address` LIKE '%$query_address%' AND `status` = '$status_specific';";
         }
-        $re = $db->query($sql);
-        $response['count'] = $db->query($sql2)->fetch_assoc()['cnt'];
-        $all_data = $re->fetch_all(MYSQLI_ASSOC);
-        $response["data"] = $all_data;
+        $response["data"] = $db->query($sql_fetch_data)->fetch_all(MYSQLI_ASSOC);
+        $response['count'] = $db->query($sql_fetch_cnt)->fetch_assoc()['cnt'];
     } else if ($_SESSION['usertype'] == "enterprise") { // TODO : can be opt
-        $sql = "SELECT * FROM `enterprise`;";
-        $all_data = $db->query($sql)->fetch_all(MYSQLI_ASSOC);
+        $sql_fetch_data = "SELECT * FROM `enterprise`;";
+        $all_data = $db->query($sql_fetch_data)->fetch_all(MYSQLI_ASSOC);
 
         for ($i = 0; $i < count($all_data); $i++) {
             if ($all_data[$i]["loginid"] == $_SESSION['loginid']) {

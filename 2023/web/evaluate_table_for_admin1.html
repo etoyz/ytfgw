@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="assets/plugins/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="assets/css/table.css" media="all">
+    <link href="assets/plugins/font-awesome/css/font-awesome.min.css" media="all" rel="stylesheet">
+    <link href="assets/plugins/adjust/css/adjustLayui.css" media="all" rel="stylesheet">
+    <link href="assets/css/form.css" media="all" rel="stylesheet">
+    <link href="assets/css/common.css" media="all" rel="stylesheet">
+</head>
+<body>
+<div class="layui-fluid main">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div class="s-headerSearch" id="headArea">
+                <form action="" autocomplete="off" class="layui-form">
+                    <div class="layui-form-item">
+                        <div class="layui-inline s-layuiInline">
+                            <label class="layui-form-label">归属地</label>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" id="addressSearch"
+                                       placeholder="请输入归属地"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="layui-inline s-layuiInline">
+                            <label class="layui-form-label">企业名称</label>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" id="enterpriseNameSearch"
+                                       placeholder="请输入企业名称"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="layui-inline s-layuiInline">
+                            <label class="layui-form-label">申报状态</label>
+                            <div class="layui-input-inline">
+                                <select id="statusSearch">
+                                    <option value="-1">全部</option>
+                                    <option value="0">未完善信息</option>
+                                    <option value="1">未填报数据</option>
+                                    <option value="2">审核中</option>
+                                    <option value="3">已退回</option>
+                                    <option value="4">已通过审核</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline s-layuiInline">
+                            <button class="layui-btn layui-btn-warm" id="queryBtn">查询</button>
+                        </div>
+                        <div class="layui-inline s-layuiInline" style="float: right">
+                            <button class="layui-btn" id="exportAll">导出全部</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="s-commonTable">
+                <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
+                <script id="operation" type="text/html">
+                    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="view_data">查看企业数据</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view_score">得分汇总</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="pass">通过</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="return">退回</a>
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="s-details" id="dataTableWithAttachmentPopup">
+    <table class="layui-hide" id="dataTableWithAttachment" lay-filter="dataTableWithAttachment"></table>
+</div>
+
+<div class="s-details" id="scoreTablePopup">
+    <table class="layui-hide" id="scoreTable" lay-filter="scoreTable"></table>
+</div>
+
+</body>
+<script src="assets/plugins/layui/layui.js"></script>
+<script>
+    layui.use(['form', 'laydate', 'table', 'layer', 'element', 'upload'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            laydate = layui.laydate,
+            layer = layui.layer,
+            table = layui.table,
+            element = layui.element,
+            upload = layui.upload;
+
+        let maintable = table.render({
+            elem: '#enterpriseTable',
+            url: '../service/get_enterprise_list.php?query=&status=0-4',
+            toolbar: true,
+            defaultToolbar: ['print', 'exports'],
+            height: 'full-100',
+            page: {
+                layout: ['prev', 'page', 'next', 'skip', 'count'], //自定义分页布局
+                limit: 10,
+                groups: 3,
+                first: false,
+                last: false
+            },
+            cols: [[
+                {type: 'numbers', style: 'background-color: #eee;'},
+                {field: 'address', width: '150', title: '归属地（县市区）'},
+                {field: 'name', width: '285', title: '企业名称'},
+                {field: 'created_year', width: '80', title: '报告年度'},
+                {field: 'status', width: '95', title: '申报状态'},
+                {field: 'submit_time', width: '170', title: '填报时间'},
+                {field: 'expert_score', width: '100', title: '专家打分'},
+                {field: 'return_reason', width: '220', title: '退回原因'},
+                {field: 'remark', width: '220', title: '备注'},
+                {field: 'operation', width: '250', title: '操作', toolbar: '#operation', fixed: 'right'}
+            ]],
+            size: 'sm',
+            parseData: function (res) {
+                for (let item of res.data) {
+                    item.status %= 5;
+                    if (item.status == "0")
+                        item.status = "未完善信息";
+                    else if (item.status == "1")
+                        item.status = "未填报数据";
+                    else if (item.status == "2")
+                        item.status = "审核中";
+                    else if (item.status == "3")
+                        item.status = "已退回";
+                    else if (item.status == "4")
+                        item.status = "已通过审核";
+                    if (item.expert_score === null)
+                        item.expert_score = "暂未评审"
+                }
+            }
+        });
+
+        let indicator_selected;
+
+        let dataTableWithAttachment = table.render({
+            elem: '#dataTableWithAttachment',
+            height: 1150,
+            limit: Number.MAX_SAFE_INTEGER,
+            cols: [[
+                {type: 'numbers', style: 'background-color: #eee;'},
+                {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
+                {field: 'value', width: 110, title: '数值', style: 'background-color: #eee;'},
+                {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
+                {field: 'attachment', width: 120, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
+                {
+                    field: 'operation', width: 170,
+                    title: '操作',
+                    toolbar: '#operationDataTable',
+                    fixed: 'right',
+                    style: 'background-color: #eee;'
+                }
+            ]],
+            size: 'sm'
+        });
+
+        table.on('tool(enterpriseTable)', function (obj) {
+            if (obj.event === 'view_data') { // 查看全部数据，包括核定数据
+                let loadMsg = layer.load(1)
+                table.render({
+                    elem: '#dataTableWithAttachment',
+                    url: "../service/get_evaluating_indicator_value.php?type=0&user=" + obj.data["loginid"],
+                    height: 1150,
+                    limit: Number.MAX_SAFE_INTEGER,
+                    cols: [[
+                        {type: 'numbers', style: 'background-color: #eee;'},
+                        {field: 'indicator', width: 580, title: '指标', style: 'background-color: #eee;'},
+                        {field: 'value', width: 110, title: '填报数值', style: 'background-color: #eee;'},
+                        {field: 'value_fixed', width: 110, title: '核定数值', style: 'background-color: #eee;'},
+                        {field: 'unit', width: 120, title: '单位', style: 'background-color: #eee;'},
+                        {field: 'attachment', width: 135, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
+                    ]],
+                    size: 'sm',
+                    done: function () {
+                        layer.close(loadMsg)
+                        layer.open({
+                            type: 1,
+                            title: '企业详细数据',
+                            content: $('#dataTableWithAttachmentPopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                            area: ['1150px', '90%']
+                        });
+                    },
+                    parseData: function (res) {
+                        $.post({ // 获得核定数值
+                            url: "../service/get_evaluating_indicator_value.php?type=1&user=" + obj.data["loginid"],
+                            async: false,
+                            dataType: 'json',
+                            success: function (resp) {
+                                let i = 0
+                                for (const d of resp.data) {
+                                    res.data[i]['value_fixed'] = d["value"];
+                                    i++
+                                }
+                            }
+                        })
+                        return res
+                    }
+                });
+            } else if (obj.event === 'view_score') {
+                let msg = layer.load(1)
+                table.render({
+                    elem: '#scoreTable',
+                    url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid,
+                    height: 850,
+                    limit: Number.MAX_SAFE_INTEGER,
+                    cols: [[
+                        {type: 'numbers', style: 'background-color: #eee;'},
+                        {field: 'indicator', width: 553, title: '指标', style: 'background-color: #eee;'},
+                        {field: 'score_0', width: 110, title: '填报得分', style: 'background-color: #eee;'},
+                        {field: 'score_1', width: 110, title: '核定得分', style: 'background-color: #eee;'},
+                    ]],
+                    size: 'sm',
+                    done: function () {
+                        layer.open({
+                            type: 1,
+                            title: '电脑评判结果',
+                            content: $('#scoreTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                            area: ['866px', '90%']
+                        });
+                        layer.close(msg)
+                    }
+                });
+            } else if (obj.event === 'pass') {
+                layer.confirm("确认通过【" + obj.data.name + "】的申请吗？", {
+                    btn: ['确认', '取消'] //可以无限个按钮
+                }, function () {
+                    $.post({
+                        url: "../service/check_data.php",
+                        data: {
+                            "loginid": obj.data.loginid,
+                            "operation": "pass"
+                        },
+                        success: function (res) {
+                            if (res.data === true)
+                                layer.alert("成功！", {icon: "1"})
+                            maintable.reload()
+                        },
+                        dataType: "json"
+                    })
+                })
+            } else if (obj.event === 'return') {
+                layer.prompt({title: "请输入退回原因", formType: 2}, function (value, index) {
+                    $.post({
+                        url: "../service/check_data.php",
+                        data: {
+                            "loginid": obj.data.loginid,
+                            "operation": "return",
+                            "return_reason": value
+                        },
+                        success: function (res) {
+                            if (res.data === true)
+                                layer.alert("成功！", {icon: "1"})
+                            maintable.reload()
+                        },
+                        dataType: "json"
+                    })
+                    layer.close(index);
+                });
+            }
+        })
+
+        $("#queryBtn").unbind("click").click(function () {
+            maintable.reload({
+                url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val()
+                    + '&status=0-4'
+                    + '&status_specific=' + $("#statusSearch").val()
+                    + '&query_address=' + $("#addressSearch").val(),
+                page: {
+                    curr: 1
+                },
+            })
+            return false;
+        })
+
+        $("#exportAll").unbind("click").click(function () {
+            layer.load(1)
+            let exportData;
+            maintable.reload({
+                page: {
+                    limit: Number.MAX_SAFE_INTEGER,
+                    curr: 1
+                },
+                done: function (res) {
+                    exportData = res.data
+                    table.exportFile(maintable.config.id, exportData, 'xls');
+                    location.reload()
+                }
+            })
+            return false
+        })
+
+    })
+</script>
+</html>

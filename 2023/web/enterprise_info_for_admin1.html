@@ -16,11 +16,51 @@
 <div class="layui-fluid main">
     <div class="layui-row">
         <div class="layui-col-md12">
+            <div class="s-headerSearch" id="headArea">
+                <form action="" autocomplete="off" class="layui-form">
+                    <div class="layui-form-item">
+                        <div class="layui-inline s-layuiInline">
+                            <label class="layui-form-label">归属地</label>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" id="addressSearch"
+                                       placeholder="请输入归属地"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="layui-inline s-layuiInline">
+                            <label class="layui-form-label">企业名称</label>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" id="enterpriseNameSearch"
+                                       placeholder="请输入企业名称"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="layui-inline s-layuiInline">
+                            <label class="layui-form-label">申报状态</label>
+                            <div class="layui-input-inline">
+                                <select id="statusSearch">
+                                    <option value="-1">全部</option>
+                                    <option value="0">未完善信息</option>
+                                    <option value="1">未填报数据</option>
+                                    <option value="2">审核中</option>
+                                    <option value="3">已退回</option>
+                                    <option value="4">已通过审核</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline s-layuiInline">
+                            <button class="layui-btn layui-btn-warm" id="queryBtn">查询
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="addBtn" id="addBtn">完善企业信息</a>
-                    <a class="layui-btn layui-btn-xs" lay-event="view">查看企业信息</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="view">查看</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete_account">删除账号</a>
                 </script>
             </div>
         </div>
@@ -40,11 +80,6 @@
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">企业营业执照<br>(含附表1)</label>
-                    <div class="layui-input-inline">
-                        <button class="edit-mod layui-btn" id="upload_license" type="button"><i class="layui-icon">&#xe67c;</i>
-                        </button>
-                        <a target="_blank" id="upload_license_indicate" style="color: red"></a>
-                    </div>
                 </div>
             </div>
             <div class="layui-form-item s-formItem5">
@@ -57,11 +92,6 @@
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">下属企业营业执照</label>
-                    <div class="layui-input-inline">
-                        <button class="edit-mod layui-btn" id="upload_license_sub" type="button"><i class="layui-icon">&#xe67c;</i>
-                        </button>
-                        <a target="_blank" id="upload_license_sub_indicate" style="color: red"></a>
-                    </div>
                 </div>
             </div>
             <div class="layui-form-item s-formItem5">
@@ -122,9 +152,6 @@
                 </div>
             </div>
         </div>
-        <div class="s-tabBottomButton">
-            <button class="layui-btn edit-mod" id="confirm" lay-filter="confirm" lay-submit type="button">提交</button>
-        </div>
     </form>
 </div>
 </body>
@@ -141,8 +168,17 @@
 
         let enterpriseTable = table.render({
             elem: '#enterpriseTable',
-            url: '../service/get_enterprise_list.php?query=',
-            height: '150',
+            url: '../service/get_enterprise_list.php?query=&status=0-4',
+            toolbar: true,
+            defaultToolbar: ['print', 'exports'],
+            height: 'full-100',
+            page: {
+                layout: ['prev', 'page', 'next', 'skip', 'count'], //自定义分页布局
+                limit: 10,
+                groups: 8,
+                first: false,
+                last: false
+            },
             cols: [[
                 {type: 'numbers', style: 'background-color: #eee;'},
                 {field: 'address', width: '180', title: '归属地（县市区）'},
@@ -150,9 +186,9 @@
                 {field: 'created_year', width: '100', title: '报告年度'},
                 {field: 'status', width: '100', title: '申报状态'},
                 {field: 'remark', width: '400', title: '备注'},
-                {field: 'operation', width: '200', title: '操作', toolbar: '#operation', fixed: 'right'}
+                {field: 'operation', width: '150', title: '操作', toolbar: '#operation', fixed: 'right'}
             ]],
-            size: 'lg',
+            size: 'sm',
             parseData: function (res) {
                 for (let item of res.data) {
                     item.status %= 5;
@@ -168,58 +204,7 @@
                         item.status = "已通过审核";
                 }
             },
-            done: function () {
-                $.post({
-                    url: "../service/can_user_submit_info.php",
-                    success: function (res) {
-                        if (res == "1") {
-                            $("#addBtn").click();
-                        } else {
-                            $("#addBtn").html("修改企业信息")
-                        }
-                    }
-                })
-            }
         });
-
-        function renderUploadBtn(elem, indicator, user) {
-            $(elem).click(function () {
-                $.get({
-                    url: "../service/attachment_delete.php",
-                    data: {
-                        "indicator": indicator
-                    },
-                    success: function (res) {
-                        if (res.data) {
-                            layer.msg("已删除上次提交的附件，请重新上传！")
-                            renderUploadIndicator(user)
-                        }
-                    },
-                    dataType: 'json'
-                })
-            })
-            upload.render({
-                elem: elem
-                , url: '../service/attachment_upload.php'
-                , accept: 'file'
-                , exts: 'pdf'
-                , multiple: false
-                , data: {
-                    'indicator': indicator
-                }
-                , done: function (obj) {
-                    if (obj.status === "isLogin") {
-                        if (obj.data === true) {
-                            layer.alert("上传成功！")
-                            renderUploadIndicator(user)
-                        } else
-                            layer.msg("异常错误！")
-                    } else {
-                        layer.msg("未登录！")
-                    }
-                }
-            })
-        }
 
         function renderUploadIndicator(user) {
             $.get({
@@ -250,7 +235,6 @@
             if (obj.event === 'view') {
                 // render 附件指示label
                 renderUploadIndicator(obj.data.loginid)
-                $(".edit-mod").hide()
                 let data = obj.data;
                 $("#name").val(data["name"]);
                 $("#mainbus").val(data["mainbus"]);
@@ -267,43 +251,57 @@
                     content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                     area: ['800px', '430px'],
                 });
-            } else if (obj.event === 'addBtn') {
-                // render 附件指示label
-                renderUploadIndicator(obj.data.loginid)
-                $(".edit-mod").show()
-                renderUploadBtn("#upload_license", "企业营业执照", obj.data.loginid)
-                renderUploadBtn("#upload_license_sub", "下属企业营业执照", obj.data.loginid)
-                let data = obj.data;
-                $("#name").val(data["name"]);
-                $("#mainbus").val(data["mainbus"]);
-                $("#industry").val(data["industry"]);
-                $("#address").val(data["address"]);
-                $("#numofsub").val(data["numofsub"]);
-                $("#chargeperson").val(data["chargeperson"]);
-                $("#phone").val(data["phone"]);
-                $("#created_year").val(data["created_year"]);
-                $("#remark").val(data["remark"]);
-                layer.open({
-                    type: 1,
-                    title: '请完善企业详细信息',
-                    content: $('#popUp'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                    area: ['800px', '430px'],
-                });
+            } else if (obj.event === 'delete_account') {
+                layer.confirm("若执行删除账号，将会删除该账号在此系统上的全部数据，包括基本信息、评价数据以及上传的附件等，确定执行删除吗？", {
+                    icon: 0,
+                    title: '请注意',
+                    id: 0
+                }, function () {
+                    layer.prompt({
+                        formType: 3,
+                        title: '请输入【企业名称】确认删除',
+                        area: ['800px', '350px'],
+                        id: 1,
+                        btn: ["确认删除", "取消"]
+                    }, function (value, index1) {
+                        if (value !== obj.data.name) {
+                            layer.closeAll()
+                            layer.alert("企业名称不匹配，未执行删除！")
+                            return false;
+                        }
+                        $.post({
+                            url: "../service/delete_account.php",
+                            data: {
+                                "loginid": obj.data.loginid
+                            },
+                            dataType: 'json',
+                            success: function (res) {
+                                if (res.db === true) {
+                                    layer.alert("删除成功！", function () {
+                                        layer.closeAll()
+                                        enterpriseTable.reload()
+                                    })
+                                } else {
+                                    layer.alert("删除失败！" + JSON.stringify(res))
+                                }
+                            }
+                        })
+                    });
+                })
             }
         })
 
-        form.on('submit(confirm)', function (data) {
-            $.post({
-                url: "../service/edit_enterprise_info.php",
-                data: data.field,
-                success: function (res) {
-                    if (JSON.parse(res).data)
-                        layer.alert("完善成功！", {icon: 1}, function () {
-                            location.reload()
-                            layer.closeAll();
-                        });
-                }
+        $("#queryBtn").unbind("click").click(function () {
+            enterpriseTable.reload({
+                url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val()
+                    + '&status_specific=' + $("#statusSearch").val()
+                    + '&status=0-4'
+                    + '&query_address=' + $("#addressSearch").val(),
+                page: {
+                    curr: 1
+                },
             })
+            return false;
         })
     })
 </script>

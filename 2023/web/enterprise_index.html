@@ -17,8 +17,8 @@
 <body>
 <div class="layui-layout layui-layout-admin kit-layout-admin">
     <div class="layui-header">
-        <a class="layui-logo" style=":line-height 60px;margin-left: 5px;width: 280px">
-            烟台市创新平台申报与评价系统
+        <a class="layui-logo" style=":line-height 60px;margin-left: 5px;width: 330px" href="enterprise_index.html">
+            烟台市创新平台申报与评价系统(2023)
         </a>
         <ul class="layui-nav layui-layout-right kit-nav">
             <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="changePassword"><i
@@ -42,11 +42,11 @@
                                kit-target> <span> 填报指南</span></a>
                         </dd>
                         <dd>
-                            <a data-options="{url:'enterprise_info.html?status=-1',icon:'&#xe658;',title:'企业基本信息',id:'2'}"
+                            <a data-options="{url:'enterprise_info.html',icon:'&#xe658;',title:'企业基本信息',id:'2'}"
                                href="javascript:" kit-target> <span> 企业基本信息</span></a>
                         </dd>
                         <dd>
-                            <a data-options="{url:'enterprise_evaluate_table.html?status=-1',icon:'&#xe658;',title:'填报评价数据',id:'3'}"
+                            <a data-options="{url:'evaluate_table.html',icon:'&#xe658;',title:'填报评价数据',id:'3'}"
                                href="javascript:" kit-target> <span> 填报评价数据</span></a>
                         </dd>
                     </dl>
@@ -129,7 +129,7 @@
             success: (res) => {
                 if (res == 0)
                     layer.alert("登录已经过期，请重新登录！", {icon: 3}, function () {
-                        location.href = "../../index.php"
+                        location.href = "../web/enterprise_login.html"
                     })
             }
         })

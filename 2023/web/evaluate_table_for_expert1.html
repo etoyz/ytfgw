@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="assets/plugins/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="assets/css/table.css" media="all">
+    <link href="assets/plugins/font-awesome/css/font-awesome.min.css" media="all" rel="stylesheet">
+    <link href="assets/plugins/adjust/css/adjustLayui.css" media="all" rel="stylesheet">
+    <link href="assets/css/form.css" media="all" rel="stylesheet">
+    <link href="assets/css/common.css" media="all" rel="stylesheet">
+</head>
+<body>
+<div class="layui-fluid main">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div class="s-headerSearch" id="headArea">
+                <form action="" autocomplete="off" class="layui-form">
+                    <div class="layui-form-item">
+                        <div class="layui-inline s-layuiInline ">
+                            <label class="layui-form-label">归属地</label>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" id="addressSearch"
+                                       placeholder="请输入归属地"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="layui-inline s-layuiInline ">
+                            <label class="layui-form-label">企业名称</label>
+                            <div class="layui-input-inline">
+                                <input autocomplete="off" class="layui-input" id="enterpriseNameSearch"
+                                       placeholder="请输入企业名称"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="layui-inline s-layuiInline ">
+                            <label class="layui-form-label">申报状态</label>
+                            <div class="layui-input-inline">
+                                <select id="statusSearch">
+                                    <option value="-1">全部</option>
+                                    <option value="0">未完善信息</option>
+                                    <option value="1">未填报数据</option>
+                                    <option value="2">审核中</option>
+                                    <option value="3">已退回</option>
+                                    <option value="4">已通过审核</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline s-layuiInline">
+                            <button class="layui-btn layui-btn-warm " id="queryBtn">查询</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="s-commonTable">
+                <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
+                <script id="operation" type="text/html">
+                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="fix_data">核定企业数据</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view_score">得分汇总</a>
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="s-details" id="dataTableWithAttachmentPopup">
+    <table class="layui-hide" id="dataTableWithAttachment" lay-filter="dataTableWithAttachment"></table>
+    <div class="layui-btn-container s-tabBottomButton">
+        <span class="layui-btn " id="submitForPreserve"> 保存</span>
+    </div>
+</div>
+
+<div class="s-details" id="scoreTablePopup">
+    <table class="layui-hide" id="scoreTable" lay-filter="scoreTable"></table>
+</div>
+
+</body>
+<script src="assets/plugins/layui/layui.js"></script>
+<script>
+    layui.use(['form', 'laydate', 'table', 'layer', 'element', 'upload'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            table = layui.table;
+
+        let activeLoginId;
+        let dataToBeSub = {};
+
+        let maintable = table.render({
+            elem: '#enterpriseTable',
+            url: '../service/get_enterprise_list.php?query=&status=0-4',
+            toolbar: true,
+            defaultToolbar: ['print', 'exports'],
+            height: 'full-100',
+            page: {
+                layout: ['prev', 'page', 'next', 'skip', 'count'], //自定义分页布局
+                limit: 10,
+                groups: 3,
+                first: false,
+                last: false
+            },
+            cols: [[
+                {type: 'numbers', style: 'background-color: #eee;'},
+                {field: 'address', width: '150', title: '归属地（县市区）'},
+                {field: 'name', width: '285', title: '企业名称'},
+                {field: 'created_year', width: '80', title: '报告年度'},
+                {field: 'status', width: '95', title: '申报状态'},
+                {field: 'submit_time', width: '170', title: '填报时间'},
+                {field: 'expert_score', width: '90', title: '专家评审'},
+                {field: 'remark', width: '250', title: '备注'},
+                {field: 'operation', width: '180', title: '操作', toolbar: '#operation', fixed: 'right'}
+            ]],
+            size: 'sm',
+            parseData: function (res) {
+                for (let item of res.data) {
+                    item.status %= 5;
+                    if (item.status == "0")
+                        item.status = "未完善信息";
+                    else if (item.status == "1")
+                        item.status = "未填报数据";
+                    else if (item.status == "2")
+                        item.status = "审核中";
+                    else if (item.status == "3")
+                        item.status = "已退回";
+                    else if (item.status == "4")
+                        item.status = "已通过审核";
+                    if (item.expert_score === null)
+                        item.expert_score = "暂未评审"
+                }
+            }
+        })
+
+        table.on('tool(enterpriseTable)', function (obj) {
+            activeLoginId = obj.data.loginid
+            dataToBeSub['loginid'] = activeLoginId
+            if (obj.event === "fix_data") {
+                let loadMsg = layer.load(1)
+                dataToBeSub['type'] = 1 // 专家核定数据
+                table.render({
+                    url: "../service/get_evaluating_indicator_value.php?type=0&user=" + activeLoginId,
+                    elem: '#dataTableWithAttachment',
+                    height: 1150,
+                    limit: Number.MAX_SAFE_INTEGER,
+                    cols: [[
+                        {type: 'numbers', style: 'background-color: #eee;'},
+                        {field: 'indicator', width: 580, title: '指标', style: 'background-color: #eee;'},
+                        {field: 'value', width: 110, title: '填报数值', style: 'background-color: #eee;'},
+                        {
+                            field: 'value_fixed',
+                            width: 110,
+                            title: '核定数值',
+                            edit: "number",
+                            style: 'background-color: #FFFFFF;'
+                        },
+                        {field: 'unit', width: 120, title: '单位', style: 'background-color: #eee;'},
+                        {field: 'attachment', width: 135, title: '附件', style: 'background-color: #eee;'}
+                    ]],
+                    size: 'sm',
+                    done: function (res) {
+                        for (const d of res.data) {
+                            if (d["value_fixed"] != null)
+                                dataToBeSub[d["indicator"]] = d["value_fixed"];
+                        }
+                        table.on('edit(dataTableWithAttachment)', function (obj) {
+                            var value = obj.value //得到修改后的值
+                                , data = obj.data //得到所在行所有键值
+                            dataToBeSub[data.indicator] = value;
+                            if (value === "")
+                                delete dataToBeSub[data.indicator]
+                        });
+                        layer.close(loadMsg)
+                        layer.open({
+                            type: 1,
+                            title: '核定数据',
+                            content: $('#dataTableWithAttachmentPopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                            area: ['1150px', '90%']
+                        });
+                    },
+                    parseData: function (res) {
+                        $.post({
+                            url: "../service/get_evaluating_indicator_value.php?type=1&user=" + obj.data["loginid"],
+                            async: false,
+                            dataType: 'json',
+                            success: function (resp) {
+                                let i = 0
+                                for (const d of resp.data) {
+                                    res.data[i]['value_fixed'] = d["value"];
+                                    i++
+                                }
+                            }
+                        })
+                        return res
+                    }
+                })
+            } else if (obj.event === 'view_score') {
+                let msg = layer.load(1)
+                table.render({
+                    elem: '#scoreTable',
+                    url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid,
+                    height: 850,
+                    limit: Number.MAX_SAFE_INTEGER,
+                    cols: [[
+                        {type: 'numbers', style: 'background-color: #eee;'},
+                        {field: 'indicator', width: 553, title: '指标', style: 'background-color: #eee;'},
+                        {field: 'score_0', width: 110, title: '填报得分', style: 'background-color: #eee;'},
+                        {field: 'score_1', width: 110, title: '核定得分', style: 'background-color: #eee;'},
+                    ]],
+                    size: 'sm',
+                    done: function () {
+                        layer.open({
+                            type: 1,
+                            title: '电脑评判结果',
+                            content: $('#scoreTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                            area: ['866px', '90%']
+                        });
+                        layer.close(msg)
+                    }
+                });
+            }
+        });
+
+        $("#submitForPreserve").unbind("click").click(function () {
+            let msg = layer.load(1)
+            $.post({
+                url: "../service/submit_data.php",
+                data: dataToBeSub,
+                success: function (res) {
+                    layer.close(msg)
+                    if (res.data === true) {
+                        layer.alert("保存成功！", {icon: 1}, function () {
+                            layer.closeAll();
+                            maintable.reload();
+                        })
+                    } else if (res.data === 1265 || res.data == 1366) {
+                        layer.alert("请检查数据格式是否正确！", {icon: 2})
+                    } else {
+                        layer.alert(res.data + '', {icon: 2}, function () {
+                            layer.closeAll();
+                        })
+                    }
+                },
+                dataType: "json"
+            })
+            return false
+        })
+
+        $("#queryBtn").unbind("click").click(function () {
+            maintable.reload({
+                url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val()
+                    + '&status_specific=' + $("#statusSearch").val()
+                    + '&status=0-4'
+                    + '&query_address=' + $("#addressSearch").val(),
+                page: {
+                    curr: 1
+                },
+            })
+            return false;
+        })
+
+    })
+</script>
+</html>

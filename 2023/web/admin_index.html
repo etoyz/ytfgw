@@ -12,17 +12,12 @@
     <link href="assets/css/table.css" media="all" rel="stylesheet">
     <link href="assets/css/form.css" media="all" rel="stylesheet">
     <link href="assets/plugins/adjust/css/colorTheme.css" media="all" rel="stylesheet">
-    <style>
-        .m-mod {
-            display: none;
-        }
-    </style>
 </head>
 
 <body>
 <div class="layui-layout layui-layout-admin kit-layout-admin">
     <div class="layui-header">
-        <a class="layui-logo" style=":line-height 60px;margin-left: 5px;width: 330px" href="./admin_index.html">
+        <a class="layui-logo" style=":line-height 60px;margin-left: 5px;width: 330px" href="admin_index.html">
             烟台市创新平台申报与评价系统后台(2023)
         </a>
         <ul class="layui-nav layui-layout-right kit-nav">
@@ -54,15 +49,15 @@
                                kit-target> <span> 填报指南</span></a>
                         </dd>
                         <dd class="m-mod">
-                            <a data-options="{url:'enterprise_info.html?status=0-4',icon:'&#xe658;',title:'企业基本信息',id:'2'}"
+                            <a data-options="{url:'enterprise_info_for_admin1.html',icon:'&#xe658;',title:'企业基本信息',id:'2'}"
                                href="javascript:" kit-target> <span> 企业基本信息</span></a>
                         </dd>
                         <dd class="m-mod">
-                            <a data-options="{url:'enterprise_evaluate_table.html?status=0-4',icon:'&#xe658;',title:'企业数据汇总',id:'3'}"
+                            <a data-options="{url:'evaluate_table_for_admin1.html',icon:'&#xe658;',title:'企业数据汇总',id:'3'}"
                                href="javascript:" kit-target> <span> 企业数据汇总</span></a>
                         </dd>
                         <dd>
-                            <a data-options="{url:'enterprise_evaluate_table_for_expert.html?status=0-4',icon:'&#xe658;',title:'专家评审',id:'7'}"
+                            <a data-options="{url:'evaluate_table_for_expert1.html',icon:'&#xe658;',title:'专家评审',id:'7'}"
                                href="javascript:" kit-target> <span> 专家评审</span></a>
                         </dd>
                     </dl>
@@ -76,15 +71,15 @@
                                kit-target> <span> 填报指南</span></a>
                         </dd>
                         <dd class="m-mod">
-                            <a data-options="{url:'enterprise_info.html?status=5-9',icon:'&#xe658;',title:'企业基本信息',id:'5'}"
+                            <a data-options="{url:'enterprise_info_for_admin2.html',icon:'&#xe658;',title:'企业基本信息',id:'5'}"
                                href="javascript:" kit-target> <span> 企业基本信息</span></a>
                         </dd>
                         <dd class="m-mod">
-                            <a data-options="{url:'enterprise_evaluate_table.html?status=5-9',icon:'&#xe658;',title:'企业数据汇总',id:'6'}"
+                            <a data-options="{url:'evaluate_table_for_admin2.html',icon:'&#xe658;',title:'企业数据汇总',id:'6'}"
                                href="javascript:" kit-target> <span> 企业数据汇总</span></a>
                         </dd>
                         <dd>
-                            <a data-options="{url:'enterprise_evaluate_table_for_expert.html?status=5-9',icon:'&#xe658;',title:'专家评审',id:'8'}"
+                            <a data-options="{url:'evaluate_table_for_expert2.html',icon:'&#xe658;',title:'专家评审',id:'8'}"
                                href="javascript:" kit-target> <span> 专家评审</span></a>
                         </dd>
                     </dl>
@@ -256,7 +251,7 @@
             success: (res) => {
                 if (res == 0)
                     layer.alert("登录已经过期，请重新登录！", {icon: 3}, function () {
-                        location.href = "../../index_admin.php"
+                        location.href = "../web/admin_login.html"
                     })
             }
         })
