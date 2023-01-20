@@ -230,13 +230,9 @@
             }
         })
         $.get({
-            url: "../service/getLoginId.php",
+            url: "../service/get_loginid.php",
             success: function (res) {
                 $("#loginName").html(res + " ")
-                if (res === "")
-                    layer.alert("登录已经过期，请重新登录！", {icon: 3}, function () {
-                        location.href = "../../index_admin.php"
-                    })
             }
         })
         $.get({
@@ -254,6 +250,15 @@
             success: function (res) {
                 if (res != "专家")
                     $(".m-mod").show()
+            }
+        })
+        $.get({
+            url: "../../service_admin/get_login_status.php",
+            success: (res) => {
+                if (res == 0)
+                    layer.alert("登录已经过期，请重新登录！", {icon: 3}, function () {
+                        location.href = "../../index_admin.php"
+                    })
             }
         })
         $("#logout").unbind("click").click(function () {

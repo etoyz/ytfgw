@@ -103,17 +103,13 @@
             }
         });
         $.get({
-            url: "../service/getLoginId.php",
+            url: "../service/get_loginid.php",
             success: function (res) {
                 $("#loginName").html(res + " ")
-                if (res === "")
-                    layer.alert("登录已经过期，请重新登录！", {icon: 3}, function () {
-                        location.href = "enterprise_login.html"
-                    })
             }
         })
         $.get({
-            url: "../service/getEnterpriseName.php",
+            url: "../service/get_enterprise_name.php",
             success: function (res) {
                 $("#name").html(res + " ")
             }
@@ -126,6 +122,15 @@
                     $("#tip").attr('data-options', '{url:\'tips2.html\',icon:\'&#xe658;\',title:\'填报指南\',id:\'1\'}');
                 else
                     $("#tip").attr('data-options', '{url:\'tips1.html\',icon:\'&#xe658;\',title:\'填报指南\',id:\'1\'}');
+            }
+        })
+        $.get({
+            url: "../service/get_enterprise_login_status.php",
+            success: (res) => {
+                if (res == 0)
+                    layer.alert("登录已经过期，请重新登录！", {icon: 3}, function () {
+                        location.href = "../../index.php"
+                    })
             }
         })
         $("#logout").unbind("click").click(function () {
