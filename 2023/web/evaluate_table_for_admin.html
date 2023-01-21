@@ -19,7 +19,7 @@
             <div class="s-headerSearch" id="headArea">
                 <form action="" autocomplete="off" class="layui-form">
                     <div class="layui-form-item">
-                        <div class="layui-inline s-layuiInline ">
+                        <div class="layui-inline s-layuiInline">
                             <label class="layui-form-label">归属地</label>
                             <div class="layui-input-inline">
                                 <input autocomplete="off" class="layui-input" id="addressSearch"
@@ -27,7 +27,7 @@
                                        type="text">
                             </div>
                         </div>
-                        <div class="layui-inline s-layuiInline ">
+                        <div class="layui-inline s-layuiInline">
                             <label class="layui-form-label">企业名称</label>
                             <div class="layui-input-inline">
                                 <input autocomplete="off" class="layui-input" id="enterpriseNameSearch"
@@ -35,7 +35,7 @@
                                        type="text">
                             </div>
                         </div>
-                        <div class="layui-inline s-layuiInline ">
+                        <div class="layui-inline s-layuiInline">
                             <label class="layui-form-label">申报状态</label>
                             <div class="layui-input-inline">
                                 <select id="statusSearch">
@@ -49,7 +49,10 @@
                             </div>
                         </div>
                         <div class="layui-inline s-layuiInline">
-                            <button class="layui-btn layui-btn-warm " id="queryBtn">查询</button>
+                            <button class="layui-btn layui-btn-warm" id="queryBtn">查询</button>
+                        </div>
+                        <div class="layui-inline s-layuiInline" style="float: right">
+                            <button class="layui-btn" id="exportAll">导出全部</button>
                         </div>
                     </div>
                 </form>
@@ -58,8 +61,10 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="fix_data">核定企业数据</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="view_data">查看企业数据</a>
                     <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view_score">得分汇总</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="pass">通过</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="return">退回</a>
                 </script>
             </div>
         </div>
@@ -68,9 +73,6 @@
 
 <div class="s-details" id="dataTableWithAttachmentPopup">
     <table class="layui-hide" id="dataTableWithAttachment" lay-filter="dataTableWithAttachment"></table>
-    <div class="layui-btn-container s-tabBottomButton">
-        <span class="layui-btn " id="submitForPreserve"> 保存</span>
-    </div>
 </div>
 
 <div class="s-details" id="scoreTablePopup">
@@ -80,17 +82,19 @@
 </body>
 <script src="assets/plugins/layui/layui.js"></script>
 <script>
+    let status = (new URLSearchParams(location.search)).get('status');
     layui.use(['form', 'laydate', 'table', 'layer', 'element', 'upload'], function () {
         var $ = layui.jquery,
+            form = layui.form,
+            laydate = layui.laydate,
             layer = layui.layer,
-            table = layui.table;
-
-        let activeLoginId;
-        let dataToBeSub = {};
+            table = layui.table,
+            element = layui.element,
+            upload = layui.upload;
 
         let maintable = table.render({
             elem: '#enterpriseTable',
-            url: '../service/get_enterprise_list.php?query=&status=5-9',
+            url: '../service/get_enterprise_list.php?query=&status=' + status,
             toolbar: true,
             defaultToolbar: ['print', 'exports'],
             height: 'full-100',
@@ -108,9 +112,10 @@
                 {field: 'created_year', width: '80', title: '报告年度'},
                 {field: 'status', width: '95', title: '申报状态'},
                 {field: 'submit_time', width: '170', title: '填报时间'},
-                {field: 'expert_score', width: '90', title: '专家评审'},
-                {field: 'remark', width: '250', title: '备注'},
-                {field: 'operation', width: '180', title: '操作', toolbar: '#operation', fixed: 'right'}
+                {field: 'expert_score', width: '100', title: '专家打分'},
+                {field: 'return_reason', width: '220', title: '退回原因'},
+                {field: 'remark', width: '220', title: '备注'},
+                {field: 'operation', width: '250', title: '操作', toolbar: '#operation', fixed: 'right'}
             ]],
             size: 'sm',
             parseData: function (res) {
@@ -130,56 +135,59 @@
                         item.expert_score = "暂未评审"
                 }
             }
-        })
+        });
+
+        let indicator_selected;
+
+        let dataTableWithAttachment = table.render({
+            elem: '#dataTableWithAttachment',
+            height: 1150,
+            limit: Number.MAX_SAFE_INTEGER,
+            cols: [[
+                {type: 'numbers', style: 'background-color: #eee;'},
+                {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
+                {field: 'value', width: 110, title: '数值', style: 'background-color: #eee;'},
+                {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
+                {field: 'attachment', width: 120, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
+                {
+                    field: 'operation', width: 170,
+                    title: '操作',
+                    toolbar: '#operationDataTable',
+                    fixed: 'right',
+                    style: 'background-color: #eee;'
+                }
+            ]],
+            size: 'sm'
+        });
 
         table.on('tool(enterpriseTable)', function (obj) {
-            activeLoginId = obj.data.loginid
-            dataToBeSub['loginid'] = activeLoginId
-            if (obj.event === "fix_data") {
+            if (obj.event === 'view_data') { // 查看全部数据，包括核定数据
                 let loadMsg = layer.load(1)
-                dataToBeSub['type'] = 1 // 专家核定数据
                 table.render({
-                    url: "../service/get_evaluating_indicator_value.php?type=0&user=" + activeLoginId,
                     elem: '#dataTableWithAttachment',
+                    url: "../service/get_evaluating_indicator_value.php?type=0&user=" + obj.data["loginid"],
                     height: 1150,
                     limit: Number.MAX_SAFE_INTEGER,
                     cols: [[
                         {type: 'numbers', style: 'background-color: #eee;'},
                         {field: 'indicator', width: 580, title: '指标', style: 'background-color: #eee;'},
                         {field: 'value', width: 110, title: '填报数值', style: 'background-color: #eee;'},
-                        {
-                            field: 'value_fixed',
-                            width: 110,
-                            title: '核定数值',
-                            edit: "number",
-                            style: 'background-color: #FFFFFF;'
-                        },
+                        {field: 'value_fixed', width: 110, title: '核定数值', style: 'background-color: #eee;'},
                         {field: 'unit', width: 120, title: '单位', style: 'background-color: #eee;'},
-                        {field: 'attachment', width: 135, title: '附件', style: 'background-color: #eee;'}
+                        {field: 'attachment', width: 135, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
                     ]],
                     size: 'sm',
-                    done: function (res) {
-                        for (const d of res.data) {
-                            if (d["value_fixed"] != null)
-                                dataToBeSub[d["indicator"]] = d["value_fixed"];
-                        }
-                        table.on('edit(dataTableWithAttachment)', function (obj) {
-                            var value = obj.value //得到修改后的值
-                                , data = obj.data //得到所在行所有键值
-                            dataToBeSub[data.indicator] = value;
-                            if (value === "")
-                                delete dataToBeSub[data.indicator]
-                        });
+                    done: function () {
                         layer.close(loadMsg)
                         layer.open({
                             type: 1,
-                            title: '核定数据',
+                            title: '企业详细数据',
                             content: $('#dataTableWithAttachmentPopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                             area: ['1150px', '90%']
                         });
                     },
                     parseData: function (res) {
-                        $.post({
+                        $.post({ // 获得核定数值
                             url: "../service/get_evaluating_indicator_value.php?type=1&user=" + obj.data["loginid"],
                             async: false,
                             dataType: 'json',
@@ -193,7 +201,7 @@
                         })
                         return res
                     }
-                })
+                });
             } else if (obj.event === 'view_score') {
                 let msg = layer.load(1)
                 table.render({
@@ -218,45 +226,73 @@
                         layer.close(msg)
                     }
                 });
+            } else if (obj.event === 'pass') {
+                layer.confirm("确认通过【" + obj.data.name + "】的申请吗？", {
+                    btn: ['确认', '取消'] //可以无限个按钮
+                }, function () {
+                    $.post({
+                        url: "../service/check_data.php",
+                        data: {
+                            "loginid": obj.data.loginid,
+                            "operation": "pass"
+                        },
+                        success: function (res) {
+                            if (res.data === true)
+                                layer.alert("成功！", {icon: "1"})
+                            maintable.reload()
+                        },
+                        dataType: "json"
+                    })
+                })
+            } else if (obj.event === 'return') {
+                layer.prompt({title: "请输入退回原因", formType: 2}, function (value, index) {
+                    $.post({
+                        url: "../service/check_data.php",
+                        data: {
+                            "loginid": obj.data.loginid,
+                            "operation": "return",
+                            "return_reason": value
+                        },
+                        success: function (res) {
+                            if (res.data === true)
+                                layer.alert("成功！", {icon: "1"})
+                            maintable.reload()
+                        },
+                        dataType: "json"
+                    })
+                    layer.close(index);
+                });
             }
-        });
-
-        $("#submitForPreserve").unbind("click").click(function () {
-            let msg = layer.load(1)
-            $.post({
-                url: "../service/submit_data.php",
-                data: dataToBeSub,
-                success: function (res) {
-                    layer.close(msg)
-                    if (res.data === true) {
-                        layer.alert("保存成功！", {icon: 1}, function () {
-                            layer.closeAll();
-                            maintable.reload();
-                        })
-                    } else if (res.data === 1265 || res.data == 1366) {
-                        layer.alert("请检查数据格式是否正确！", {icon: 2})
-                    } else {
-                        layer.alert(res.data + '', {icon: 2}, function () {
-                            layer.closeAll();
-                        })
-                    }
-                },
-                dataType: "json"
-            })
-            return false
         })
 
         $("#queryBtn").unbind("click").click(function () {
             maintable.reload({
                 url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val()
+                    + '&status=' + status
                     + '&status_specific=' + $("#statusSearch").val()
-                    + '&status=5-9'
                     + '&query_address=' + $("#addressSearch").val(),
                 page: {
                     curr: 1
                 },
             })
             return false;
+        })
+
+        $("#exportAll").unbind("click").click(function () {
+            layer.load(1)
+            let exportData;
+            maintable.reload({
+                page: {
+                    limit: Number.MAX_SAFE_INTEGER,
+                    curr: 1
+                },
+                done: function (res) {
+                    exportData = res.data
+                    table.exportFile(maintable.config.id, exportData, 'xls');
+                    location.reload()
+                }
+            })
+            return false
         })
 
     })

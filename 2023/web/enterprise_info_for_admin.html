@@ -157,6 +157,7 @@
 </body>
 <script src="assets/plugins/layui/layui.js"></script>
 <script>
+    let status = (new URLSearchParams(location.search)).get('status'); // 0-4 申报 5-9 评价
     layui.use(['form', 'laydate', 'table', 'layer', 'element', 'upload'], function () {
         var $ = layui.jquery,
             form = layui.form,
@@ -168,7 +169,7 @@
 
         let enterpriseTable = table.render({
             elem: '#enterpriseTable',
-            url: '../service/get_enterprise_list.php?query=&status=5-9',
+            url: '../service/get_enterprise_list.php?query=&status=' + status,
             toolbar: true,
             defaultToolbar: ['print', 'exports'],
             height: 'full-100',
@@ -295,7 +296,7 @@
             enterpriseTable.reload({
                 url: '../service/get_enterprise_list.php?query=' + $("#enterpriseNameSearch").val()
                     + '&status_specific=' + $("#statusSearch").val()
-                    + '&status=5-9'
+                    + '&status=' + status
                     + '&query_address=' + $("#addressSearch").val(),
                 page: {
                     curr: 1
