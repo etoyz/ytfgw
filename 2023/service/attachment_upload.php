@@ -6,7 +6,8 @@ session_start();
 
 $response = array(
     "status" => "notLogin",
-    "data" => null
+    "result" => false,
+    "error" => ""
 );
 
 //若未登录、登录者不是企业，则不能上传文件。（申报数据后才能上传文件）
@@ -20,6 +21,7 @@ require_once "../include/define_error_handler_to_catch_warnings.php";
 try {
     mkdir("../uploads/" . $_SESSION['loginid']);
 } catch (Exception $e) {
+    $response['error'] .= $e->getMessage();
 }
 ini_set("upload_max_filesize", "30M"); //TODO It does not work on some system
 try {
@@ -27,7 +29,7 @@ try {
     $response['data'] = move_uploaded_file($_FILES['file']['tmp_name'], $dst_url);
     $response['url'] = $dst_url;
 } catch (Exception $e) {
-    $response['error'] = json_encode($e);
+    $response['error'] .= $e->getMessage();
 }
 
 die(json_encode($response));

@@ -183,7 +183,7 @@
         });
 
         function renderUploadBtn(elem, indicator, user) {
-            $(elem).click(function () {
+            $(elem).unbind("click").click(function () {// 一点击上传按钮，就删除之前的文件
                 $.get({
                     url: "../service/attachment_delete.php",
                     data: {
@@ -213,9 +213,9 @@
                             layer.alert("上传成功！")
                             renderUploadIndicator(user)
                         } else
-                            layer.msg("异常错误！")
+                            layer.alert(obj.error)
                     } else {
-                        layer.msg("未登录！")
+                        layer.alert("未登录！")
                     }
                 }
             })

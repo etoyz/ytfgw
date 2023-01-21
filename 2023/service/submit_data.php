@@ -39,6 +39,7 @@ if (isset($_SESSION['usertype'])) {
         $arr['data'] = "无权限进行此操作！";
         die(json_encode($arr));
     }
+    $_POST['loginid'] = $user;
 
     // 数据插入数据库
     $sql = "INSERT INTO `enterprise_data`(";
