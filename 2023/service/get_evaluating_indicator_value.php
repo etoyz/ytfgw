@@ -16,13 +16,15 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $user = null;
     if ($_SESSION['usertype'] === "enterprise") { // 若是企业用户，则只能查询自己的
         $user = $_SESSION['loginid'];
+        $type = 0; // 只能查询自己提交的数据
     } else { // 若是管理员用户，则可以查询任何人的
         $user = $_GET['user'];
+        $type = $_GET['type']; // 能查询专家核定的数据和自己提交的数据
     }
     require_once '../include/db.php';
     $db = new DB();
     $user = $db->escape($user);
-    $type = $db->escape($_GET['type']); // type为0表示企业提报的数据，为1表示专家核定的数据
+    $type = $db->escape($type); // type为0表示企业提报的数据，为1表示专家核定的数据
 
     // patch
     if ($type == 1 && $_SESSION['privilege'] !== '0') { // 非超级管理员不可查看专家核定数据
