@@ -8,7 +8,7 @@ $arr = array(
     "data" => null
 );
 
-$user = null;
+$loginid = null;
 $type = 0;
 if (isset($_SESSION['usertype'])) {
     $arr["status"] = "isLogin";
@@ -17,7 +17,8 @@ if (isset($_SESSION['usertype'])) {
 
     // 若是企业用户，则只能提交自己的数据，且会进行状态校验
     if ($_SESSION['usertype'] === "enterprise") {
-        $user = $_SESSION['loginid'];
+        $loginid = $_SESSION['loginid'];
+        $type = 0; // 企业提报的数据
         // 检查用户状态
         require_once "../include/common.php";
         $status = get_user_status($_SESSION['loginid']) % 5;
@@ -32,14 +33,16 @@ if (isset($_SESSION['usertype'])) {
         }
     } else if ($_SESSION['usertype'] === "admin") { // 若是管理员用户
         if (($_SESSION['privilege'] == '0' || $_SESSION['privilege'] == '专家')) { // 超管可以提交任意用户数据，用于重新判分; 专家也可以提交
-            $user = $_POST['loginid'];
-            $type = $_POST['type'];
+            $loginid = $_POST['loginid'];
+            $type = 1; // 专家核定的数据
         }
     } else {
         $arr['data'] = "无权限进行此操作！";
         die(json_encode($arr));
     }
-    $_POST['loginid'] = $user;
+    // 要插入到数据库的数据，暂存到$_POST里
+    $_POST['loginid'] = $loginid;
+    $_POST['type'] = $type;
 
     // 数据插入数据库
     $sql = "INSERT INTO `enterprise_data`(";
@@ -61,7 +64,7 @@ if (isset($_SESSION['usertype'])) {
             $sql .= "`" . $db->escape($key) . "` = '" . $db->escape($_POST[$key]) . "', ";
         }
         $sql = substr($sql, 0, -2);
-        $sql .= " WHERE `loginid` = '" . $db->escape($user) . "' AND `type` = '" . $db->escape($type) . "'";
+        $sql .= " WHERE `loginid` = '" . $db->escape($loginid) . "' AND `type` = '" . $db->escape($type) . "'";
         $arr["data"] = $db->query($sql); // 成功返回true，失败返回错误码
     }
 
@@ -71,7 +74,7 @@ if (isset($_SESSION['usertype'])) {
         // update info 企业修改才改提交时间
         if ($_SESSION['usertype'] === "enterprise") {
             date_default_timezone_set("PRC");
-            $sql = "UPDATE `enterprise` set  `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '" . $db->escape($user) . "'";
+            $sql = "UPDATE `enterprise` set  `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '" . $db->escape($loginid) . "'";
             $db->query($sql);
         }
     }

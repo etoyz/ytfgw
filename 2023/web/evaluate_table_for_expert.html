@@ -138,9 +138,8 @@
             dataToBeSub['loginid'] = activeLoginId
             if (obj.event === "fix_data") {
                 let loadMsg = layer.load(1)
-                dataToBeSub['type'] = 1 // 专家核定数据
                 table.render({
-                    url: "../service/get_evaluating_indicator_value.php?type=0&user=" + activeLoginId,
+                    url: "../service/get_evaluating_indicator_value.php?user=" + activeLoginId,
                     elem: '#dataTableWithAttachment',
                     height: 1150,
                     limit: Number.MAX_SAFE_INTEGER,
@@ -181,7 +180,7 @@
                     },
                     parseData: function (res) {
                         $.post({
-                            url: "../service/get_evaluating_indicator_value.php?type=1&user=" + obj.data["loginid"],
+                            url: "../service/get_evaluating_indicator_value.php?user=" + obj.data["loginid"],
                             async: false,
                             dataType: 'json',
                             success: function (resp) {
