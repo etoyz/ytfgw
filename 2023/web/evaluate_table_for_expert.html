@@ -179,7 +179,7 @@
                         });
                     },
                     parseData: function (res) {
-                        $.post({
+                        $.get({
                             url: "../service/get_evaluating_indicator_value.php?type=1&user=" + obj.data["loginid"],
                             async: false,
                             dataType: 'json',

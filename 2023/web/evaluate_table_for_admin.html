@@ -187,7 +187,7 @@
                         });
                     },
                     parseData: function (res) {
-                        $.post({ // 获得核定数值
+                        $.get({ // 获得核定数值
                             url: "../service/get_evaluating_indicator_value.php?type=1&user=" + obj.data["loginid"],
                             async: false,
                             dataType: 'json',

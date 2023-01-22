@@ -83,7 +83,7 @@ if (isset($_SESSION['usertype'])) {
 function cal_score()
 {
     // 公式
-    $user = $GLOBALS['user'];
+    $loginid = $GLOBALS['loginid'];
     $type = $GLOBALS['type'];
     $metaData = array();
     $metaData["研究人员人均研发经费支出"] = array(
@@ -180,16 +180,16 @@ function cal_score()
     foreach (array_keys($metaData) as $key) {
         $sql .= "'" . $metaData[$key][4] . "', ";
     }
-    $sql .= "'$user', $type, '$score_cnt');";
+    $sql .= "'$loginid', $type, '$score_cnt');";
     if ($GLOBALS['db']->query($sql) == 1062) { // 如果已经存在尝试进行更新
         $sql = "UPDATE `enterprise_score` SET ";
         foreach (array_keys($metaData) as $key) {
             $sql .= "`$key` = '" . $metaData[$key][4] . "', ";
         }
-        $sql .= "`type` = $type, `得分汇总` = '$score_cnt' WHERE `loginid` = '$user' AND `type` = '$type'";
+        $sql .= "`type` = $type, `得分汇总` = '$score_cnt' WHERE `loginid` = '$loginid' AND `type` = '$type'";
         $GLOBALS['db']->query($sql);
 //        var_dump($sql);
-        $sql1 = "UPDATE `enterprise` set `expert_score` = '" . number_format($score_cnt, 2) . "' WHERE `loginid` = '$user'";
+        $sql1 = "UPDATE `enterprise` set `expert_score` = '" . number_format($score_cnt, 2) . "' WHERE `loginid` = '$loginid'";
         $GLOBALS['db']->query($sql1);
     }
 }

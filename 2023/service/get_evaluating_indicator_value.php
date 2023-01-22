@@ -27,7 +27,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     $type = $db->escape($type); // type为0表示企业提报的数据，为1表示专家核定的数据
 
     // patch
-    if ($type == 1 && $_SESSION['privilege'] !== '0') { // 非超级管理员不可查看专家核定数据
+    if ($type == 1 && $_SESSION['privilege'] !== '0' && $_SESSION['privilege'] !== "专家") { // 非超级管理员不可查看专家核定数据，专家可以
         die(json_encode($response));
     }
 
