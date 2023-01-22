@@ -24,7 +24,7 @@ require_once '../include/db.php';
 $db = new DB();
 
 //名字重复
-$sql = "SELECT eid FROM `enterprise` WHERE `loginid` = '" . $db->escape($_POST['loginid']) . "';";
+$sql = "SELECT `loginid` FROM `enterprise` WHERE `loginid` = '" . $db->escape($_POST['loginid']) . "';";
 $re = $db->query($sql);
 if ($re->num_rows == 1) {
     $arr['nameRepetition'] = true;

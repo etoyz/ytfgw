@@ -4,7 +4,7 @@ body {
 }
 
 .main {
-    margin-top: 25px;
+    margin-top: 5px;
 }
 
 .main .layui-row {
@@ -113,7 +113,7 @@ h4 {
 
 .layui-form-item {
     margin-bottom: 0;
-    padding-bottom: 8px;
+    padding-bottom: 3px;
 }
 
 .layui-form-item .s-layuiInline {

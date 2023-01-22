@@ -25,10 +25,10 @@
                 控制面板</a>
             </li>
             <li class="layui-nav-item"><a class="s-logout" style="display: none;" href="javascript:"
-                                          id="registerEnterprise2"> 注册企业用户（评价）</a>
+                                          id="registerEnterprise2"> 注册企业账号（评价）</a>
             </li>
             <li class="layui-nav-item"><a class="s-logout" style="display: none;" href="javascript:"
-                                          id="registerEnterprise"> 注册企业用户（申报）</a>
+                                          id="registerEnterprise"> 注册企业账号（申报）</a>
             </li>
             <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="changePassword"><i
                     aria-hidden="true" class="fa fa-pencil-square"></i> 修改密码</a></li>
@@ -288,7 +288,7 @@
             $("#regForm").trigger("reset")
             var index = layer.open({
                 type: 1,
-                title: '注册企业用户（申报）',
+                title: '注册企业账号（申报）',
                 content: $('#registerWin'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                 area: '300px'
             });
@@ -300,6 +300,7 @@
                         if (res.nameRepetition)
                             layer.alert("名字重复！", {icon: 2})
                         if (res.regSuccess) {
+                            $('#refreshBtn').click()
                             layer.alert("注册成功！\n企业【" + $("input[name=name]").val() + "】的登录账号为【" + res.username + "】,密码为【" + $("#loginpw").val() + "】", {icon: 1})
                         }
 
@@ -315,12 +316,11 @@
             $("#regForm").trigger("reset")
             var index = layer.open({
                 type: 1,
-                title: '注册企业用户（评价）',
+                title: '注册企业账号（评价）',
                 content: $('#registerWin'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                 area: '300px'
             });
             form.on('submit(subForReg)', function (data) {
-                console.log(data)
                 $.post({
                     url: "../service/enterprise_register.php?status=5",
                     data: data.field,
@@ -328,6 +328,7 @@
                         if (res.nameRepetition)
                             layer.alert("名字重复！", {icon: 2})
                         if (res.regSuccess) {
+                            $('#refreshBtn').click()
                             layer.alert("注册成功！\n企业【" + $("input[name=name]").val() + "】的登录账号为【" + res.username + "】,密码为【" + $("#loginpw").val() + "】", {icon: 1})
                         }
 

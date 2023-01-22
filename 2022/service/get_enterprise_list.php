@@ -17,7 +17,7 @@ if (isset($_SESSION['usertype'])) { // 已经登录
     if ($_SESSION['usertype'] == "admin") {
         $sql = null;
         $sql2 = null;
-        if ($_SESSION['privilege'] == "0") // 超级管理员
+        if ($_SESSION['privilege'] == "0" || $_SESSION['privilege'] == "专家") // 超级管理员
             $query_address = $_GET['query_address'] ?? "";
         else
             $query_address = $_SESSION['privilege'];

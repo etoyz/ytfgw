@@ -115,7 +115,7 @@ a, button {
 }
 
 .kit-layout-admin .layui-body {
-    bottom: 35px;
+    bottom: 0;
     top: 50px
 }
 

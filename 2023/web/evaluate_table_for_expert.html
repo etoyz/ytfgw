@@ -69,7 +69,7 @@
 <div class="s-details" id="dataTableWithAttachmentPopup">
     <table class="layui-hide" id="dataTableWithAttachment" lay-filter="dataTableWithAttachment"></table>
     <div class="layui-btn-container s-tabBottomButton">
-        <span class="layui-btn " id="submitForPreserve"> 保存</span>
+        <span class="layui-btn " id="submitForPreserve"> 保存并计算得分 </span>
     </div>
 </div>
 
@@ -92,13 +92,11 @@
         let maintable = table.render({
             elem: '#enterpriseTable',
             url: '../service/get_enterprise_list.php?query=&status=' + status,
-            toolbar: true,
-            defaultToolbar: ['print', 'exports'],
-            height: 'full-100',
+            height: 'full-90',
             page: {
-                layout: ['prev', 'page', 'next', 'skip', 'count'], //自定义分页布局
-                limit: 10,
-                groups: 3,
+                layout: ['prev', 'page', 'next', 'count'], //自定义分页布局
+                limit: 12,
+                groups: 20,
                 first: false,
                 last: false
             },
@@ -229,7 +227,7 @@
                 success: function (res) {
                     layer.close(msg)
                     if (res.data === true) {
-                        layer.alert("保存成功！", {icon: 1}, function () {
+                        layer.alert("成功！", {icon: 1}, function () {
                             layer.closeAll();
                             maintable.reload();
                         })
