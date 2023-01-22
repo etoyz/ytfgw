@@ -21,10 +21,12 @@
             烟台市创新平台申报与评价系统(2023)
         </a>
         <ul class="layui-nav layui-layout-right kit-nav">
-            <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="changePassword"><i
+            <li class="layui-nav-item"><a class="s-logout" id="progress">
+                <i class="layui-icon layui-icon-align-center"></i> 我的进度</a></li>
+            <li class="layui-nav-item"><a class="s-logout" id="changePassword"><i
                     aria-hidden="true" class="fa fa-pencil-square"></i> 修改密码</a></li>
-            <li class="layui-nav-item"><a class="s-headPortrait" href="javascript:" id="name">正在加载... </a></li>
-            <li class="layui-nav-item"><a class="s-headPortrait" href="javascript:" id="loginName">正在加载... </a></li>
+            <li class="layui-nav-item"><a class="" id="name">正在加载... </a></li>
+            <li class="layui-nav-item"><a class="" id="loginName">正在加载... </a></li>
             <li class="layui-nav-item"><a class="s-logout" id="logout"><i aria-hidden="true" class="fa fa-sign-out"></i>
                 退出登录</a></li>
         </ul>
@@ -84,6 +86,43 @@
             </div>
         </div>
     </form>
+</div>
+
+<!-- 进度弹窗 -->
+<div class="s-details" id="progressWin">
+    <ul class="layui-timeline" style="font-weight: bolder">
+        <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis layui-icon-ok-circle" id="p1"></i>
+            <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">1、账号激活</div>
+            </div>
+        </li>
+        <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis layui-icon-help" id="p2"></i>
+            <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">2、完善企业基本信息</div>
+            </div>
+        </li>
+        <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis layui-icon-help" id="p3"></i>
+            <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">3、提报数据</div>
+                <span id="return_tips" style="color: red;font-weight: lighter"></span>
+            </div>
+        </li>
+        <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis layui-icon-help" id="p4"></i>
+            <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">4、正在审核中</div>
+            </div>
+        </li>
+        <li class="layui-timeline-item">
+            <i class="layui-icon layui-timeline-axis layui-icon-help" id="p5"></i>
+            <div class="layui-timeline-content layui-text">
+                <div class="layui-timeline-title">5、审核通过</div>
+            </div>
+        </li>
+    </ul>
 </div>
 
 <script src="assets/plugins/layui/layui.js"></script>
@@ -158,6 +197,38 @@
                 // 关闭当前弹出层
                 layer.close(index);
             });
+        });
+        $('body').on('click', '#progress', function () {
+            function progressTo(to) { // to 1-5
+                for (let i = to; i >= 0; i--) // 已完成的打对号
+                    $("#p" + i).attr('class', 'layui-icon layui-timeline-axis layui-icon-ok-circle')
+                for (let i = to + 1; i <= 5; i++)// 未完成的打圈
+                    $("#p" + i).attr('class', 'layui-icon layui-timeline-axis layui-icon-help')
+            }
+
+            $("#return_tips").hide()
+            $.get({
+                url: "../service/get_enterprise_list.php",
+                dataType: 'json',
+                success: (res) => {
+                    let status = res.data[0]['status'] % 5 // status为0-4
+                    if (status <= 1)
+                        progressTo(status + 1)
+                    else if (status === 2) // 正在审核
+                        progressTo(4)
+                    else if (status === 3) { // 被退回
+                        $("#return_tips").show().html("审核失败,被退回；<br/>请修改后重新提交；<hr/>退回原因：<br/>" + res.data[0]['return_reason'])
+                        progressTo(2)
+                    } else
+                        progressTo(5)
+                    layer.open({
+                        type: 1,
+                        title: '我的进度',
+                        content: $('#progressWin'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                        area: '200px'
+                    });
+                }
+            })
         });
     }).config({
         base: 'assets/common/js/'
