@@ -155,7 +155,7 @@ function cal_score()
     $metaData["营业收入"] = array( //？？
         $_POST["主营业务收入"], 5, 5000, 20000
     );
-    //  指标数值0    权重1  基本要求2    满分要求3
+    //  指标数值0    权重1  基本要求2    满分要求3  成绩4
     $score_cnt = 0;
     foreach ($metaData as &$data) { // 成绩存储在data[4]
         if ($data[0] >= $data[3])
