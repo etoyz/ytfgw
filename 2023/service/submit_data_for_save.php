@@ -2,86 +2,91 @@
 /**
  * 保存评判数据
  */
-require "../include/common.php";
-
 session_start();
+
+require "../include/common.php";
+require "../include/verify_login.php";
+
 $arr = array(
     "code" => 1,
-    "msg" => get_string("NOT_LOGIN"),
+    "msg" => "",
 );
 
-if (isset($_SESSION['usertype'])) {
-    $db = new DB();
+$db = new DB();
 
-    // 若是企业用户，则只能提交自己的数据，且会进行状态校验
-    if ($_SESSION['usertype'] === "enterprise") {
-        $loginid = $_SESSION['loginid'];
-        $type = 0; // 企业提报的数据
-        // 检查用户状态
-        $status = get_user_status($_SESSION['loginid']) % 5;
-        if ($status != "1" && $status != "3") {
-            if ($status == "0")
-                $arr["msg"] = "请先完善企业信息！";
-            else if ($status == "2")
-                $arr["msg"] = "您已经提交，请勿重复提交！";
-            else if ($status == "4")
-                $arr["msg"] = "已经通过！";
-            die(json_encode($arr));
-        }
-    } else if ($_SESSION['usertype'] === "admin" &&
-        ($_SESSION['privilege'] == '0' || $_SESSION['privilege'] == '专家')) { // 若是管理员用户,// 超管可以提交任意用户数据，用于重新判分; 专家也可以提交
-        $loginid = $_POST['loginid'];
-        $type = 1; // 专家核定的数据
-    } else {
+if (is_enterprise()) { // 若是企业用户，则只能提交自己的数据，且会进行状态校验
+    $loginid = $_SESSION['loginid'];
+    $type = 0; // 企业提报的数据
+    // 检查用户状态
+    $status = get_user_status($_SESSION['loginid']) % 5;
+    if ($status != "1" && $status != "3") {
+        if ($status == "0")
+            $arr["msg"] = "请先完善企业信息！";
+        else if ($status == "2")
+            $arr["msg"] = "您已经提交，请勿重复提交！";
+        else if ($status == "4")
+            $arr["msg"] = "已经通过！";
         die(json_encode($arr));
     }
-    // 要插入到数据库的数据，暂存到$_POST里
-    $_POST['loginid'] = $loginid;
-    $_POST['type'] = $type;
-
-    // 数据插入数据库
-    $sql = "INSERT INTO `enterprise_data`(";
-    foreach (array_keys($_POST) as $key) {
-        $sql .= "`" . $db->escape($key) . "`, ";
-    }
-    $sql = substr($sql, 0, -2);
-    $sql .= ") VALUES(";
-    foreach (array_keys($_POST) as $key) {
-        $sql .= "'" . $db->escape($_POST[$key]) . "', ";
-    }
-    $sql = substr($sql, 0, -2);
-    $sql .= ");";
-//    var_dump($sql);
-    $re = $db->query($sql); // 成功返回true，失败返回错误码
-    if ($re === true)
-        $arr['code'] = 0;
-    else if ($re == 1062) { // 如果已经存在，则尝试进行更新
-        $sql2 = "UPDATE `enterprise_data` SET ";
-        foreach (array_keys($_POST) as $key) {
-            $sql2 .= "`" . $db->escape($key) . "` = '" . $db->escape($_POST[$key]) . "', ";
-        }
-        $sql2 = substr($sql2, 0, -2);
-        $sql2 .= " WHERE `loginid` = '" . $db->escape($loginid) . "' AND `type` = '" . $db->escape($type) . "'";
-        $re2 = $db->query($sql2); // 成功返回true，失败返回错误码
-        if ($re2 === true)
-            $arr['code'] = 0;
-        else
-            $arr['msg'] = "1062 " . $re2;
-    } else
-        $arr['msg'] = $re;
-
-
-    if ($arr["code"] === 0) { // 若成功保存提交的数据
-        // 计算成绩并插入数据库
-        cal_score($loginid, $type, $db);
-        // update info 企业修改才改提交时间
-        if ($_SESSION['usertype'] === "enterprise") {
-            date_default_timezone_set("PRC");
-            $sql = "UPDATE `enterprise` set  `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '" . $db->escape($loginid) . "'";
-            $db->query($sql);
-        }
-    }
+} else if (has_permission_admin_super() | has_permission_admin_expert()) {
+    // 若是管理员用户,// 超管可以提交任意用户数据，用于重新判分; 专家也可以提交
+    $loginid = $_POST['loginid'];
+    $type = 1; // 专家核定的数据
+} else {
+    die(json_encode(array(
+        "code" => 1,
+        "msg" => get_string("PERMISSION_DENY")
+    )));
 }
+
+// 要插入到数据库的数据，暂存到$_POST里
+$_POST['loginid'] = $loginid;
+$_POST['type'] = $type;
+
+// 数据插入数据库
+$sql = "INSERT INTO `enterprise_data`(";
+foreach (array_keys($_POST) as $key) {
+    $sql .= "`" . $db->escape($key) . "`, ";
+}
+$sql = substr($sql, 0, -2);
+$sql .= ") VALUES(";
+foreach (array_keys($_POST) as $key) {
+    $sql .= "'" . $db->escape($_POST[$key]) . "', ";
+}
+$sql = substr($sql, 0, -2);
+$sql .= ");";
+//    var_dump($sql);
+$re = $db->query($sql); // 成功返回true，失败返回错误码
+
+if ($re === true)
+    $arr['code'] = 0;
+else if ($re == 1062) { // 如果已经存在，则尝试进行更新
+    $sql2 = "UPDATE `enterprise_data` SET ";
+    foreach (array_keys($_POST) as $key) {
+        $sql2 .= "`" . $db->escape($key) . "` = '" . $db->escape($_POST[$key]) . "', ";
+    }
+    $sql2 = substr($sql2, 0, -2);
+    $sql2 .= " WHERE `loginid` = '" . $db->escape($loginid) . "' AND `type` = '" . $db->escape($type) . "'";
+    $re2 = $db->query($sql2); // 成功返回true，失败返回错误码
+    if ($re2 === true)
+        $arr['code'] = 0;
+    else
+        $arr['msg'] = "1062 " . $re2;
+} else
+    $arr['msg'] = $re;
+
+
+if ($arr["code"] === 0) { // 若成功保存提交的数据
+    // 计算成绩并插入数据库
+    cal_score($loginid, $type, $db);
+    // update info
+    if (is_enterprise()) { //企业修改才改提交时间
+        date_default_timezone_set("PRC");
+        $sql = "UPDATE `enterprise` set  `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '" . $db->escape($loginid) . "'";
+        $db->query($sql);
+    }
+} else // 若未能成功保存提交的数据
+    die(json_encode($arr));
 
 // 计算成绩并插入数据库
 function cal_score($loginid, $type, $db)
@@ -197,5 +202,3 @@ function cal_score($loginid, $type, $db)
         $db->query($sql_update);
     }
 }
-
-die(json_encode($arr));

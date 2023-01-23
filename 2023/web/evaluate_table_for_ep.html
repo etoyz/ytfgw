@@ -147,7 +147,7 @@
                                     $.get({
                                         url: "../service/submit_data_for_review.php",
                                         success: function (res) {
-                                            if (res == 1) {
+                                            if (res === true) {
                                                 layer.alert("提交审核成功！", function () {
                                                     location.reload()
                                                 })

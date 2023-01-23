@@ -3,9 +3,8 @@
  * 获取当前的功能配置
  */
 session_start();
-include "../include/INI.class.php";
+include "../include/common.php";
+include "../include/verify_permission_admin_super.php";
 
-if (isset($_SESSION['usertype']) && $_SESSION['usertype'] == "admin" && $_SESSION['privilege'] == "0") { // 验证登录
-    $a = (new INI("../app.ini"))->data['Function'];
-    die(json_encode($a));
-}
+$a = (new INI("../app.ini"))->data['Function'];
+die(json_encode($a));

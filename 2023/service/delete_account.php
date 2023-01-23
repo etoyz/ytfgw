@@ -2,20 +2,16 @@
 /**
  * 删除企业账户
  */
+session_start();
+
 require "../include/common.php";
+require "../include/verify_login.php";
+require "../include/verify_permission_admin_super.php";
 
 $response = array(
     "code" => 1,
-    "msg" => get_string("NOT_LOGIN"),
-    "data" => []
+    "msg" => ""
 );
-
-session_start();
-
-// 验证登录状态
-if (!(isset($_SESSION['usertype']) && $_SESSION['usertype'] == "admin" && $_SESSION['privilege'] == "0")) {
-    die(json_encode($response));
-}
 
 $loginid = $_POST['loginid'];
 
@@ -25,9 +21,9 @@ $sql = "DELETE FROM `enterprise` WHERE `loginid` = '" . $db->escape($loginid) . 
 $re = $db->query($sql);
 if ($re !== true) {
     $response['msg'] = "数据库错误：" . $re;
-    die(json_encode($response));
+    die(json_encode($response)); // 从数据库中删除失败，则视为操作失败
 } else {
-    $response['code'] = 0;
+    $response['code'] = 0; // 从数据库中删除成功，则视为操作成功
     $response['msg'] = "数据库删除成功<br/>";
 }
 

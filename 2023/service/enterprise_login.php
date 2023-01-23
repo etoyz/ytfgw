@@ -2,6 +2,8 @@
 /**
  * 企业登录
  */
+session_start();
+
 require "../include/common.php";
 
 $arr = array(
@@ -9,16 +11,12 @@ $arr = array(
     "msg" => ''
 );
 
-
-if (get_lock()) {
+if (is_lock()) {
     $arr['msg'] = '当前系统已锁定，如需登录，请联系管理人员！';
     die(json_encode($arr));
 }
 
-session_start();
-
 $db = new DB();
-
 $sql = "SELECT `loginpw`,`status` FROM `enterprise` WHERE `loginid` = '" . $db->escape($_POST['loginid']) . "';";
 $re = $db->query($sql);
 

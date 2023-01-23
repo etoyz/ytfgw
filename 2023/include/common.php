@@ -3,17 +3,47 @@ require "db.php";
 require "INI.class.php";
 
 // 返回固定的string
-function get_string($key)
+function get_string($key): string
 {
     $ini = new INI('../app.ini');
     return $ini->data['Strings'][$key];
 }
 
 // 获取系统是否上锁
-function get_lock()
+function is_lock(): bool
 {
     $ini = new INI("../app.ini");
     return $ini->data['Function']['SYSTEM_LOCK'] === "ON";
+}
+
+// 获取登录状态
+function is_login(): bool
+{
+    return isset($_SESSION['usertype']);
+}
+
+// 是否有管理员权限
+function has_permission_admin(): bool
+{
+    return isset($_SESSION['usertype']) && $_SESSION['usertype'] === "admin";
+}
+
+// 是否有超级管理员权限
+function has_permission_admin_super(): bool
+{
+    return isset($_SESSION['usertype']) && $_SESSION['usertype'] === "admin" && $_SESSION['privilege'] == "0";
+}
+
+// 是否有专家管理员权限
+function has_permission_admin_expert(): bool
+{
+    return isset($_SESSION['usertype']) && $_SESSION['usertype'] === "admin" && $_SESSION['privilege'] == "专家";
+}
+
+// 是否是企业用户
+function is_enterprise(): bool
+{
+    return isset($_SESSION['usertype']) && $_SESSION['usertype'] === "enterprise";
 }
 
 /**
