@@ -92,13 +92,10 @@
         let maintable = table.render({
             elem: '#enterpriseTable',
             url: '../service/get_enterprise_list.php?query=&status=' + status,
-            height: 'full-90',
             page: {
                 layout: ['prev', 'page', 'next', 'count'], //自定义分页布局
-                limit: 12,
+                limit: 11,
                 groups: 20,
-                first: false,
-                last: false
             },
             cols: [[
                 {type: 'numbers', style: 'background-color: #eee;'},
@@ -111,7 +108,6 @@
                 {field: 'remark', width: '250', title: '备注'},
                 {field: 'operation', width: '180', title: '操作', toolbar: '#operation', fixed: 'right'}
             ]],
-            size: 'sm',
             parseData: function (res) {
                 for (let item of res.data) {
                     item.status %= 5;

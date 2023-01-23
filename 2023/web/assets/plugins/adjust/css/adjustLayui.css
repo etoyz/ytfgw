@@ -8,8 +8,7 @@ body {
 }
 
 .main .layui-row {
-    margin: 10px 0;
-    margin-bottom: 0;
+    margin: 12px 0 0;
 }
 
 /* <h1> - <h4>标题标签样式 */
@@ -113,7 +112,7 @@ h4 {
 
 .layui-form-item {
     margin-bottom: 0;
-    padding-bottom: 3px;
+    padding-bottom: 4px;
 }
 
 .layui-form-item .s-layuiInline {
