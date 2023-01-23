@@ -191,10 +191,10 @@ function cal_score($loginid, $type, $db)
         }
         $sql2 .= "`type` = $type, `得分汇总` = '$score_cnt' WHERE `loginid` = '$loginid' AND `type` = '$type'";
         $db->query($sql2);
-//        var_dump($sql);
-        // TODO
-        $sql1 = "UPDATE `enterprise` set `expert_score` = '" . number_format($score_cnt, 2) . "' WHERE `loginid` = '$loginid'";
-        $db->query($sql1);
+    }
+    if ($type === 1) { // 专家核定的数据
+        $sql_update = "UPDATE `enterprise` set `expert_score` = '" . number_format($score_cnt, 2) . "' WHERE `loginid` = '$loginid'";
+        $db->query($sql_update);
     }
 }
 
