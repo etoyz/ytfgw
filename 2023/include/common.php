@@ -1,4 +1,21 @@
 <?php
+require "db.php";
+require "INI.class.php";
+
+// 返回固定的string
+function get_string($key)
+{
+    $ini = new INI('../app.ini');
+    return $ini->data['Strings'][$key];
+}
+
+// 获取系统是否上锁
+function get_lock()
+{
+    $ini = new INI("../app.ini");
+    return $ini->data['Function']['SYSTEM_LOCK'] === "ON";
+}
+
 /**
  * 获取某用户上传的附件的文件名
  * @param string $user 用户的loginid

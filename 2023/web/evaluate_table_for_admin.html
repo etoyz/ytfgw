@@ -235,9 +235,11 @@
                             "operation": "pass"
                         },
                         success: function (res) {
-                            if (res.data === true)
+                            if (res.code === 0) {
                                 layer.alert("成功！", {icon: "1"})
-                            maintable.reload()
+                                maintable.reload()
+                            } else
+                                layer.alert(res.msg, {icon: "2"})
                         },
                         dataType: "json"
                     })
@@ -252,9 +254,11 @@
                             "return_reason": value
                         },
                         success: function (res) {
-                            if (res.data === true)
+                            if (res.code === 0) {
                                 layer.alert("成功！", {icon: "1"})
-                            maintable.reload()
+                                maintable.reload()
+                            } else
+                                layer.alert(res.msg, {icon: "2"})
                         },
                         dataType: "json"
                     })

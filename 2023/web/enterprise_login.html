@@ -92,7 +92,7 @@
                 url: "../service/enterprise_login.php",
                 data: data.field,
                 success: function (res) {
-                    if (res.status === "isLogin")
+                    if (res.code === 0)
                         location.href = "enterprise_index.html";
                     else
                         layer.alert(res.msg);

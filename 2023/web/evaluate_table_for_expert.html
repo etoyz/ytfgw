@@ -226,15 +226,13 @@
                 data: dataToBeSub,
                 success: function (res) {
                     layer.close(msg)
-                    if (res.data === true) {
+                    if (res.code === 0) {
                         layer.alert("成功！", {icon: 1}, function () {
                             layer.closeAll();
                             maintable.reload();
                         })
-                    } else if (res.data === 1265 || res.data == 1366) {
-                        layer.alert("请检查数据格式是否正确！", {icon: 2})
                     } else {
-                        layer.alert(res.data + '', {icon: 2}, function () {
+                        layer.alert(res.msg + '', {icon: 2}, function () {
                             layer.closeAll();
                         })
                     }

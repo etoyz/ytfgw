@@ -2,22 +2,20 @@
 /**
  * 获取指标成绩
  */
+require "../include/common.php";
+
 session_start();
 $response = array(
-    "status" => 'notLogin',
-    "data" => null,
+    "data" => [],
     "code" => 1,
-    "msg" => "无权限查看！"
+    "msg" => get_string("NOT_LOGIN")
 );
 
 if (isset($_SESSION['usertype']) && $_SESSION['usertype'] === "admin" && ($_SESSION['privilege'] == "0" | $_SESSION['privilege'] == "专家")) { // 超管和专家才可操作
-    $response["status"] = "isLogin";
-    $response["data"] = [];
     $response["code"] = 0;
 
     $user = $_GET['user'];
 
-    require_once '../include/db.php';
     $db = new DB();
 
     $sql = "DESCRIBE enterprise_score;";

@@ -19,7 +19,8 @@
             <div class="s-commonTable">
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
-                    <a class="layui-btn layui-btn-xs layui-btn-normal submit" id="fill_in" lay-event="fill_in">填报评价数据</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-normal submit" id="fill_in"
+                       lay-event="fill_in">填报评价数据</a>
                     <a class="layui-btn layui-btn-xs e-mod attachment" lay-event="upload_attachment">上传附件并提交审核</a>
                 </script>
             </div>
@@ -124,15 +125,13 @@
                                     data: dataToBeSub,
                                     success: function (res) {
                                         layer.close(msg)
-                                        if (res.data === true) {
+                                        if (res.code === 0) {
                                             layer.alert("数据保存成功！请上传附件并提交审核！", {icon: 1}, function () {
                                                 layer.closeAll();
                                                 maintable.reload();
                                             })
-                                        } else if (res.data === 1265 || res.data == 1366) {
-                                            layer.alert("请检查数据格式是否正确！", {icon: 2})
                                         } else {
-                                            layer.alert(res.data + '', {icon: 2}, function () {
+                                            layer.alert(res.msg + '', {icon: 2}, function () {
                                                 layer.closeAll();
                                             })
                                         }
@@ -180,19 +179,15 @@
                                 }
                             }
                             , done: function (obj) { //当文件全部被提交后，才触发
-                                if (obj.status === "isLogin") {
-                                    if (obj.data === true)
-                                        layer.msg("上传成功！")
-                                    else
-                                        layer.msg("异常错误！")
-                                    dataTableWithAttachment.reload({
-                                        done: function () {
-                                            renderUpload()
-                                        }
-                                    })
-                                } else {
-                                    layer.msg("请刷新页面重试！")
-                                }
+                                if (obj.code === 0)
+                                    layer.msg("上传成功！")
+                                else
+                                    layer.msg(obj.msg)
+                                dataTableWithAttachment.reload({
+                                    done: function () {
+                                        renderUpload()
+                                    }
+                                })
                             }
                             , choose: function (obj) {
                                 obj.preview(function (index, file, result) {
@@ -293,7 +288,7 @@
                                     "indicator": obj.data.indicator
                                 },
                                 success: function (res) {
-                                    if (res.data) {
+                                    if (res.code === 0) {
                                         layer.msg("删除成功！")
                                         dataTableWithAttachment.reload({
                                             done: function () {
@@ -301,14 +296,13 @@
                                             }
                                         })
                                     } else {
-                                        layer.msg("删除失败！")
+                                        layer.msg(res.msg)
                                     }
                                 },
                                 dataType: 'json'
                             })
                         }
                     })
-
 
 
                     $("#exportAll").unbind("click").click(function () {

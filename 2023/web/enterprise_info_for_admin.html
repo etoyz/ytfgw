@@ -277,13 +277,13 @@
                             },
                             dataType: 'json',
                             success: function (res) {
-                                if (res.db === true) {
-                                    layer.alert("删除成功！", function () {
+                                if (res.code === 0) {
+                                    layer.alert("操作成功！<br/>" + res.msg, function () {
                                         layer.closeAll()
                                         enterpriseTable.reload()
                                     })
                                 } else {
-                                    layer.alert("删除失败！" + JSON.stringify(res))
+                                    layer.alert("操作失败！<br/>" + res.msg)
                                 }
                             }
                         })

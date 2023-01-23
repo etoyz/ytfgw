@@ -297,13 +297,11 @@
                     url: "../service/enterprise_register.php?status=0",
                     data: data.field,
                     success: function (res) {
-                        if (res.nameRepetition)
-                            layer.alert("名字重复！", {icon: 2})
-                        if (res.regSuccess) {
+                        if (res.code === 0) {
                             $('#refreshBtn').click()
-                            layer.alert("注册成功！\n企业【" + $("input[name=name]").val() + "】的登录账号为【" + res.username + "】,密码为【" + $("#loginpw").val() + "】", {icon: 1})
-                        }
-
+                            layer.alert("注册成功！<br/>" + res.msg, {icon: 1})
+                        } else
+                            layer.alert(res.msg, {icon: 2})
                     },
                     dataType: 'json'
                 })
@@ -325,13 +323,11 @@
                     url: "../service/enterprise_register.php?status=5",
                     data: data.field,
                     success: function (res) {
-                        if (res.nameRepetition)
-                            layer.alert("名字重复！", {icon: 2})
-                        if (res.regSuccess) {
+                        if (res.code === 0) {
                             $('#refreshBtn').click()
-                            layer.alert("注册成功！\n企业【" + $("input[name=name]").val() + "】的登录账号为【" + res.username + "】,密码为【" + $("#loginpw").val() + "】", {icon: 1})
-                        }
-
+                            layer.alert("注册成功！<br/>" + res.msg, {icon: 1})
+                        } else
+                            layer.alert(res.msg, {icon: 2})
                     },
                     dataType: 'json'
                 })

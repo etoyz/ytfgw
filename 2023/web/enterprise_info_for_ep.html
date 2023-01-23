@@ -190,10 +190,11 @@
                         "indicator": indicator
                     },
                     success: function (res) {
-                        if (res.data) {
+                        if (res.code === 0) {
                             layer.msg("已删除上次提交的附件，请重新上传！")
                             renderUploadIndicator(user)
-                        }
+                        } else
+                            layer.msg(res.msg)
                     },
                     dataType: 'json'
                 })
@@ -208,14 +209,11 @@
                     'indicator': indicator
                 }
                 , done: function (obj) {
-                    if (obj.status === "isLogin") {
-                        if (obj.data === true) {
-                            layer.alert("上传成功！")
-                            renderUploadIndicator(user)
-                        } else
-                            layer.alert(obj.error)
+                    if (obj.code === 0) {
+                        layer.alert("上传成功！")
+                        renderUploadIndicator(user)
                     } else {
-                        layer.alert("未登录！")
+                        layer.alert(obj.msg)
                     }
                 }
             })
@@ -296,12 +294,15 @@
             $.post({
                 url: "../service/edit_enterprise_info.php",
                 data: data.field,
+                dataType: 'json',
                 success: function (res) {
-                    if (JSON.parse(res).data)
+                    if (res.code === 0)
                         layer.alert("完善成功！", {icon: 1}, function () {
                             location.reload()
                             layer.closeAll();
                         });
+                    else
+                        layer.alert(res.msg)
                 }
             })
         })

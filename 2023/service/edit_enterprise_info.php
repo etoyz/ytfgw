@@ -2,16 +2,17 @@
 /**
  * 编辑企业信息
  */
+require "../include/common.php";
+
 session_start();
 $response = array(
-    "status" => 'notLogin',
-    "data" => null
+    "code" => 1,
+    "msg" => get_string("NOT_LOGIN"),
+    "data" => []
 );
 if (isset($_SESSION['usertype'])) {
-    require_once '../include/db.php';
     $db = new DB();
     $dst_status = 1;
-    require_once "../include/common.php";
     if (get_user_status($_SESSION['loginid']) > 4)
         $dst_status = 6;
     $sql = "UPDATE `enterprise` 
@@ -26,7 +27,12 @@ if (isset($_SESSION['usertype'])) {
             `remark` = '" . $db->escape($_POST["remark"]) . "',
             `status` = $dst_status
         WHERE `loginid` = '" . $db->escape($_SESSION["loginid"]) . "';";
-    $response['status'] = "isLogin";
-    $response['data'] = $db->query($sql);
+    $re = $db->query($sql);
+    if ($re === true)
+        $response['code'] = 0;
+    else {
+        $response['code'] = 1;
+        $response['msg'] = $re;
+    }
 }
 die(json_encode($response));

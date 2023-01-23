@@ -2,24 +2,25 @@
 /**
  * 获取企业列表
  */
+require "../include/common.php";
+
 session_start();
 $response = array(
-    "status" => 'notLogin',
     "data" => [],
-    "code" => 0,
-    "count" => 0
+    "code" => 1,
+    "count" => 0,
+    "msg" => get_string("NOT_LOGIN")
 );
 
 if (isset($_SESSION['usertype'])) { // 已经登录
-    $response["status"] = "isLogin";
-    require_once '../include/db.php';
+    $response["code"] = 0;
     $db = new DB();
     if ($_SESSION['usertype'] == "admin") { // 管理员用户
         if ($_SESSION['privilege'] == "0" || $_SESSION['privilege'] == "专家") // 超管或专家，地址null转为“”
             $query_address = $_GET['query_address'] ?? "";
         else // 各地区管理员，只能查看各自地区的企业
             $query_address = $_SESSION['privilege'];
-        $status_specific = $_GET['status_specific'] ?? -1; // status为null，用户未指定status，则查全部
+        $status_specific = $_GET['status_specific'] ?? -1; // 若status为null，则用户未指定status，则查全部
         $query = $db->escape($_GET['query']);
         $start = ($_GET['page'] - 1) * $_GET['limit'];
         $limit = $_GET['limit'];

@@ -2,17 +2,15 @@
 /**
  * 保存评判数据
  */
+require "../include/common.php";
+
 session_start();
 $arr = array(
-    "status" => 'notLogin',
-    "data" => null
+    "code" => 1,
+    "msg" => get_string("NOT_LOGIN"),
 );
 
-$loginid = null;
-$type = 0;
 if (isset($_SESSION['usertype'])) {
-    $arr["status"] = "isLogin";
-    require_once '../include/db.php';
     $db = new DB();
 
     // 若是企业用户，则只能提交自己的数据，且会进行状态校验
@@ -20,24 +18,21 @@ if (isset($_SESSION['usertype'])) {
         $loginid = $_SESSION['loginid'];
         $type = 0; // 企业提报的数据
         // 检查用户状态
-        require_once "../include/common.php";
         $status = get_user_status($_SESSION['loginid']) % 5;
         if ($status != "1" && $status != "3") {
             if ($status == "0")
-                $arr["data"] = "请先完善企业信息！";
+                $arr["msg"] = "请先完善企业信息！";
             else if ($status == "2")
-                $arr["data"] = "您已经提交，请勿重复提交！";
+                $arr["msg"] = "您已经提交，请勿重复提交！";
             else if ($status == "4")
-                $arr["data"] = "已经通过！";
+                $arr["msg"] = "已经通过！";
             die(json_encode($arr));
         }
-    } else if ($_SESSION['usertype'] === "admin") { // 若是管理员用户
-        if (($_SESSION['privilege'] == '0' || $_SESSION['privilege'] == '专家')) { // 超管可以提交任意用户数据，用于重新判分; 专家也可以提交
-            $loginid = $_POST['loginid'];
-            $type = 1; // 专家核定的数据
-        }
+    } else if ($_SESSION['usertype'] === "admin" &&
+        ($_SESSION['privilege'] == '0' || $_SESSION['privilege'] == '专家')) { // 若是管理员用户,// 超管可以提交任意用户数据，用于重新判分; 专家也可以提交
+        $loginid = $_POST['loginid'];
+        $type = 1; // 专家核定的数据
     } else {
-        $arr['data'] = "无权限进行此操作！";
         die(json_encode($arr));
     }
     // 要插入到数据库的数据，暂存到$_POST里
@@ -57,20 +52,28 @@ if (isset($_SESSION['usertype'])) {
     $sql = substr($sql, 0, -2);
     $sql .= ");";
 //    var_dump($sql);
-    $arr["data"] = $db->query($sql); // 成功返回true，失败返回错误码
-    if ($arr["data"] == 1062) { // 如果已经存在，则尝试进行更新
-        $sql = "UPDATE `enterprise_data` SET ";
+    $re = $db->query($sql); // 成功返回true，失败返回错误码
+    if ($re === true)
+        $arr['code'] = 0;
+    else if ($re == 1062) { // 如果已经存在，则尝试进行更新
+        $sql2 = "UPDATE `enterprise_data` SET ";
         foreach (array_keys($_POST) as $key) {
-            $sql .= "`" . $db->escape($key) . "` = '" . $db->escape($_POST[$key]) . "', ";
+            $sql2 .= "`" . $db->escape($key) . "` = '" . $db->escape($_POST[$key]) . "', ";
         }
-        $sql = substr($sql, 0, -2);
-        $sql .= " WHERE `loginid` = '" . $db->escape($loginid) . "' AND `type` = '" . $db->escape($type) . "'";
-        $arr["data"] = $db->query($sql); // 成功返回true，失败返回错误码
-    }
+        $sql2 = substr($sql2, 0, -2);
+        $sql2 .= " WHERE `loginid` = '" . $db->escape($loginid) . "' AND `type` = '" . $db->escape($type) . "'";
+        $re2 = $db->query($sql2); // 成功返回true，失败返回错误码
+        if ($re2 === true)
+            $arr['code'] = 0;
+        else
+            $arr['msg'] = "1062 " . $re2;
+    } else
+        $arr['msg'] = $re;
 
-    if ($arr["data"] === true) {
+
+    if ($arr["code"] === 0) { // 若成功保存提交的数据
         // 计算成绩并插入数据库
-        cal_score();
+        cal_score($loginid, $type, $db);
         // update info 企业修改才改提交时间
         if ($_SESSION['usertype'] === "enterprise") {
             date_default_timezone_set("PRC");
@@ -80,11 +83,10 @@ if (isset($_SESSION['usertype'])) {
     }
 }
 
-function cal_score()
+// 计算成绩并插入数据库
+function cal_score($loginid, $type, $db)
 {
     // 公式
-    $loginid = $GLOBALS['loginid'];
-    $type = $GLOBALS['type'];
     $metaData = array();
     $metaData["研究人员人均研发经费支出"] = array(
         $_POST["研究与试验发展经费支出"] / $_POST['研究与试验发展人员数'], 8, 20, 40
@@ -181,16 +183,18 @@ function cal_score()
         $sql .= "'" . $metaData[$key][4] . "', ";
     }
     $sql .= "'$loginid', $type, '$score_cnt');";
-    if ($GLOBALS['db']->query($sql) == 1062) { // 如果已经存在尝试进行更新
-        $sql = "UPDATE `enterprise_score` SET ";
+    $re = $db->query($sql);
+    if ($re === 1062) { // 如果已经存在尝试进行更新
+        $sql2 = "UPDATE `enterprise_score` SET ";
         foreach (array_keys($metaData) as $key) {
-            $sql .= "`$key` = '" . $metaData[$key][4] . "', ";
+            $sql2 .= "`$key` = '" . $metaData[$key][4] . "', ";
         }
-        $sql .= "`type` = $type, `得分汇总` = '$score_cnt' WHERE `loginid` = '$loginid' AND `type` = '$type'";
-        $GLOBALS['db']->query($sql);
+        $sql2 .= "`type` = $type, `得分汇总` = '$score_cnt' WHERE `loginid` = '$loginid' AND `type` = '$type'";
+        $db->query($sql2);
 //        var_dump($sql);
+        // TODO
         $sql1 = "UPDATE `enterprise` set `expert_score` = '" . number_format($score_cnt, 2) . "' WHERE `loginid` = '$loginid'";
-        $GLOBALS['db']->query($sql1);
+        $db->query($sql1);
     }
 }
 
