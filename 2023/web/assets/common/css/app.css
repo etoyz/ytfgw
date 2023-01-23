@@ -327,7 +327,7 @@ a, button {
 }
 
 .kit-tab .layui-tab-title {
-    width: calc(100% - 71px);
+    width: calc(100%);
     padding-right: 0;
     position: absolute;
     z-index: 2
