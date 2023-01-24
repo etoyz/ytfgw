@@ -174,15 +174,13 @@
                     success: function (res) {
                         if (res == "1") {
                             $("#addBtn").click();
-                        } else {
-                            $("#addBtn").html("修改企业信息")
                         }
                     }
                 })
             }
         });
 
-        function renderUploadBtn(elem, indicator, user) {
+        function renderUploadBtn(elem, indicator) {
             $(elem).unbind("click").click(function () {// 一点击上传按钮，就删除之前的文件
                 $.get({
                     url: "../service/attachment_delete.php",
@@ -192,7 +190,7 @@
                     success: function (res) {
                         if (res.code === 0) {
                             layer.msg("已删除上次提交的附件，请重新上传！")
-                            renderUploadIndicator(user)
+                            renderUploadIndicator()
                         } else
                             layer.msg(res.msg)
                     },
@@ -211,7 +209,7 @@
                 , done: function (obj) {
                     if (obj.code === 0) {
                         layer.alert("上传成功！")
-                        renderUploadIndicator(user)
+                        renderUploadIndicator()
                     } else {
                         layer.alert(obj.msg)
                     }
@@ -219,9 +217,9 @@
             })
         }
 
-        function renderUploadIndicator(user) {
+        function renderUploadIndicator() {
             $.get({
-                url: "../service/fetch_license.php?user=" + user,
+                url: "../service/fetch_license.php",
                 success: function (res) {
                     if (res.license != null) {
                         $("#upload_license_indicate").html('点击查看>>>')
@@ -247,7 +245,7 @@
         table.on('tool(enterpriseTable)', function (obj) {
             if (obj.event === 'view') {
                 // render 附件指示label
-                renderUploadIndicator(obj.data.loginid)
+                renderUploadIndicator()
                 $(".edit-mod").hide()
                 let data = obj.data;
                 $("#name").val(data["name"]);
@@ -267,7 +265,7 @@
                 });
             } else if (obj.event === 'addBtn') {
                 // render 附件指示label
-                renderUploadIndicator(obj.data.loginid)
+                renderUploadIndicator()
                 $(".edit-mod").show()
                 renderUploadBtn("#upload_license", "企业营业执照", obj.data.loginid)
                 renderUploadBtn("#upload_license_sub", "下属企业营业执照", obj.data.loginid)
@@ -297,7 +295,7 @@
                 dataType: 'json',
                 success: function (res) {
                     if (res.code === 0)
-                        layer.alert("完善成功！", {icon: 1}, function () {
+                        layer.alert("完善企业信息成功！", {icon: 1}, function () {
                             location.reload()
                             layer.closeAll();
                         });

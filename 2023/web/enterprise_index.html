@@ -21,8 +21,8 @@
             烟台市创新平台申报与评价系统(2023)
         </a>
         <ul class="layui-nav layui-layout-right kit-nav">
-            <li class="layui-nav-item"><a class="s-logout" id="progress">
-                <i class="layui-icon layui-icon-align-center"></i> 我的进度</a></li>
+            <li class="layui-nav-item"><a class="s-logout" id="progressBtn">
+                <i class="layui-icon layui-icon-align-center"></i> 申报进度</a></li>
             <li class="layui-nav-item"><a class="s-logout" id="changePassword"><i
                     aria-hidden="true" class="fa fa-pencil-square"></i> 修改密码</a></li>
             <li class="layui-nav-item"><a class="" id="name">正在加载... </a></li>
@@ -198,11 +198,11 @@
                 layer.close(index);
             });
         });
-        $('body').on('click', '#progress', function () {
+        $('body').on('click', '#progressBtn', function () {
             function progressTo(to) { // to 1-5
-                for (let i = to; i >= 0; i--) // 已完成的打对号
+                for (let i = to; i >= 1; i--) // 已完成的打对号
                     $("#p" + i).attr('class', 'layui-icon layui-timeline-axis layui-icon-ok-circle')
-                for (let i = to + 1; i <= 5; i++)// 未完成的打圈
+                for (let i = to + 1; i <= 5; i++)// 未完成的打问号
                     $("#p" + i).attr('class', 'layui-icon layui-timeline-axis layui-icon-help')
             }
 
@@ -230,7 +230,7 @@
                 }
             })
         });
-        $('#progress').click()
+        $('#progressBtn').click()
     }).config({
         base: 'assets/common/js/'
     }).use(['app'], function () {

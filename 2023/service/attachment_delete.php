@@ -24,6 +24,7 @@ try {
     else
         $response['msg'] = "删除失败";
 } catch (Exception $e) {
+    $response['code'] = 0; // 异常一般都是文件不存在
     $response['msg'] = $e->getMessage();
 }
 die(json_encode($response));

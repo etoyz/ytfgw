@@ -7,6 +7,7 @@ session_start();
 require "../include/common.php";
 require "../include/verify_login.php";
 require "../include/verify_permission_admin.php";
+require "../include/verify_permission_admin_super.php";
 
 $arr = array(
     "code" => 1,
