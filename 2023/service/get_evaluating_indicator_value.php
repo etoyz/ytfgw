@@ -31,6 +31,8 @@ if ($type == 1 && !has_permission_admin_super() && !has_permission_admin_expert(
     die(json_encode(array(
         "code" => 1,
         "msg" => get_string("PERMISSION_DENY"),
+        "count" => 0,
+        "data" => []
     )));
 }
 
@@ -63,7 +65,7 @@ foreach ($re_indicators as $f) {
         $attachment_name = fetch_attachment_name($user, $f['Field']);
 //            $attachment_tag = "<a style='color: #0000FF;text-decoration: underline' target='_blank' href='../service/attachment_view.php?path=" . urlencode("../uploads/$user/$attachment_name") . "'>" . substr($attachment_name, strlen("附件_$f[Field]_")) . "</a>";
         if ($attachment_name == "未上传")
-            $attachment_tag = "";
+            $attachment_tag = "<span>未上传</span>";
         else
             $attachment_tag = "<a style='color: #0000FF;text-decoration: underline' target='_blank' href='../service/attachment_view.php?path=" . urlencode("../uploads/$user/$attachment_name") . "'>" . "点击查看>>>" . "</a>";
         if (in_array($f['Field'], $indicators_no_input)) // 若是无需输入的列

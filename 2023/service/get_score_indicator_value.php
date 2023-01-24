@@ -5,6 +5,7 @@
 session_start();
 
 require "../include/common.php";
+require "../include/verify_login.php";
 
 if (has_permission_admin_super() | has_permission_admin_expert()) { // 超管和专家才可操作
     $response = array(
@@ -39,5 +40,7 @@ if (has_permission_admin_super() | has_permission_admin_expert()) { // 超管和
 } else
     die(json_encode(array(
         "code" => 1,
-        "msg" => get_string("PERMISSION_DENY")
+        "msg" => get_string("PERMISSION_DENY"),
+        "count" => 0,
+        "data" => []
     )));

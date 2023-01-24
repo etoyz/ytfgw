@@ -35,7 +35,9 @@ if (is_enterprise()) { // 若是企业用户，则只能提交自己的数据，
 } else {
     die(json_encode(array(
         "code" => 1,
-        "msg" => get_string("PERMISSION_DENY")
+        "msg" => get_string("PERMISSION_DENY"),
+        "count" => 0,
+        "data" => []
     )));
 }
 
@@ -85,8 +87,9 @@ if ($arr["code"] === 0) { // 若成功保存提交的数据
         $sql = "UPDATE `enterprise` set  `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '" . $db->escape($loginid) . "'";
         $db->query($sql);
     }
-} else // 若未能成功保存提交的数据
-    die(json_encode($arr));
+}
+
+die(json_encode($arr));
 
 // 计算成绩并插入数据库
 function cal_score($loginid, $type, $db)

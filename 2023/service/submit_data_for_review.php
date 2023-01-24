@@ -23,4 +23,8 @@ else
     $dst_status = 7;
 $db = new DB();
 $sql = "UPDATE `enterprise` set  `status` = $dst_status WHERE `loginid` = '" . $db->escape($_SESSION["loginid"]) . "'";
-die($db->query($sql));
+$re = $db->query($sql);
+if ($re === true) // 成功
+    die("1");
+else
+    die("数据库错误：" . $re);
