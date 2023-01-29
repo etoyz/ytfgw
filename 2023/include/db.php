@@ -76,4 +76,9 @@ class DB
     {
         return $this->link->real_escape_string($value);
     }
+
+    public function get_error(): string
+    {
+        return mysqli_error($this->link);
+    }
 }

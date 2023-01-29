@@ -131,36 +131,13 @@
             }
         });
 
-        let indicator_selected;
-
-        let dataTableWithAttachment = table.render({
-            elem: '#dataTableWithAttachment',
-            height: 1150,
-            limit: Number.MAX_SAFE_INTEGER,
-            cols: [[
-                {type: 'numbers', style: 'background-color: #eee;'},
-                {field: 'indicator', width: 600, title: '指标', style: 'background-color: #eee;'},
-                {field: 'value', width: 110, title: '数值', style: 'background-color: #eee;'},
-                {field: 'unit', width: 90, title: '单位', style: 'background-color: #eee;'},
-                {field: 'attachment', width: 120, title: '附件', style: 'background-color: #eee;'}, //单元格内容水平居中
-                {
-                    field: 'operation', width: 170,
-                    title: '操作',
-                    toolbar: '#operationDataTable',
-                    fixed: 'right',
-                    style: 'background-color: #eee;'
-                }
-            ]],
-            size: 'sm'
-        });
-
         table.on('tool(enterpriseTable)', function (obj) {
             if (obj.event === 'view_data') { // 查看全部数据，包括核定数据
                 let loadMsg = layer.load(1)
                 table.render({
                     elem: '#dataTableWithAttachment',
                     url: "../service/get_evaluating_indicator_value.php?type=0&user=" + obj.data["loginid"],
-                    height: 1150,
+                    height: 1200,
                     limit: Number.MAX_SAFE_INTEGER,
                     cols: [[
                         {type: 'numbers', style: 'background-color: #eee;'},
@@ -201,7 +178,7 @@
                 table.render({
                     elem: '#scoreTable',
                     url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid,
-                    height: 850,
+                    height: 1150,
                     limit: Number.MAX_SAFE_INTEGER,
                     cols: [[
                         {type: 'numbers', style: 'background-color: #eee;'},
