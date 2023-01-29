@@ -225,7 +225,7 @@
                     table.on('tool(enterpriseTable)', function (obj) {
                         let dataTable = table.render({
                             elem: '#dataTable',
-                            url: "../service/get_evaluating_indicator_value.php",
+                            url: "../service/get_indicator_value.php",
                             height: 1150,
                             limit: Number.MAX_SAFE_INTEGER,
                             cols: [[
@@ -261,7 +261,7 @@
                         if (obj.event === 'upload_attachment') { //查看提交数据及附件或者企业用户上传附件
                             let loadMsg = layer.load(1)
                             dataTableWithAttachment.reload({
-                                url: "../service/get_evaluating_indicator_value.php",
+                                url: "../service/get_indicator_value.php",
                                 done: function () {
                                     layer.close(loadMsg)
                                     layer.open({

@@ -136,7 +136,7 @@
                 let loadMsg = layer.load(1)
                 table.render({
                     elem: '#dataTableWithAttachment',
-                    url: "../service/get_evaluating_indicator_value.php?type=0&user=" + obj.data["loginid"],
+                    url: "../service/get_indicator_value.php?type=0&user=" + obj.data["loginid"],
                     height: 1200,
                     limit: Number.MAX_SAFE_INTEGER,
                     cols: [[
@@ -159,7 +159,7 @@
                     },
                     parseData: function (res) {
                         $.get({ // 获得核定数值
-                            url: "../service/get_evaluating_indicator_value.php?type=1&user=" + obj.data["loginid"],
+                            url: "../service/get_indicator_value.php?type=1&user=" + obj.data["loginid"],
                             async: false,
                             dataType: 'json',
                             success: function (resp) {
@@ -177,7 +177,7 @@
                 let msg = layer.load(1)
                 table.render({
                     elem: '#scoreTable',
-                    url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid,
+                    url: "../service/get_score.php?user=" + obj.data.loginid,
                     height: 1250,
                     limit: Number.MAX_SAFE_INTEGER,
                     cols: [[

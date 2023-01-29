@@ -182,7 +182,7 @@
             if (obj.event === "fix_data") {
                 let loadMsg = layer.load(1)
                 table.render({
-                    url: "../service/get_evaluating_indicator_value.php?type=0&user=" + activeLoginId,
+                    url: "../service/get_indicator_value.php?type=0&user=" + activeLoginId,
                     elem: '#dataTableWithAttachment',
                     height: 1200,
                     limit: Number.MAX_SAFE_INTEGER,
@@ -223,7 +223,7 @@
                     },
                     parseData: function (res) {
                         $.get({
-                            url: "../service/get_evaluating_indicator_value.php?type=1&user=" + activeLoginId,
+                            url: "../service/get_indicator_value.php?type=1&user=" + activeLoginId,
                             async: false,
                             dataType: 'json',
                             success: function (resp) {
@@ -241,7 +241,7 @@
                 let msg = layer.load(1)
                 table.render({
                     elem: '#scoreTable',
-                    url: "../service/get_score_indicator_value.php?user=" + activeLoginId,
+                    url: "../service/get_score.php?user=" + activeLoginId,
                     height: 1250,
                     limit: Number.MAX_SAFE_INTEGER,
                     cols: [[
