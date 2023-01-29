@@ -206,7 +206,7 @@ function cal_score($loginid, $type, $db)
     foreach (array_keys($metaData) as $key) {
         $sql .= "`$key`, ";
     }
-    $sql .= "`loginid`, `type`, `得分汇总`) VALUES(";
+    $sql .= "`loginid`, `type`, `得分汇总（定量）`) VALUES(";
     foreach (array_keys($metaData) as $key) {
         $sql .= "'" . $metaData[$key][4] . "', ";
     }
@@ -219,7 +219,7 @@ function cal_score($loginid, $type, $db)
         foreach (array_keys($metaData) as $key) {
             $sql2 .= "`$key` = '" . $metaData[$key][4] . "', ";
         }
-        $sql2 .= "`type` = $type, `得分汇总` = '$score_cnt' WHERE `loginid` = '$loginid' AND `type` = '$type'";
+        $sql2 .= "`type` = $type, `得分汇总（定量）` = '$score_cnt' WHERE `loginid` = '$loginid' AND `type` = '$type'";
         $db->query($sql2);
     }
     if ($type === 1) { // 专家核定的数据
