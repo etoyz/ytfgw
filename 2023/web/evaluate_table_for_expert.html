@@ -59,6 +59,7 @@
                 <table class="layui-hide" id="enterpriseTable" lay-filter="enterpriseTable"></table>
                 <script id="operation" type="text/html">
                     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="fix_data">核定企业数据</a>
+                    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="qualitative_score">定性打分</a>
                     <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="view_score">得分汇总</a>
                 </script>
             </div>
@@ -69,12 +70,59 @@
 <div class="s-details" id="dataTableWithAttachmentPopup">
     <table class="layui-hide" id="dataTableWithAttachment" lay-filter="dataTableWithAttachment"></table>
     <div class="layui-btn-container s-tabBottomButton">
-        <span class="layui-btn " id="submitForPreserve"> 保存并计算得分 </span>
+        <span class="layui-btn " id="submitForPreserve"> 定量打分 </span>
     </div>
 </div>
 
 <div class="s-details" id="scoreTablePopup">
     <table class="layui-hide" id="scoreTable" lay-filter="scoreTable"></table>
+</div>
+
+<div class="s-details" id="qualitativeScorePopup">
+    <form class="layui-form" lay-filter="qualitativeScoreForm" id="qualitativeScoreForm">
+        <div>
+            <div class="layui-form-item s-formItem8">
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 230px">企业在行业中的地位和作用</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="a1"
+                               lay-verify="required|number|specifyScore" name="a1" placeholder="请输入得分(0分~4分)">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 230px">企业技术中心创新资源整合情况</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="a2"
+                               lay-verify="required|number|specifyScore" name="a2" placeholder="请输入得分(0分~4分)">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 230px">企业技术中心研究开发工作开展情况</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="a3"
+                               lay-verify="required|number|specifyScore" name="a3" placeholder="请输入得分(0分~4分)">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 230px">企业技术中心取得的主要创新成果</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="a4"
+                               lay-verify="required|number|specifyScore" name="a4" placeholder="请输入得分(0分~4分)">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label" style="width: 230px">企业技术创新战略和规划</label>
+                    <div class="layui-input-inline">
+                        <input autocomplete="off" class="layui-input" id="a5"
+                               lay-verify="required|number|specifyScore" name="a5" placeholder="请输入得分(0分~4分)">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="s-tabBottomButton">
+            <button class="layui-btn" lay-filter="qualitativeScoreBtn" lay-submit type="button">提交</button>
+        </div>
+    </form>
 </div>
 
 </body>
@@ -84,6 +132,7 @@
     layui.use(['form', 'laydate', 'table', 'layer', 'element', 'upload'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
+            form = layui.form,
             table = layui.table;
 
         let activeLoginId;
@@ -106,7 +155,7 @@
                 {field: 'submit_time', width: '170', title: '填报时间'},
                 {field: 'expert_score', width: '90', title: '专家评审'},
                 {field: 'remark', width: '250', title: '备注'},
-                {field: 'operation', width: '180', title: '操作', toolbar: '#operation', fixed: 'right'}
+                {field: 'operation', width: '230', title: '操作', toolbar: '#operation', fixed: 'right'}
             ]],
             parseData: function (res) {
                 for (let item of res.data) {
@@ -174,7 +223,7 @@
                     },
                     parseData: function (res) {
                         $.get({
-                            url: "../service/get_evaluating_indicator_value.php?type=1&user=" + obj.data["loginid"],
+                            url: "../service/get_evaluating_indicator_value.php?type=1&user=" + activeLoginId,
                             async: false,
                             dataType: 'json',
                             success: function (resp) {
@@ -192,7 +241,7 @@
                 let msg = layer.load(1)
                 table.render({
                     elem: '#scoreTable',
-                    url: "../service/get_score_indicator_value.php?user=" + obj.data.loginid,
+                    url: "../service/get_score_indicator_value.php?user=" + activeLoginId,
                     height: 1150,
                     limit: Number.MAX_SAFE_INTEGER,
                     cols: [[
@@ -211,6 +260,39 @@
                         });
                         layer.close(msg)
                     }
+                });
+            } else if (obj.event === 'qualitative_score') {
+                $.post({
+                    url: "../service/qualitative_score_get.php?user=" + activeLoginId,
+                    dataType: 'json',
+                    success: function (re) {
+                        if (re.count === 1) // 有数据
+                            form.val("qualitativeScoreForm", re.data[0]); // 填充数据
+                        else // 无数据
+                            $("#qualitativeScoreForm").trigger('reset'); // 表格清空
+                        layer.open({
+                            type: 1,
+                            title: '定性打分',
+                            content: $('#qualitativeScorePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                            area: ['500px', '50%']
+                        });
+                    }
+                })
+
+                form.on('submit(qualitativeScoreBtn)', function (data) {
+                    $.post({
+                        url: "../service/qualitative_score_submit.php?user=" + activeLoginId,
+                        data: data.field,
+                        success: function (re) {
+                            if (re == "1") {
+                                layer.alert("定性打分成功！", {icon: 1}, function () {
+                                    layer.closeAll()
+                                })
+                            } else
+                                layer.alert(re, {icon: 2})
+
+                        }
+                    })
                 });
             }
         });
@@ -251,6 +333,12 @@
             return false;
         })
 
+        form.verify({
+            specifyScore: function (v, item) {
+                if (!(v >= 0 && v <= 4))
+                    return "必须在0到4之间！";
+            }
+        })
     })
 </script>
 </html>
