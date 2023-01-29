@@ -178,10 +178,10 @@ function cal_score($loginid, $type, $db)
         $_POST["获市级以上政府质量奖、商标和名牌数"], 1, 1, 2
     );
     $metaData["是否列入《山东省新型基础设施网建设行动计划》"] = array(
-        $_POST["是否列入《山东省新型基础设施网建设行动计划》（鲁政字〔2022〕83号）"], 2, 0, 1
+        $_POST["是否列入《山东省新型基础设施网建设行动计划》（是填1，否填0）"], 2, 0, 1
     );
     $metaData["是否列入《烟台市新型基础设施网建设行动计划》"] = array(
-        $_POST["是否列入《烟台市新型基础设施网建设行动计划》（烟政发〔2022〕19号）"], 1, 0, 1
+        $_POST["是否列入《烟台市新型基础设施网建设行动计划》（是填1，否填0）"], 1, 0, 1
     );
 
     //  指标数值0    权重1  基本要求2    满分要求3  分数4
@@ -206,7 +206,7 @@ function cal_score($loginid, $type, $db)
     foreach (array_keys($metaData) as $key) {
         $sql .= "`$key`, ";
     }
-    $sql .= "`loginid`, `type`, `得分汇总（定量）`) VALUES(";
+    $sql .= "`loginid`, `type`, `定量得分`) VALUES(";
     foreach (array_keys($metaData) as $key) {
         $sql .= "'" . $metaData[$key][4] . "', ";
     }
@@ -219,7 +219,7 @@ function cal_score($loginid, $type, $db)
         foreach (array_keys($metaData) as $key) {
             $sql2 .= "`$key` = '" . $metaData[$key][4] . "', ";
         }
-        $sql2 .= "`type` = $type, `得分汇总（定量）` = '$score_cnt' WHERE `loginid` = '$loginid' AND `type` = '$type'";
+        $sql2 .= "`type` = $type, `定量得分` = '$score_cnt' WHERE `loginid` = '$loginid' AND `type` = '$type'";
         $db->query($sql2);
     }
     if ($type === 1) { // 专家核定的数据

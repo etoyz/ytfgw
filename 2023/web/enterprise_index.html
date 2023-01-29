@@ -167,7 +167,7 @@
             url: "../service/get_enterprise_login_status.php",
             success: (res) => {
                 if (res == 0)
-                    layer.alert("登录已经过期，请重新登录！", {icon: 3}, function () {
+                    layer.alert("登录已经过期，点击确定重新登录！！", {icon: 3}, function () {
                         location.href = "../web/enterprise_login.html"
                     })
             }
@@ -217,7 +217,7 @@
                     else if (status === 2) // 正在审核
                         progressTo(4)
                     else if (status === 3) { // 被退回
-                        $("#return_tips").show().html("审核失败,被退回；<br/>请修改后重新提交；<hr/>退回原因：<br/>" + res.data[0]['return_reason'])
+                        $("#return_tips").show().html("审核失败,被退回；<hr/>退回原因：" + res.data[0]['return_reason'])
                         progressTo(2)
                     } else
                         progressTo(5)

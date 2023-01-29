@@ -60,21 +60,22 @@ if (get_user_status($user) <= 4) {// 申报体系
 }
 // 无需输入数据的列
 $indicators_no_input = ["运行评价报告", "市级企业技术中心认定通知", "申请报告", "信用报告证明材料", "高新技术企业（仅上传附件）"];
-foreach ($re_indicators as $f) {
+foreach ($re_indicators as $f) { // 遍历各个指标
     if (!in_array($f['Field'], $indicators_disabled)) { // 若不是被禁用的列
-        $attachment_name = fetch_attachment_name($user, $f['Field']);
+        $attachment_name = fetch_attachment_name($user, $f['Field']); // 附件名
 //            $attachment_tag = "<a style='color: #0000FF;text-decoration: underline' target='_blank' href='../service/attachment_view.php?path=" . urlencode("../uploads/$user/$attachment_name") . "'>" . substr($attachment_name, strlen("附件_$f[Field]_")) . "</a>";
         if ($attachment_name == "未上传")
             $attachment_tag = "<span>未上传</span>";
         else
             $attachment_tag = "<a style='color: #0000FF;text-decoration: underline' target='_blank' href='../service/attachment_view.php?path=" . urlencode("../uploads/$user/$attachment_name") . "'>" . "点击查看>>>" . "</a>";
+
         if (in_array($f['Field'], $indicators_no_input)) // 若是无需输入的列
-            $value = "---";
+            $value = "----";
         else {
             if ($re_values == null)
-                $value = null;
+                $value = "";
             else
-                $value = $re_values[$i];
+                $value = $re_values[$i] ?? ""; // 若为null，则转为""
         }
         array_push($response["data"], array(
             "indicator" => $f['Field'],

@@ -251,7 +251,7 @@
             url: "../../service_admin/get_login_status.php",
             success: (res) => {
                 if (res == 0)
-                    layer.alert("登录已经过期，请重新登录！", {icon: 3}, function () {
+                    layer.alert("登录已经过期，点击确定重新登录！！", {icon: 3}, function () {
                         location.href = "../web/admin_login.html"
                     })
             }

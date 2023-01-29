@@ -120,7 +120,7 @@
             </div>
         </div>
         <div class="s-tabBottomButton">
-            <button class="layui-btn" lay-filter="qualitativeScoreBtn" lay-submit type="button">提交</button>
+            <button class="layui-btn" lay-filter="qualitativeScoreBtn" lay-submit type="button">定性打分，并计算总得分</button>
         </div>
     </form>
 </div>
@@ -274,7 +274,7 @@
                             type: 1,
                             title: '定性打分',
                             content: $('#qualitativeScorePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                            area: ['500px', '50%']
+                            area: ['500px', '320px']
                         });
                     }
                 })
@@ -285,7 +285,7 @@
                         data: data.field,
                         success: function (re) {
                             if (re == "1") {
-                                layer.alert("定性打分成功！", {icon: 1}, function () {
+                                layer.alert("成功！", {icon: 1}, function () {
                                     layer.closeAll()
                                 })
                             } else

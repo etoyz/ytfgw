@@ -33,6 +33,11 @@ if (has_permission_admin_super() | has_permission_admin_expert()) { // 超管和
                 "score_0" => number_format($re2[$i], 2),
                 "score_1" => number_format($re3[$i], 2)
             ));
+            // 修正，空值置为----
+            if ($re2[$i] === null)
+                $response["data"][sizeof($response["data"]) - 1]["score_0"] = "----";
+            if ($re3[$i] === null)
+                $response["data"][sizeof($response["data"]) - 1]["score_1"] = "----";
         }
         $i++;
     }
