@@ -239,7 +239,7 @@
                 })
             } else if (obj.event === 'view_score') {
                 let msg = layer.load(1)
-                table.render({
+                let scoreTable = table.render({
                     elem: '#scoreTable',
                     url: "../service/get_score.php?user=" + activeLoginId,
                     height: 1250,
@@ -248,15 +248,19 @@
                         {type: 'numbers', style: 'background-color: #eee;'},
                         {field: 'indicator', width: 553, title: '指标', style: 'background-color: #eee;'},
                         {field: 'score_0', width: 110, title: '填报得分', style: 'background-color: #eee;'},
-                        {field: 'score_1', width: 110, title: '核定得分', style: 'background-color: #eee;'},
+                        {field: 'score_1', width: 110, title: '专家评审得分', style: 'background-color: #eee;'},
                     ]],
                     size: 'sm',
-                    done: function () {
+                    done: function (res) {
                         layer.open({
                             type: 1,
                             title: '得分汇总',
                             content: $('#scoreTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-                            area: ['866px', '90%']
+                            area: ['866px', '90%'],
+                            btn: ['导出为Excel文件'],
+                            yes: function () {
+                                table.exportFile(scoreTable.config.id, res.data, 'xls');
+                            }
                         });
                         layer.close(msg)
                     }
