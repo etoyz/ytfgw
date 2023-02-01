@@ -203,28 +203,32 @@
             },
         });
 
-        function renderUploadIndicator(user) {
+        function renderUploadIndicator(loginid) {
             $.get({
-                url: "../service/fetch_license.php?user=" + user,
+                url: "../service/attachment_check.php?indicator=" + "企业营业执照&loginid=" + loginid, // 检查是否上传过
                 success: function (res) {
-                    if (res.license != null) {
+                    if (res === "1") { // 上传过
                         $("#upload_license_indicate").html('点击查看>>>')
-                        $("#upload_license_indicate").attr('href', "../service/attachment_view.php?path=" + encodeURIComponent(res.license))
+                        $("#upload_license_indicate").attr('href', "../service/attachment_view.php?indicator=" + "企业营业执照&loginid=" + loginid)
                         $("#upload_license_indicate").attr('onclick', "return true")
                     } else {
-                        $("#upload_license_indicate").html('未上传')
+                        $("#upload_license_indicate").html(res)
                         $("#upload_license_indicate").attr('onclick', "return false")
                     }
-                    if (res.license_sub != null) {
+                },
+            })
+            $.get({
+                url: "../service/attachment_check.php?indicator=" + "下属企业营业执照&loginid=" + loginid, // 检查是否上传过
+                success: function (res) {
+                    if (res === "1") {
                         $("#upload_license_sub_indicate").html('点击查看>>>')
-                        $("#upload_license_sub_indicate").attr('href', "../service/attachment_view.php?path=" + encodeURIComponent(res.license_sub))
+                        $("#upload_license_sub_indicate").attr('href', "../service/attachment_view.php?indicator=" + "下属企业营业执照&loginid=" + loginid)
                         $("#upload_license_sub_indicate").attr('onclick', "return true")
                     } else {
                         $("#upload_license_sub_indicate").html('未上传')
                         $("#upload_license_sub_indicate").attr('onclick', "return false")
                     }
                 },
-                dataType: "json"
             })
         }
 

@@ -14,15 +14,15 @@ $response = array(
 );
 
 if (is_enterprise()) { // 若是企业用户，则只能查询自己的
-    $user = $_SESSION['loginid'];
+    $loginid = $_SESSION['loginid'];
     $type = 0; // 只能查询自己提交的数据
 } else { // 若是管理员用户，则可以查询任何人的
-    $user = $_GET['user'];
+    $loginid = $_GET['user'];
     $type = $_GET['type']; // 能查询专家核定的数据和自己提交的数据
 }
 
 $db = new DB();
-$user = $db->escape($user);
+$loginid = $db->escape($loginid);
 $type = $db->escape($type); // type为0表示企业提报的数据，为1表示专家核定的数据
 
 // patch
@@ -38,11 +38,11 @@ if ($type == 1 && !has_permission_admin_super() && !has_permission_admin_expert(
 
 $sql_fetch_indicators = "DESCRIBE enterprise_data;"; // 表“enterprise_data”的各列名为评价指标名
 $re_indicators = $db->query($sql_fetch_indicators)->fetch_all(MYSQLI_ASSOC);
-$sql_fetch_values = "SELECT * FROM enterprise_data WHERE `loginid` = '$user' AND `type` = '$type';";
+$sql_fetch_values = "SELECT * FROM enterprise_data WHERE `loginid` = '$loginid' AND `type` = '$type';";
 $re_values = $db->query($sql_fetch_values);
 if ($type == 1 && $re_values->num_rows == 0) // 若查询专家核定数据，而专家还未操作过，则返回企业原数据
 {
-    $sql_fetch_values = "SELECT * FROM enterprise_data WHERE `loginid` = '$user' AND `type` = '0';";
+    $sql_fetch_values = "SELECT * FROM enterprise_data WHERE `loginid` = '$loginid' AND `type` = '0';";
     $re_values = $db->query($sql_fetch_values);
 }
 $re_values = mysqli_fetch_array($re_values);
@@ -52,7 +52,7 @@ $units = ["loginid", "type", "万元", "万元", "人", "人", "人", "人", "�
 $i = 0;
 
 $indicators_disabled = ["loginid", "type"]; // 被禁用的列
-if (get_user_status($user) <= 4) {// 申报体系
+if (get_user_status($loginid) <= 4) {// 申报体系
     array_push($indicators_disabled, "运行评价报告");
     array_push($indicators_disabled, "市级企业技术中心认定通知");
 } else {// 评价体系
@@ -61,15 +61,14 @@ if (get_user_status($user) <= 4) {// 申报体系
 // 无需输入数据的列
 $indicators_no_input = ["运行评价报告", "市级企业技术中心认定通知", "申请报告", "信用报告证明材料", "高新技术企业（仅上传附件）"];
 foreach ($re_indicators as $f) { // 遍历各个指标
-    if (!in_array($f['Field'], $indicators_disabled)) { // 若不是被禁用的列
-        $attachment_name = fetch_attachment_name($user, $f['Field']); // 附件名
-//            $attachment_tag = "<a style='color: #0000FF;text-decoration: underline' target='_blank' href='../service/attachment_view.php?path=" . urlencode("../uploads/$user/$attachment_name") . "'>" . substr($attachment_name, strlen("附件_$f[Field]_")) . "</a>";
-        if ($attachment_name == "未上传")
+    $indicator = $f['Field']; // 指标名
+    if (!in_array($indicator, $indicators_disabled)) { // 若不是被禁用的列
+        if (!is_attachment_exist($loginid, $indicator)) // 附件不存在
             $attachment_tag = "<span>未上传</span>";
         else
-            $attachment_tag = "<a style='color: #0000FF;text-decoration: underline' target='_blank' href='../service/attachment_view.php?path=" . urlencode("../uploads/$user/$attachment_name") . "'>" . "点击查看>>>" . "</a>";
+            $attachment_tag = "<a style='color: #0000FF;text-decoration: underline' target='_blank' href='../service/attachment_view.php?loginid=$loginid&indicator=$indicator'>" . "点击查看>>>" . "</a>";
 
-        if (in_array($f['Field'], $indicators_no_input)) // 若是无需输入的列
+        if (in_array($indicator, $indicators_no_input)) // 若是无需输入的列
             $value = "----";
         else {
             if ($re_values == null)
@@ -77,8 +76,9 @@ foreach ($re_indicators as $f) { // 遍历各个指标
             else
                 $value = $re_values[$i] ?? ""; // 若为null，则转为""
         }
+
         array_push($response["data"], array(
-            "indicator" => $f['Field'],
+            "indicator" => $indicator,
             "value" => $value,
             "unit" => $units[$i],
             "attachment" => $attachment_tag

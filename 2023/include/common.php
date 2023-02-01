@@ -2,6 +2,15 @@
 require "db.php";
 require "INI.class.php";
 
+// 检查指定附件是否存在
+function is_attachment_exist($loginid, $indicator): bool
+{
+    if (fetch_attachment_name($loginid, $indicator) === "未上传") // 未上传，即不存在
+        return false;
+    else
+        return true;
+}
+
 // 返回固定的string
 function get_string($key): string
 {

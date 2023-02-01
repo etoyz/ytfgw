@@ -7,20 +7,21 @@ session_start();
 require "../include/common.php";
 
 if (is_login()) {  // 验证登录
+    // 响应头，在浏览器内查看即可
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: inline;');
+
+    // 构造相对路径
+    $indicator = $_GET['indicator'];
     if (has_permission_admin()) {  // 管理员
-        header('Content-Type: application/pdf');
-        header('Content-Disposition: inline;');
-
-        readfile($_GET['path']);
+        $loginid = $_GET['loginid'];  // 管理员可看指定人的
+        $url = "../uploads/$loginid/" . fetch_attachment_name($loginid, $indicator);
     } else { // 非管理员
-        preg_match("/(?<=^..\/uploads\/).*(?=\/附件_.*$)/", $_GET['path'], $file_owner); //获取文件拥有者
-        if ($_SESSION['loginid'] == $file_owner[0]) { // 验证是否越权
-            header('Content-Type: application/pdf');
-            header('Content-Disposition: inline;');
-
-            readfile($_GET['path']);
-        } else // 越权
-            die(get_string("PERMISSION_DENY"));
+        $loginid = $_SESSION['loginid']; // 非管理员只能看自己的
+        $url = "../uploads/$loginid/" . fetch_attachment_name($loginid, $indicator);
     }
+
+    // 响应体
+    readfile($url);
 } else
     die(get_string("NOT_LOGIN"));
