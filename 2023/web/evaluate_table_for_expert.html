@@ -120,7 +120,12 @@
             </div>
         </div>
         <div class="s-tabBottomButton">
-            <button class="layui-btn" lay-filter="qualitativeScoreBtn" lay-submit type="button">定性打分，并计算总得分</button>
+            <a class="layui-btn layui-btn-normal" target="_blank" id="viewBtn">
+                查看上传的材料
+            </a>
+            <button class="layui-btn" lay-filter="qualitativeScoreBtn" lay-submit type="button">
+                定性打分，并计算总得分
+            </button>
         </div>
     </form>
 </div>
@@ -282,6 +287,12 @@
                         });
                     }
                 })
+
+                // 修改查看资料按钮的href
+                if (status === "0-4") // 申报
+                    $("#viewBtn").attr('href', '../service/attachment_view.php?indicator=申请报告&loginid=' + activeLoginId)
+                else // 评价
+                    $("#viewBtn").attr('href', '../service/attachment_view.php?indicator=运行评价报告&loginid=' + activeLoginId)
 
                 form.on('submit(qualitativeScoreBtn)', function (data) {
                     $.post({
