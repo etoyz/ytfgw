@@ -21,7 +21,8 @@
                 <script id="operation" type="text/html">
                     <a class="layui-btn layui-btn-xs layui-btn-normal submit" id="fill_in"
                        lay-event="fill_in">填报评价数据</a>
-                    <a class="layui-btn layui-btn-xs e-mod attachment" lay-event="upload_attachment">上传附件并提交审核</a>
+                    <a class="layui-btn layui-btn-xs e-mod attachment"
+                       lay-event="upload_attachment">上传附件并提交审核</a>
                 </script>
             </div>
         </div>
@@ -44,7 +45,7 @@
     <div class="layui-btn-container s-tabBottomButton">
         <span class="layui-btn layui-btn-warm e-mod" id="submitForReview">
                 提交审核 <svg class="icon" height="21" p-id="6305" t="1623748927861"
-                          version="1.1" viewBox="0 0 1024 620" width="21" xmlns="http://www.w3.org/2000/svg"><path
+                              version="1.1" viewBox="0 0 1024 620" width="21" xmlns="http://www.w3.org/2000/svg"><path
                 d="M960 260.571L462.222 864 64 512l49.778-100.571 348.444 201.142L960 160z" fill="#ffffff"
                 p-id="6306"></path></svg>
         </span>
@@ -82,7 +83,8 @@
                             {field: 'status', width: '95', title: '申报状态'},
                             {field: 'submit_time', width: '170', title: '填报时间'},
                             {field: 'expert_score', width: '100', title: '专家打分'},
-                            {field: 'return_reason', width: '220', title: '退回原因'},
+                            {field: 'remark_expert', width: '250', title: '专家意见'},
+                            {field: 'return_reason', width: '250', title: '退回原因'},
                             {field: 'remark', width: '220', title: '备注'},
                             {field: 'operation', width: '250', title: '操作', toolbar: '#operation', fixed: 'right'}
                         ]],

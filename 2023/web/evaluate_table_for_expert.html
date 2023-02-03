@@ -158,7 +158,8 @@
                 {field: 'created_year', width: '80', title: '报告年度'},
                 {field: 'status', width: '95', title: '申报状态'},
                 {field: 'submit_time', width: '170', title: '填报时间'},
-                {field: 'expert_score', width: '90', title: '专家评审'},
+                {field: 'expert_score', width: '100', title: '专家打分'},
+                {field: 'remark_expert', width: '250', title: '专家意见'},
                 {field: 'remark', width: '250', title: '备注'},
                 {field: 'operation', width: '230', title: '操作', toolbar: '#operation', fixed: 'right'}
             ]],
@@ -221,7 +222,7 @@
                         layer.close(loadMsg)
                         layer.open({
                             type: 1,
-                            title: '核定数据',
+                            title: '核定数据（' + obj.data["name"] + "）",
                             content: $('#dataTableWithAttachmentPopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                             area: ['1150px', '90%']
                         });
@@ -259,14 +260,35 @@
                     done: function (res) {
                         layer.open({
                             type: 1,
-                            title: '得分汇总',
-                            content: $('#scoreTablePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                            title: '得分汇总（' + obj.data["name"] + "）",
+                            content: $('#scoreTablePopup'),
                             area: ['866px', '90%'],
-                            btn: ['导出为Excel文件'],
+                            btn: ['给企业留言', '导出为Excel文件'],
                             yes: function () {
+                                layer.prompt({title: "请输入留言内容", formType: 2}, function (value, index) {
+                                    $.post({
+                                        url: "../service/expert_remark.php",
+                                        data: {
+                                            "loginid": obj.data.loginid,
+                                            "remark": value
+                                        },
+                                        success: function (res) {
+                                            if (res.code === 0) {
+                                                layer.alert("留言成功！", {icon: "1"})
+                                                maintable.reload()
+                                            } else
+                                                layer.alert(res.msg, {icon: "2"})
+                                        },
+                                        dataType: "json"
+                                    })
+                                    layer.close(index);
+                                });
+                            },
+                            btn2: function () {
                                 table.exportFile(scoreTable.config.id, res.data, 'xls');
+                                return false
                             }
-                        });
+                        })
                         layer.close(msg)
                     }
                 });
@@ -281,7 +303,7 @@
                             $("#qualitativeScoreForm").trigger('reset'); // 表格清空
                         layer.open({
                             type: 1,
-                            title: '定性打分',
+                            title: '定性打分（' + obj.data["name"] + "）",
                             content: $('#qualitativeScorePopup'), //这里content是一个DOM，注意:最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                             area: ['500px', '320px']
                         });
