@@ -10,14 +10,16 @@ class DB
     private $charset;
     private $link;
 
-    // TODO 暂时硬编码连接
     public function __construct()
     {
-        $this->host = "127.0.0.1";
-        $this->port = 3306;
-        $this->user = "root";
-        $this->pass = "ytfgw0535ytu123";
-        $this->db = 'ytfgw-admin';
+        // TODO 暂时用2023年用的库
+        include "../2023/include/INI.class.php";
+        $db_config = (new INI('adminDB.ini'))->data;
+        $this->host = $db_config['DB_HOST'];
+        $this->port = $db_config['DB_PORT'];
+        $this->user = $db_config['DB_USER'];
+        $this->pass = $db_config['DB_PASSWORD'];
+        $this->db = $db_config['DB_NAME'];
         $this->charset = 'utf8';
         //连接数据库
         $this->db_connect();

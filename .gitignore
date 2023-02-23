@@ -7,3 +7,5 @@
 2023/app.ini
 2023/web/doc/*
 2023/uploads/*
+
+service_admin/adminDB.ini
