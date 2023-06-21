@@ -107,7 +107,7 @@
                             }
                         },
                         done: function () {
-                            let dataLength = 32;
+                            let dataLength = 29;
                             table.on('edit(dataTable)', function (obj) {
                                 var value = obj.value //得到修改后的值
                                     , data = obj.data //得到所在行所有键值
@@ -117,6 +117,7 @@
                                     delete dataToBeSub[data.indicator]
                             });
                             $("#submitForPreserve").unbind("click").click(function () {
+                                console.log(dataToBeSub)
                                 if (Object.keys(dataToBeSub).length < dataLength) {
                                     layer.msg("请输入全部数据！");
                                     return false;
@@ -202,7 +203,7 @@
 
                     let dataTableWithAttachment = table.render({
                         elem: '#dataTableWithAttachment',
-                        height: 1150,
+                        height: 950,
                         limit: Number.MAX_SAFE_INTEGER,
                         cols: [[
                             {type: 'numbers', style: 'background-color: #eee;'},
@@ -228,7 +229,7 @@
                         let dataTable = table.render({
                             elem: '#dataTable',
                             url: "../service/get_indicator_value.php",
-                            height: 1150,
+                            height: 950,// 对话框的高度
                             limit: Number.MAX_SAFE_INTEGER,
                             cols: [[
                                 {type: 'numbers', style: 'background-color: #eee;'},
@@ -250,6 +251,7 @@
                                 }
                             }
                         });
+                        // 监听一个元素的单击事件，并在用户单击该元素时重新加载数据表格并打开一个包含数据表格的弹出窗口，以供用户输入详细数据。
                         $("#fill_in").unbind("click").click(function () {
                             dataTable.reload()
                             layer.open({

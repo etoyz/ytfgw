@@ -75,6 +75,10 @@ function fetch_attachment_name(string $user, string $indicator)
     return "未上传";
 }
 
+/**
+ * @param $loginid
+ * @return mixed
+ */
 function get_user_status($loginid)
 {
     require_once "db.php";
