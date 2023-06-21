@@ -3,7 +3,8 @@
  * 保存评判数据
  */
 session_start();
-
+error_reporting(0);
+ini_set('display_errors', 0);
 require "../include/common.php";
 require "../include/verify_login.php";
 
@@ -45,6 +46,7 @@ if (is_enterprise()) { // 若是企业用户，则只能提交自己的数据，
 $_POST['loginid'] = $loginid;
 $_POST['type'] = $type;
 
+
 // 数据插入数据库
 $sql = "INSERT INTO `enterprise_data`(";
 foreach (array_keys($_POST) as $key) {
@@ -53,7 +55,11 @@ foreach (array_keys($_POST) as $key) {
 $sql = substr($sql, 0, -2);
 $sql .= ") VALUES(";
 foreach (array_keys($_POST) as $key) {
-    $sql .= "'" . $db->escape($_POST[$key]) . "', ";
+//    echo $db->escape($_POST[$key]) . " ";
+    if($db->escape($_POST[$key]))
+        $sql .= "'" . $db->escape($_POST[$key]) . "', ";
+    else
+        $sql .= "'" . 0 . "', ";
 }
 $sql = substr($sql, 0, -2);
 $sql .= ");";
@@ -70,8 +76,10 @@ else if ($re == 1062) { // 如果已经存在，则尝试进行更新
     $sql2 .= " WHERE `loginid` = '" . $db->escape($loginid) . "' AND `type` = '" . $db->escape($type) . "'";
     $re2 = $db->query($sql2); // 成功返回true，失败返回错误码
 //    var_dump($re2);
-    if ($re2 === true)
+    if ($re2 === true){
         $arr['code'] = 0;
+    }
+
     else
         $arr['msg'] = "1062 " . $re2;
 } else
@@ -87,13 +95,19 @@ if ($arr["code"] === 0) { // 若成功保存提交的数据
         $sql = "UPDATE `enterprise` set  `submit_time` = '" . date('Y-m-d H:i:s', time()) . "' WHERE `loginid` = '" . $db->escape($loginid) . "'";
         $db->query($sql);
     }
+    $arr['msg'] = "成功提交数据";
+    die(json_encode($arr));
 }
-
-die(json_encode($arr));
 
 // 计算成绩并插入数据库
 function cal_score($loginid, $type, $db)
 {
+    foreach (array_keys($_POST) as $key) {
+        if (!$db->escape($_POST[$key])) {
+            $_POST[$key] = '';
+        }
+    }
+
     // 公式
     $metaData = array();
     $metaData["研究与试验发展人员人均研发经费支出"] = array(
@@ -201,14 +215,16 @@ function cal_score($loginid, $type, $db)
             array_push($data, ($n - $n_basic) / ($n_full - $n_basic) * $weight * 0.4 + $weight * 0.6);
         $score_cnt += $data[4];
     }
-
     $sql = "INSERT INTO `enterprise_score`(";
     foreach (array_keys($metaData) as $key) {
         $sql .= "`$key`, ";
     }
     $sql .= "`loginid`, `type`, `定量得分`) VALUES(";
     foreach (array_keys($metaData) as $key) {
-        $sql .= "'" . $metaData[$key][4] . "', ";
+        if(!$metaData[$key][4])
+            $sql .= "'" . 0 . "', ";
+        else
+            $sql .= "'" . $metaData[$key][4] . "', ";
     }
     $sql .= "'$loginid', $type, '$score_cnt');";
     $re = $db->query($sql);
@@ -217,7 +233,10 @@ function cal_score($loginid, $type, $db)
     if ($re === 1062) { // 如果已经存在尝试进行更新
         $sql2 = "UPDATE `enterprise_score` SET ";
         foreach (array_keys($metaData) as $key) {
-            $sql2 .= "`$key` = '" . $metaData[$key][4] . "', ";
+            if(!$metaData[$key][4])
+                $sql2 .= "`$key` = '" . 0 . "', ";
+            else
+                $sql2 .= "`$key` = '" . $metaData[$key][4] . "', ";
         }
         $sql2 .= "`type` = $type, `定量得分` = '$score_cnt' WHERE `loginid` = '$loginid' AND `type` = '$type'";
         $db->query($sql2);

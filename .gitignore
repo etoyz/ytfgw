@@ -9,3 +9,5 @@
 2023/uploads/*
 
 service_admin/adminDB.ini
+
+*.sql

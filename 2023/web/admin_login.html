@@ -63,11 +63,12 @@
 <script type="text/javascript" src="assets/plugins/layui/layui.js"></script>
 <script type="text/javascript" src="assets/common/js/jparticle.min.js"></script>
 <script>
-    layui.use(['form', 'layer', 'form'], function () {
+    layui.use(['form', 'layer'], function () {
         var $ = layui.jquery,
             form = layui.form,
             layer = layui.layer;
 
+        // 验证表单输入
         form.verify({
             userName: function (value) {
                 if (value.length < 4) {
@@ -85,7 +86,9 @@
             }
         });
 
+        // 监听表单提交
         form.on('submit(loginnow)', function (data) {
+            // 发送表单数据到后端
             $.post({
                 url: "../../service_admin/login.php",
                 data: data.field,
@@ -99,7 +102,7 @@
             })
             return false
         });
-
+    
         //粒子线条
         $(".zyl_login_cont").jParticle({
             background: "rgba(0,0,0,0)",//背景颜色
