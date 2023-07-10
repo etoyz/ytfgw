@@ -33,7 +33,7 @@
                                           id="registerEnterprise"> 注册企业账号（申报）</a>
             </li>
             <li class="layui-nav-item"><a class="s-logout" href="javascript:" id="changePassword"><i
-                    aria-hidden="true" class="fa fa-pencil-square"></i> 修改密码</a></li>
+                aria-hidden="true" class="fa fa-pencil-square"></i> 修改密码</a></li>
             <li class="layui-nav-item"><a class="s-headPortrait" href="javascript:" id="name">正在加载... </a></li>
             <li class="layui-nav-item"><a class="s-headPortrait" href="javascript:" id="loginName">正在加载... </a></li>
             <li class="layui-nav-item"><a class="s-logout" id="logout"><i aria-hidden="true" class="fa fa-sign-out"></i>
@@ -43,11 +43,14 @@
     <div class="layui-side layui-bg-black kit-side" style="width: 150px">
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree" kit-nFavbar lay-filter="kitNavbar">
-                <li class="layui-nav-item layui-nav-itemed">
+                <!--                <li class="layui-nav-item layui-nav-itemed">-->
+                <li class="layui-nav-item ">
+<!--                    默认不展开-->
                     <a class="" href="javascript:"><span> 申报</span></a>
                     <dl class="layui-nav-child">
                         <dd class="m-mod">
-                            <a data-options="{url:'tips1.html',icon:'&#xe658;',title:'填报指南（申报）',id:'1'}" href="javascript:"
+                            <a data-options="{url:'tips1.html',icon:'&#xe658;',title:'填报指南（申报）',id:'1'}"
+                               href="javascript:"
                                kit-target> <span> 填报指南</span></a>
                         </dd>
                         <dd class="m-mod">
@@ -64,12 +67,13 @@
                         </dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item">
+                <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:"><i aria-hidden="true"
                                                       class="fa fa-plug"></i><span> 评价</span></a>
                     <dl class="layui-nav-child">
                         <dd class="m-mod">
-                            <a data-options="{url:'tips2.html',icon:'&#xe658;',title:'填报指南（评价）',id:'4'}" href="javascript:"
+                            <a data-options="{url:'tips2.html',icon:'&#xe658;',title:'填报指南（评价）',id:'4'}"
+                               href="javascript:"
                                kit-target> <span> 填报指南</span></a>
                         </dd>
                         <dd class="m-mod">
